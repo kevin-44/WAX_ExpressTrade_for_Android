@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ** MAIN -->
+
+    <color name="main_primary">#000000</color>
+    <color name="main_primary_dark">#000000</color>
+    <color name="main_accent">#E34E4F</color>
+
+    <!-- ** GENERAL -->
+
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="gray">#878787</color>
+    <color name="cod_gray_1">#161616</color>
+    <color name="cod_gray_2">#111111</color>
+    <color name="maroon_flush">#AC2044</color>
+    <color name="ebony_clay_1">#1F2934</color>
+    <color name="ebony_clay_2">#232E3E</color>
+    <color name="downy">#66CCCC</color>
+    <color name="big_stone">#172437</color>
+    <color name="stiletto_1">#A02E45</color>
+    <color name="stiletto_2">#9E2D44</color>
+    <color name="bunker">#0C0F15</color>
+    <color name="mirage_1">#182029</color>
+    <color name="mirage_2">#131A23</color>
+    <color name="eucalyptus">#28A745</color>
+    <color name="denim">#0C7BBD</color>
+    <color name="shark">#252626</color>
+    <color name="iron">#E6E6E7</color>
+    <color name="prussian_blue">#012D4A</color>
+    <color name="nile_blue">#152C47</color>
+    <color name="shuttle_gray">#67686A</color>
+    <color name="bombay">#A9AAAC</color>
+    <color name="mine_shaft">#333333</color>
+    <color name="pale_sky">#6C757D</color>
+    <color name="tory_blue">#0F6CA1</color>
+    <color name="dusty_gray">#999999</color>
+    <color name="bittersweet">#FF6562</color>
+    <color name="science_blue">#0360CF</color>
+
+    <!-- ** CUSTOM -->
+
+    <!-- *** MAIN -->
+
+    <color name="background">#000000</color>
+
+    <!-- *** OTHER -->
+
+    <color name="transparent">#00000000</color>
+    <color name="clickable">#FC5A55</color>
+</resources>

@@ -1,0 +1,23 @@
+<resources>
+    <style name="SplashScreenTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+    </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/main_primary</item>
+        <item name="colorPrimaryDark">@color/main_primary_dark</item>
+        <item name="colorAccent">@color/main_accent</item>
+    </style>
+
+    <style name="CircleProgressBarTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorAccent">#66CCCC</item>
+    </style>
+
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@color/shark</item>
+
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorAlertDialogListItem">@color/white</item>
+    </style>
+</resources>

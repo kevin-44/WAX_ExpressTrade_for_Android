@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="19dp"
+        android:layout_marginRight="19dp"
+
+        android:gravity="center">
+
+        <HorizontalScrollView tools:ignore="UselessParent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:gravity="center">
+
+                <ImageView tools:ignore="ContentDescription"
+                    android:layout_width="64dp"
+                    android:layout_height="20dp"
+
+                    android:src="@drawable/ic_wax_logo"
+
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="openTab"
+                    android:tag="https://opskins.com"/>
+
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+
+                    android:background="@color/ebony_clay_1"/>
+
+                <ImageView tools:ignore="ContentDescription"
+                    android:layout_width="180dp"
+                    android:layout_height="25dp"
+
+                    android:src="@drawable/expresstrade_logo"
+
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="openTab"
+                    android:tag="https://trade.opskins.com"/>
+            </LinearLayout>
+        </HorizontalScrollView>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:gravity="center_vertical">
+
+        <ImageView tools:ignore="ContentDescription"
+            android:layout_width="19dp"
+            android:layout_height="match_parent"
+
+            android:background="@color/background"
+
+            android:src="@drawable/ic_menu"
+            android:tint="@color/white"
+
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="toggleNavigationDrawer"/>
+    </LinearLayout>
+</RelativeLayout>

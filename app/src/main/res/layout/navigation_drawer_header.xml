@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="100dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+
+        android:background="@drawable/background"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+
+        android:background="@drawable/background_fade"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+
+        android:gravity="center">
+
+        <RelativeLayout tools:ignore="UselessParent"
+            android:id="@+id/navigation_drawer_header_user_log_in"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+
+            android:background="@drawable/shape_button_outline"
+
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="logIn_CloseNavigationDrawer">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+
+                android:background="@color/downy"
+
+                android:text="@string/fragment_log_in_button"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+
+        android:gravity="center">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/navigation_drawer_header_user_avatar"
+
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginRight="9dp"
+            android:layout_marginEnd="9dp"
+
+            app:civ_border_width="1dp"
+            app:civ_border_color="@color/white"
+
+            android:src="@color/transparent"
+
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/navigation_drawer_header_user_username"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textSize="16sp"
+            android:textColor="@color/white"
+
+            android:singleLine="true"
+
+            android:visibility="gone"/>
+    </LinearLayout>
+</RelativeLayout>

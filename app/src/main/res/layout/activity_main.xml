@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".main"
+
+    android:id="@+id/navigation_drawer_layout"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:fitsSystemWindows="true">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:background="@color/background"
+
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView tools:ignore="ContentDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/fragment_container"
+                android:layout_alignBottom="@id/fragment_container"
+                android:layout_alignLeft="@id/fragment_container"
+                android:layout_alignStart="@id/fragment_container"
+                android:layout_alignRight="@id/fragment_container"
+                android:layout_alignEnd="@id/fragment_container"
+
+                android:background="@drawable/background"/>
+
+            <ImageView tools:ignore="ContentDescription"
+                android:id="@+id/background_fade"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/fragment_container"
+                android:layout_alignBottom="@id/fragment_container"
+                android:layout_alignLeft="@id/fragment_container"
+                android:layout_alignStart="@id/fragment_container"
+                android:layout_alignRight="@id/fragment_container"
+                android:layout_alignEnd="@id/fragment_container"
+
+                android:background="@drawable/background_fade"
+
+                android:visibility="gone"/>
+
+            <FrameLayout
+                android:id="@+id/fragment_container"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp">
+            </FrameLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fragment_container"
+
+                android:paddingTop="17dp"
+                android:paddingBottom="30dp"
+
+                android:background="@color/cod_gray_1">
+
+                <RelativeLayout
+                    android:id="@+id/footer_copyright_container"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:gravity="center_horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="@string/footer_copyright"
+                        android:textSize="12sp"
+                        android:textColor="@color/clickable"
+
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="openTab"
+                        android:tag="https://twitter.com/realkevinreinke"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_below="@id/footer_copyright_container"
+
+                    android:gravity="center_horizontal">
+
+                    <TextView
+                        android:id="@+id/footer_join_our_community"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="24dp"
+
+                        android:text="@string/footer_join_our_community"
+                        android:textSize="12sp"
+                        android:textColor="@color/gray"
+
+                        android:gravity="center_vertical"/>
+
+                    <ImageView tools:ignore="ContentDescription"
+                        android:id="@+id/footer_join_our_community_reddit"
+
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginLeft="9dp"
+                        android:layout_marginStart="9dp"
+                        android:layout_toRightOf="@id/footer_join_our_community"
+                        android:layout_toEndOf="@id/footer_join_our_community"
+
+                        android:src="@drawable/ic_reddit_button"
+                        android:tint="@color/white"
+
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="openTab"
+                        android:tag="https://www.reddit.com/r/opskins"/>
+
+                    <ImageView tools:ignore="ContentDescription"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginLeft="7dp"
+                        android:layout_marginStart="7dp"
+                        android:layout_toRightOf="@id/footer_join_our_community_reddit"
+                        android:layout_toEndOf="@id/footer_join_our_community_reddit"
+
+                        android:src="@drawable/ic_twitter_button"
+                        android:tint="@color/white"
+
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="openTab"
+                        android:tag="https://twitter.com/opskinsgo"/>
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+    <android.support.design.widget.NavigationView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+
+        android:background="@color/background"
+
+        android:fitsSystemWindows="false">
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            layout="@layout/navigation_drawer_header"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="100dp"
+
+            android:background="@color/background">
+
+            <ListView
+                android:id="@+id/navigation_drawer_list"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:divider="@color/ebony_clay_1"
+                android:dividerHeight="1dp"/>
+        </RelativeLayout>
+    </android.support.design.widget.NavigationView>
+</android.support.v4.widget.DrawerLayout>

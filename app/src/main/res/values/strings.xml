@@ -1,0 +1,52 @@
+<resources>
+    <!-- ** MAIN -->
+
+    <string name="app_name">WAX ExpressTrade</string>
+
+    <!-- ** FOOTER -->
+
+    <string name="footer_copyright">\@realkevinreinke</string>
+    <string name="footer_join_our_community">Join Our Community</string>
+
+    <!-- ** FRAGMENT LOG IN -->
+
+    <string name="fragment_log_in_button">LOG IN</string>
+
+    <!-- ** FRAGMENT TRADE -->
+
+    <string name="fragment_trade_title">TRADE ITEMS</string>
+    <string name="fragment_trade_description">Enter your trading partner\'s WAX Trade URL, then select items from your inventory to trade.</string>
+    <string name="fragment_trade_inventory_items_total">Items Total</string>
+    <string name="fragment_trade_inventory_items_in_trade_count">0</string>
+    <string name="fragment_trade_inventory_items">Items</string>
+    <string name="fragment_trade_inventory_in_trade">in Trade</string>
+    <string name="fragment_trade_inventory_total_value">Total Value</string>
+    <string name="fragment_trade_inventory_max_selectable_items">200 items max</string>
+    <string name="fragment_trade_search_inventory_hint">Start typing to find an item&#8230;</string>
+    <string name="fragment_trade_find_partner_title">Find your friend to trade with</string>
+    <string name="fragment_trade_find_partner_description">Enter WAX ExpressTrade URL:</string>
+    <string name="fragment_trade_find_partner_button">FIND</string>
+    <string name="fragment_trade_find_partner_error_user_not_found">Sorry, that user cannot be found. Make sure you have a valid WAX ExpressTrade URL.</string>
+    <string name="fragment_trade_find_partner_error_unable_to_load_friend_inventory">Unable to load friend\'s inventory! Ensure the WAX ExpressTrade URL is correct.</string>
+    <string name="fragment_trade_find_partner_error_cant_trade_with_yourself">You can\'t trade with yourself.</string>
+    <string name="fragment_trade_offer_message">Offer Message:</string>
+    <string name="fragment_trade_default_message">This is an offer you can\'t refuse!</string>
+    <string name="fragment_trade_enter_twofactor_hint">Enter Two Factor Authentication Code</string>
+    <string name="fragment_trade_make_offer_button">MAKE OFFER</string>
+
+    <!-- ** FRAGMENT OFFERS -->
+
+    <string name="fragment_offers_title">TRADE OFFERS</string>
+    <string name="fragment_offers_description">Thousands of unique virtual items available for trade</string>
+    <string name="fragment_offers_received">Received</string>
+    <string name="fragment_offers_sent">Sent</string>
+    <string name="fragment_offers_pending">Pending</string>
+    <string name="fragment_offers_accepted">Accepted</string>
+    <string name="fragment_offers_expired">Expired</string>
+    <string name="fragment_offers_declined">Declined</string>
+    <string name="fragment_offers_canceled">Canceled</string>
+    <string name="fragment_offers_loading">Please wait&#8230;</string>
+    <string name="fragment_offers_error_tag">An error occurred: \</string>
+    <string name="fragment_offers_error_expected_return_data_not_found">An error occurred: Expected return data not found.</string>
+    <string name="fragment_offers_empty_tab">This tab is empty</string>
+</resources>

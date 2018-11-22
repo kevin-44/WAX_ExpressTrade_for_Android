@@ -1,0 +1,6 @@
+<resources>
+    <!-- ** OPSKINS OAUTH -->
+
+    <string name="OPSKINS_OAUTH_CLIENT_ID"></string>
+    <string name="OPSKINS_OAUTH_CLIENT_SECRET"></string>
+</resources>

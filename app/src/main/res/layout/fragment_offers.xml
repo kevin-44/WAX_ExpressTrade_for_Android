@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="7dp">
+
+    <RelativeLayout
+        android:id="@+id/fragment_offers_title_container"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/fragment_offers_title"
+            android:textSize="23sp"
+            android:textStyle="bold"
+            android:textColor="@color/downy"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/fragment_offers_description_container"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_below="@id/fragment_offers_title_container"
+
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/fragment_offers_description"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+
+            android:gravity="center_horizontal"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/fragment_offers_note_container"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/fragment_offers_description_container"
+
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/fragment_offers_note"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textSize="12sp"
+            android:textColor="@color/white"
+
+            android:gravity="center_horizontal"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/fragment_offers_tabs_container"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:layout_below="@id/fragment_offers_note_container"
+
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+
+        android:gravity="center_horizontal">
+
+        <HorizontalScrollView tools:ignore="UselessParent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/fragment_offers_tab_received"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:paddingLeft="13dp"
+                    android:paddingStart="13dp"
+                    android:paddingRight="13dp"
+                    android:paddingEnd="13dp"
+
+                    android:background="@drawable/shape_fragment_offers_tab">
+
+                    <ImageView tools:ignore="ContentDescription"
+                        android:layout_width="25dp"
+                        android:layout_height="36dp"
+
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+
+                        android:src="@drawable/ic_received"
+                        android:tint="@color/white"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginLeft="7dp"
+                        android:layout_marginStart="7dp"
+
+                        android:text="@string/fragment_offers_received"
+                        android:textSize="14sp"
+                        android:textColor="@color/white"
+
+                        android:gravity="center_vertical"/>
+                </LinearLayout>
+
+                <LinearLayout tools:ignore="UseCompoundDrawables"
+                    android:id="@+id/fragment_offers_tab_sent"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginStart="7dp"
+
+                    android:paddingLeft="9dp"
+                    android:paddingStart="9dp"
+                    android:paddingRight="13dp"
+                    android:paddingEnd="13dp">
+
+                    <ImageView tools:ignore="ContentDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+
+                        android:src="@drawable/ic_sent"
+                        android:tint="@color/white"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginStart="3dp"
+
+                        android:text="@string/fragment_offers_sent"
+                        android:textSize="14sp"
+                        android:textColor="@color/white"
+
+                        android:gravity="center_vertical"/>
+                </LinearLayout>
+            </LinearLayout>
+        </HorizontalScrollView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/fragment_offers_state_tabs_container"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/fragment_offers_tabs_container"
+
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+
+        android:gravity="center_horizontal">
+
+        <HorizontalScrollView tools:ignore="UselessParent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/fragment_offers_state_tab_pending"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:paddingLeft="13dp"
+                    android:paddingStart="13dp"
+                    android:paddingRight="13dp"
+                    android:paddingEnd="13dp"
+
+                    android:background="@drawable/shape_fragment_offers_tab">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+
+                        android:text="@string/fragment_offers_pending"
+                        android:textSize="14sp"
+                        android:textColor="@color/white"
+
+                        android:gravity="center_vertical"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/fragment_offers_state_tab_accepted"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginStart="7dp"
+
+                    android:paddingLeft="13dp"
+                    android:paddingStart="13dp"
+                    android:paddingRight="13dp"
+                    android:paddingEnd="13dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+
+                        android:text="@string/fragment_offers_accepted"
+                        android:textSize="14sp"
+                        android:textColor="@color/white"
+
+                        android:gravity="center_vertical"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/fragment_offers_state_tab_expired"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginStart="7dp"
+
+                    android:paddingLeft="13dp"
+                    android:paddingStart="13dp"
+                    android:paddingRight="13dp"
+                    android:paddingEnd="13dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+
+                        android:text="@string/fragment_offers_expired"
+                        android:textSize="14sp"
+                        android:textColor="@color/white"
+
+                        android:gravity="center_vertical"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/fragment_offers_state_tab_declined"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginStart="7dp"
+
+                    android:paddingLeft="13dp"
+                    android:paddingStart="13dp"
+                    android:paddingRight="13dp"
+                    android:paddingEnd="13dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+
+                        android:text="@string/fragment_offers_declined"
+                        android:textSize="14sp"
+                        android:textColor="@color/white"
+
+                        android:gravity="center_vertical"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/fragment_offers_state_tab_canceled"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginStart="7dp"
+
+                    android:paddingLeft="13dp"
+                    android:paddingStart="13dp"
+                    android:paddingRight="13dp"
+                    android:paddingEnd="13dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+
+                        android:text="@string/fragment_offers_canceled"
+                        android:textSize="14sp"
+                        android:textColor="@color/white"
+
+                        android:gravity="center_vertical"/>
+                </LinearLayout>
+            </LinearLayout>
+        </HorizontalScrollView>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/fragment_offers_offers_container"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:layout_below="@id/fragment_offers_state_tabs_container"
+
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+
+        android:gravity="center_horizontal"
+
+        android:orientation="vertical"/>
+</RelativeLayout>

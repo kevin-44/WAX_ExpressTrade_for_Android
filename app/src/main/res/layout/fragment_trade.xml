@@ -1,0 +1,983 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="7dp">
+
+    <RelativeLayout
+        android:id="@+id/fragment_trade_title_container"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/fragment_trade_title"
+            android:textSize="23sp"
+            android:textStyle="bold"
+            android:textColor="@color/downy"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/fragment_trade_description_container"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_below="@id/fragment_trade_title_container"
+
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/fragment_trade_description"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+
+            android:gravity="center_horizontal"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/fragment_trade_apps_container"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/fragment_trade_description_container"
+
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+
+        android:gravity="center_horizontal">
+
+        <HorizontalScrollView tools:ignore="UselessParent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/fragment_trade_selected_app_container"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:background="@drawable/shape_fragment_trade_apps_container">
+
+                <ProgressBar
+                    android:id="@+id/fragment_trade_selected_app_progress_bar"
+
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginStart="11dp"
+
+                    android:theme="@style/CircleProgressBarTheme"/>
+
+                <ImageView tools:ignore="ContentDescription"
+                    android:id="@+id/fragment_trade_selected_app_image"
+
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginStart="11dp"
+
+                    android:visibility="gone"/>
+
+                <ImageView tools:ignore="ContentDescription"
+                    android:layout_width="8dp"
+                    android:layout_height="33dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+
+                    android:src="@drawable/ic_dropdown"
+                    android:tint="@color/white"/>
+            </LinearLayout>
+        </HorizontalScrollView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="45.5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_below="@id/fragment_trade_apps_container"
+
+        android:paddingTop="1dp"
+        android:paddingBottom="1dp"
+        android:paddingLeft="1dp"
+        android:paddingRight="1dp"
+
+        android:background="@drawable/shape_fragment_trade_container_outline">
+
+        <RelativeLayout
+            android:id="@+id/fragment_trade_user_info_container"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout tools:ignore="UselessParent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:paddingTop="27dp"
+                android:paddingBottom="28dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+
+                android:background="@drawable/shape_fragment_trade_user_container"
+
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/fragment_trade_user_username"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:textSize="13sp"
+                    android:textColor="@color/downy"
+
+                    android:singleLine="true"
+                    android:maxLines="1"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/fragment_trade_user_inventory_container"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fragment_trade_user_info_container"
+
+            android:paddingTop="15dp"
+            android:paddingBottom="42dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+
+            android:background="@color/bunker"
+
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:baselineAligned="true">
+
+                <RelativeLayout
+                    android:layout_width="85dp"
+                    android:layout_height="65dp"
+
+                    android:background="@drawable/shape_fragment_trade_user_inventory_count_container">
+
+                    <LinearLayout
+                        android:id="@+id/fragment_trade_user_inventory_total_items_inner_container"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginBottom="1dp"
+                        android:layout_marginLeft="1dp"
+                        android:layout_marginRight="1dp"
+
+                        android:background="@drawable/shape_fragment_trade_inventory_count_inner_container"
+
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/fragment_trade_user_inventory_total_items_count"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="-8dp"
+
+                            android:textSize="28sp"
+                            android:textColor="@color/downy"
+
+                            android:singleLine="true"
+                            android:maxLines="1"/>
+
+                        <TextView tools:ignore="SmallSp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="-8dp"
+
+                            android:text="@string/fragment_trade_inventory_items_total"
+                            android:textSize="10sp"
+                            android:textColor="@color/white"
+
+                            android:singleLine="true"
+                            android:maxLines="1"/>
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:id="@+id/fragment_trade_user_inventory_items_in_trade_total_value_container"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="65dp"
+                        android:layout_toLeftOf="@id/fragment_trade_user_inventory_items_in_trade_container"
+                        android:layout_toStartOf="@id/fragment_trade_user_inventory_items_in_trade_container"
+
+                        android:gravity="center_vertical|end"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="7dp"
+                            android:layout_marginEnd="7dp"
+
+                            android:text="@string/fragment_trade_inventory_total_value"
+                            android:textSize="12sp"
+                            android:textColor="@color/downy"
+
+                            android:singleLine="true"
+                            android:maxLines="1"
+
+                            android:gravity="end"/>
+
+                        <TextView
+                            android:id="@+id/fragment_trade_user_inventory_items_in_trade_total_value"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="7dp"
+                            android:layout_marginEnd="7dp"
+
+                            android:textSize="12sp"
+                            android:textColor="@color/downy"
+
+                            android:singleLine="true"
+                            android:maxLines="1"
+
+                            android:gravity="end"/>
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/fragment_trade_user_inventory_items_in_trade_container"
+
+                        android:layout_width="85dp"
+                        android:layout_height="65dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:background="@drawable/shape_fragment_trade_user_inventory_count_container">
+
+                        <LinearLayout
+                            android:id="@+id/fragment_trade_user_inventory_items_in_trade_inner_container"
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="1dp"
+                            android:layout_marginBottom="1dp"
+                            android:layout_marginLeft="1dp"
+                            android:layout_marginRight="1dp"
+
+                            android:background="@drawable/shape_fragment_trade_inventory_count_inner_container"
+
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/fragment_trade_user_inventory_items_in_trade_count"
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="-8dp"
+
+                                android:text="@string/fragment_trade_inventory_items_in_trade_count"
+                                android:textSize="28sp"
+                                android:textColor="@color/downy"
+
+                                android:singleLine="true"
+                                android:maxLines="1"/>
+
+                            <TextView tools:ignore="SmallSp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="-8dp"
+
+                                android:text="@string/fragment_trade_inventory_items"
+                                android:textSize="10sp"
+                                android:textColor="@color/white"
+
+                                android:singleLine="true"
+                                android:maxLines="1"/>
+
+                            <TextView tools:ignore="SmallSp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="-3dp"
+
+                                android:text="@string/fragment_trade_inventory_in_trade"
+                                android:textSize="10sp"
+                                android:textColor="@color/white"
+
+                                android:singleLine="true"
+                                android:maxLines="1"/>
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <TextView tools:ignore="SmallSp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@id/fragment_trade_user_inventory_items_in_trade_container"
+
+                        android:text="@string/fragment_trade_inventory_max_selectable_items"
+                        android:textSize="11sp"
+                        android:textColor="@color/downy"
+
+                        android:singleLine="true"
+                        android:maxLines="1"
+
+                        android:gravity="end"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/fragment_trade_user_search_inventory_input"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="11dp"
+
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="13dp"
+                android:paddingRight="13dp"
+
+                android:background="@drawable/shape_input"
+
+                android:text="@string/fragment_trade_search_inventory_hint"
+                android:textSize="12sp"
+                android:textColor="@color/pale_sky"
+
+                android:singleLine="true"
+                android:maxLines="1"/>
+
+            <HorizontalScrollView tools:ignore="UselessParent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:id="@+id/fragment_trade_user_inventory_items_container"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:orientation="horizontal"/>
+            </HorizontalScrollView>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/fragment_trade_find_partner_container"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fragment_trade_user_inventory_container"
+
+            android:paddingBottom="42dp"
+            android:paddingLeft="60dp"
+            android:paddingRight="60dp"
+
+            android:background="@color/bunker"
+
+            android:gravity="center_horizontal">
+
+            <LinearLayout tools:ignore="UselessParent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="@string/fragment_trade_find_partner_title"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+
+                    android:gravity="center_horizontal"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+
+                    android:text="@string/fragment_trade_find_partner_description"
+                    android:textSize="12sp"
+                    android:textColor="@color/dusty_gray"
+
+                    android:gravity="center_horizontal"/>
+
+                <TextView
+                    android:id="@+id/fragment_trade_find_partner_input"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="13dp"
+                    android:paddingRight="13dp"
+
+                    android:background="@drawable/shape_input"
+
+                    android:textSize="12sp"
+                    android:textColor="@color/pale_sky"
+
+                    android:singleLine="true"
+                    android:maxLines="1"/>
+
+                <TextView
+                    android:id="@+id/fragment_trade_find_partner_error"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+
+                    android:textSize="12sp"
+                    android:textColor="@color/bittersweet"
+
+                    android:gravity="center_horizontal"
+                    android:visibility="gone"/>
+
+                <RelativeLayout
+                    android:id="@+id/fragment_trade_find_partner_button"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+
+                    android:background="@drawable/shape_button_outline">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+
+                        android:background="@color/eucalyptus"
+
+                        android:text="@string/fragment_trade_find_partner_button"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"/>
+                </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/fragment_trade_partner_info_container"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fragment_trade_find_partner_container"
+
+            android:visibility="gone">
+
+            <LinearLayout tools:ignore="UselessParent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:paddingTop="28dp"
+                android:paddingBottom="28dp"
+
+                android:background="@drawable/shape_fragment_trade_partner_container"
+
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/fragment_trade_partner_username"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:textSize="13sp"
+                    android:textColor="@color/stiletto_2"
+
+                    android:singleLine="true"
+                    android:maxLines="1"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/fragment_trade_partner_avatar_container"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-27.5dp"
+            android:layout_below="@id/fragment_trade_find_partner_container"
+
+            android:gravity="center_horizontal"
+            android:visibility="gone">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/fragment_trade_partner_avatar"
+
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+
+                app:civ_border_width="1dp"
+                app:civ_border_color="@color/white"
+
+                android:src="@color/transparent"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/fragment_trade_partner_inventory_container"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fragment_trade_partner_info_container"
+
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+
+            android:background="@color/bunker"
+
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:baselineAligned="true">
+
+                <RelativeLayout
+                    android:layout_width="85dp"
+                    android:layout_height="65dp"
+
+                    android:background="@drawable/shape_fragment_trade_partner_inventory_count_container">
+
+                    <LinearLayout
+                        android:id="@+id/fragment_trade_partner_inventory_total_items_inner_container"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginBottom="1dp"
+                        android:layout_marginLeft="1dp"
+                        android:layout_marginRight="1dp"
+
+                        android:background="@drawable/shape_fragment_trade_inventory_count_inner_container"
+
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/fragment_trade_partner_inventory_total_items_count"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="-8dp"
+
+                            android:textSize="28sp"
+                            android:textColor="@color/stiletto_2"
+
+                            android:singleLine="true"
+                            android:maxLines="1"/>
+
+                        <TextView tools:ignore="SmallSp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="-8dp"
+
+                            android:text="@string/fragment_trade_inventory_items_total"
+                            android:textSize="10sp"
+                            android:textColor="@color/white"
+
+                            android:singleLine="true"
+                            android:maxLines="1"/>
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:id="@+id/fragment_trade_partner_inventory_items_in_trade_total_value_container"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="65dp"
+                        android:layout_toLeftOf="@id/fragment_trade_partner_inventory_items_in_trade_container"
+                        android:layout_toStartOf="@id/fragment_trade_partner_inventory_items_in_trade_container"
+
+                        android:gravity="center_vertical|end"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="7dp"
+                            android:layout_marginEnd="7dp"
+
+                            android:text="@string/fragment_trade_inventory_total_value"
+                            android:textSize="12sp"
+                            android:textColor="@color/stiletto_2"
+
+                            android:singleLine="true"
+                            android:maxLines="1"
+
+                            android:gravity="end"/>
+
+                        <TextView
+                            android:id="@+id/fragment_trade_partner_inventory_items_in_trade_total_value"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="7dp"
+                            android:layout_marginEnd="7dp"
+
+                            android:textSize="12sp"
+                            android:textColor="@color/stiletto_2"
+
+                            android:singleLine="true"
+                            android:maxLines="1"
+
+                            android:gravity="end"/>
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/fragment_trade_partner_inventory_items_in_trade_container"
+
+                        android:layout_width="85dp"
+                        android:layout_height="65dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+
+                        android:background="@drawable/shape_fragment_trade_partner_inventory_count_container">
+
+                        <LinearLayout
+                            android:id="@+id/fragment_trade_partner_inventory_items_in_trade_inner_container"
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="1dp"
+                            android:layout_marginBottom="1dp"
+                            android:layout_marginLeft="1dp"
+                            android:layout_marginRight="1dp"
+
+                            android:background="@drawable/shape_fragment_trade_inventory_count_inner_container"
+
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/fragment_trade_partner_inventory_items_in_trade_count"
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="-8dp"
+
+                                android:text="@string/fragment_trade_inventory_items_in_trade_count"
+                                android:textSize="28sp"
+                                android:textColor="@color/stiletto_2"
+
+                                android:singleLine="true"
+                                android:maxLines="1"/>
+
+                            <TextView tools:ignore="SmallSp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="-8dp"
+
+                                android:text="@string/fragment_trade_inventory_items"
+                                android:textSize="10sp"
+                                android:textColor="@color/white"
+
+                                android:singleLine="true"
+                                android:maxLines="1"/>
+
+                            <TextView tools:ignore="SmallSp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="-3dp"
+
+                                android:text="@string/fragment_trade_inventory_in_trade"
+                                android:textSize="10sp"
+                                android:textColor="@color/white"
+
+                                android:singleLine="true"
+                                android:maxLines="1"/>
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <TextView tools:ignore="SmallSp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@id/fragment_trade_partner_inventory_items_in_trade_container"
+
+                        android:text="@string/fragment_trade_inventory_max_selectable_items"
+                        android:textSize="11sp"
+                        android:textColor="@color/stiletto_2"
+
+                        android:singleLine="true"
+                        android:maxLines="1"
+
+                        android:gravity="end"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/fragment_trade_partner_search_inventory_input"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="11dp"
+
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="13dp"
+                android:paddingRight="13dp"
+
+                android:background="@drawable/shape_input"
+
+                android:text="@string/fragment_trade_search_inventory_hint"
+                android:textSize="12sp"
+                android:textColor="@color/pale_sky"
+
+                android:singleLine="true"
+                android:maxLines="1"/>
+
+            <HorizontalScrollView tools:ignore="UselessParent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:id="@+id/fragment_trade_partner_inventory_items_container"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:orientation="horizontal"/>
+            </HorizontalScrollView>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/fragment_trade_separator_1"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fragment_trade_partner_inventory_container"
+
+            android:paddingLeft="17dp"
+            android:paddingRight="17dp"
+
+            android:background="@color/bunker">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+
+                android:background="@color/nile_blue"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/fragment_trade_config_container"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fragment_trade_separator_1"
+
+            android:paddingTop="15dp"
+            android:paddingBottom="28dp"
+            android:paddingLeft="27dp"
+            android:paddingRight="27dp"
+
+            android:background="@drawable/shape_fragment_trade_container_bottom"
+
+            android:gravity="center_horizontal">
+
+            <LinearLayout tools:ignore="UselessParent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/fragment_trade_enter_message_container"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="13dp"
+                    android:paddingRight="13dp"
+
+                    android:background="@drawable/shape_fragment_trade_offer_message_container">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="@string/fragment_trade_offer_message"
+                        android:textSize="12sp"
+                        android:textColor="@color/tory_blue"
+
+                        android:singleLine="true"
+                        android:maxLines="1"/>
+
+                    <TextView
+                        android:id="@+id/fragment_trade_enter_message_input"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+
+                        android:background="@color/mirage_2"
+
+                        android:text="@string/fragment_trade_default_message"
+                        android:textSize="12sp"
+                        android:textColor="@color/pale_sky"
+
+                        android:singleLine="true"
+                        android:maxLines="1"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/fragment_trade_enter_twofactor_input"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
+
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="13dp"
+                    android:paddingRight="13dp"
+
+                    android:background="@drawable/shape_input"
+
+                    android:text="@string/fragment_trade_enter_twofactor_hint"
+                    android:textSize="12sp"
+                    android:textColor="@color/pale_sky"
+
+                    android:singleLine="true"
+                    android:maxLines="1"/>
+
+                <RelativeLayout
+                    android:id="@+id/fragment_trade_make_offer_button"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28dp"
+
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+
+                    android:background="@drawable/shape_button_outline">
+
+                    <TextView
+                        android:id="@+id/fragment_trade_inner_make_offer_button"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+
+                        android:background="@color/shuttle_gray"
+
+                        android:text="@string/fragment_trade_make_offer_button"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/bombay"/>
+                </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:layout_below="@id/fragment_trade_apps_container"
+
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+
+        android:gravity="center_horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/fragment_trade_user_avatar"
+
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+
+            app:civ_border_width="1dp"
+            app:civ_border_color="@color/white"
+
+            android:src="@color/transparent"/>
+    </RelativeLayout>
+</RelativeLayout>
