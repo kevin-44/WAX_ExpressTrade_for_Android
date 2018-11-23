@@ -25,7 +25,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import org.json.JSONArray;
@@ -64,6 +68,8 @@ public class fragment_offers extends Fragment {
     private int selected_offer_state_filter = Constant.OFFER_STATE_ACTIVE;
     private View selected_offer_type_view;
     private View selected_offer_state_filter_view;
+    private int image_load_count = 0;
+    private Boolean offers_loaded = false;
 
     // *** STATES
 
@@ -258,6 +264,9 @@ public class fragment_offers extends Fragment {
             perform_action = false;
             main.set_perform_action(false);
 
+            image_load_count = 0;
+            offers_loaded = false;
+
             // -----
 
             final Context context = fragment_offers.this.getContext();
@@ -299,10 +308,6 @@ public class fragment_offers extends Fragment {
                             final int offer_count = offers.length();
 
                             if(offer_count >= 1) {
-                                clearView_LinearLayout(offers_container);
-
-                                // -----
-
                                 JSONObject offer;
                                 JSONObject sender;
                                 JSONObject recipient;
@@ -311,6 +316,10 @@ public class fragment_offers extends Fragment {
                                 JSONArray their_items;
                                 JSONArray your_items;
                                 JSONObject item;
+
+                                final LinearLayout offers_inner_container = new LinearLayout(context);
+                                offers_inner_container.setOrientation(LinearLayout.VERTICAL);
+
                                 LinearLayout offer_outline_container_layout;
                                 LinearLayout.LayoutParams offer_outline_container_layout_params;
                                 LinearLayout offer_header_layout;
@@ -367,6 +376,16 @@ public class fragment_offers extends Fragment {
                                 int recipient_item_count;
                                 int their_item_count;
                                 int your_item_count;
+                                int total_image_count_temp = offer_count;
+
+                                for(int i = 0; i < offer_count; i ++) {
+                                    offer = offers.getJSONObject(i);
+                                    total_image_count_temp += offer.getJSONObject("sender").getJSONArray("items").length() + offer.getJSONObject("recipient").getJSONArray("items").length();
+                                }
+
+                                // -----
+
+                                final int total_image_count = total_image_count_temp;
 
                                 for(int i = 0; i < offer_count; i ++) {
                                     offer = offers.getJSONObject(i);
@@ -452,6 +471,10 @@ public class fragment_offers extends Fragment {
                                         user_avatar_view_1.setImageDrawable(opskins_logo_drawable);
                                         user_avatar_view_1.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.SRC_IN);
                                         offer_header_inner_layout.addView(user_avatar_view_1, unit_conversion_4, unit_conversion_4);
+
+                                        // -----
+
+                                        image_load_count += 1;
                                     }
                                     else {
                                         user_avatar_view_2 = new de.hdodenhof.circleimageview.CircleImageView(context);
@@ -459,7 +482,30 @@ public class fragment_offers extends Fragment {
                                         user_avatar_view_2.setBorderColor(color_white);
                                         offer_header_inner_layout.addView(user_avatar_view_2, unit_conversion_4, unit_conversion_4);
 
-                                        Glide.with(context).load(user_avatar).apply(new RequestOptions().fitCenter()).into(user_avatar_view_2);
+                                        Glide.with(context)
+                                                .load(user_avatar)
+                                                .apply(new RequestOptions().fitCenter())
+                                                .listener(new RequestListener<Drawable>() {
+                                                    @Override
+                                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                                        return false;
+                                                    }
+
+                                                    @Override
+                                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                                        if(!offers_loaded && (++ image_load_count) == total_image_count) {
+                                                            offers_loaded = true;
+
+                                                            // -----
+
+                                                            clearView_LinearLayout(offers_container);
+
+                                                            offers_container.addView(offers_inner_container, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                                        }
+                                                        return false;
+                                                    }
+                                                })
+                                                .into(user_avatar_view_2);
                                     }
 
                                     user_name_view = new TextView(context);
@@ -656,7 +702,7 @@ public class fragment_offers extends Fragment {
 
                                     // -
 
-                                    /*if(!message.isEmpty()) { // functional; however, conflicts with glide - needs fixing
+                                    if(!message.isEmpty()) { // functional; however, conflicts with glide - needs fixing
                                         offer_header_inner_layout = new LinearLayout(context);
                                         offer_header_inner_layout.setPadding(0, unit_conversion_9, 0, unit_conversion_9);
                                         offer_header_inner_layout.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -682,7 +728,7 @@ public class fragment_offers extends Fragment {
                                         offer_header_inner_layout.addView(message_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
                                         offer_header_layout.addView(offer_header_inner_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                    }*/
+                                    }
 
                                     // -----
 
@@ -728,7 +774,30 @@ public class fragment_offers extends Fragment {
                                         item_image_view = new ImageView(context);
                                         offer_content_inner_layout.addView(item_image_view, unit_conversion_10, unit_conversion_10);
 
-                                        Glide.with(context).load(item_image).apply(new RequestOptions().fitCenter()).into(item_image_view);
+                                        Glide.with(context)
+                                                .load(item_image)
+                                                .apply(new RequestOptions().fitCenter())
+                                                .listener(new RequestListener<Drawable>() {
+                                                    @Override
+                                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                                        return false;
+                                                    }
+
+                                                    @Override
+                                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                                        if(!offers_loaded && (++ image_load_count) == total_image_count) {
+                                                            offers_loaded = true;
+
+                                                            // -----
+
+                                                            clearView_LinearLayout(offers_container);
+
+                                                            offers_container.addView(offers_inner_container, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                                        }
+                                                        return false;
+                                                    }
+                                                })
+                                                .into(item_image_view);
 
                                         item_name_view = new TextView(context);
                                         item_name_view.setPadding(unit_conversion_5, 0, 0, 0);
@@ -779,7 +848,30 @@ public class fragment_offers extends Fragment {
                                         item_image_view = new ImageView(context);
                                         offer_content_inner_layout.addView(item_image_view, unit_conversion_10, unit_conversion_10);
 
-                                        Glide.with(context).load(item_image).apply(new RequestOptions().fitCenter()).into(item_image_view);
+                                        Glide.with(context)
+                                                .load(item_image)
+                                                .apply(new RequestOptions().fitCenter())
+                                                .listener(new RequestListener<Drawable>() {
+                                                    @Override
+                                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                                        return false;
+                                                    }
+
+                                                    @Override
+                                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                                        if(!offers_loaded && (++ image_load_count) == total_image_count) {
+                                                            offers_loaded = true;
+
+                                                            // -----
+
+                                                            clearView_LinearLayout(offers_container);
+
+                                                            offers_container.addView(offers_inner_container, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                                        }
+                                                        return false;
+                                                    }
+                                                })
+                                                .into(item_image_view);
 
                                         item_name_view = new TextView(context);
                                         item_name_view.setPadding(unit_conversion_5, 0, 0, 0);
@@ -795,9 +887,18 @@ public class fragment_offers extends Fragment {
 
                                     offer_outline_container_layout.addView(offer_header_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                     offer_outline_container_layout.addView(offer_content_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                    offers_container.addView(offer_outline_container_layout, offer_outline_container_layout_params);
 
-                                    //main.showDialog(context, "test", their_items.toString());
+                                    offers_inner_container.addView(offer_outline_container_layout, offer_outline_container_layout_params);
+                                }
+
+                                if(!offers_loaded && image_load_count == total_image_count) {
+                                    offers_loaded = true;
+
+                                    // -----
+
+                                    clearView_LinearLayout(offers_container);
+
+                                    offers_container.addView(offers_inner_container, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                 }
                             }
                             else {
