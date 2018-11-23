@@ -163,8 +163,8 @@ public class fragment_trade extends Fragment {
                                     app_list_layout.setOrientation(LinearLayout.VERTICAL);
 
                                     RelativeLayout app_list_item_layout;
-                                    RelativeLayout.LayoutParams app_list_item_layout_params;
                                     LinearLayout layout;
+                                    LinearLayout.LayoutParams layout_params;
                                     ImageView app_image_view;
                                     TextView app_name_view;
                                     final AlertDialog alert_dialog = new AlertDialog.Builder(context, R.style.DialogTheme).create();
@@ -175,11 +175,11 @@ public class fragment_trade extends Fragment {
                                             app_2 = apps.getJSONObject(i);
                                             app_list_item_layout = new RelativeLayout(context);
 
-                                            app_list_item_layout_params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                                            app_list_item_layout_params.setMargins(0, unit_conversion_3, 0, unit_conversion_3);
-
                                             layout = new LinearLayout(context);
                                             layout.setGravity(Gravity.CENTER_VERTICAL);
+
+                                            layout_params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                            layout_params.setMargins(0, unit_conversion_3, 0, unit_conversion_3);
 
                                             app_image_view = new ImageView(context);
                                             layout.addView(app_image_view, unit_conversion_4, unit_conversion_4);
@@ -193,8 +193,8 @@ public class fragment_trade extends Fragment {
                                             app_name_view.setTextColor(app_name_color);
                                             layout.addView(app_name_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-                                            app_list_item_layout.addView(layout, app_list_item_layout_params);
-                                            app_list_layout.addView(app_list_item_layout, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                            app_list_item_layout.addView(layout, layout_params);
+                                            app_list_layout.addView(app_list_item_layout, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
                                             // -----
 
@@ -591,6 +591,7 @@ public class fragment_trade extends Fragment {
                         final String twofactor = twofactor_input.getText().toString();
 
                         if(PartnerData.valid_user && (selected_user_items.size() >= 1 || selected_partner_items.size() >= 1) && !twofactor.equals(twofactor_hint)) {
+                            final String default_message = resources.getString(R.string.fragment_trade_default_message);
                             final String message = message_input.getText().toString();
 
                             final RequestParams params = new RequestParams();
@@ -598,7 +599,10 @@ public class fragment_trade extends Fragment {
                             params.put("trade_url", PartnerData.trade_url);
                             params.put("items_to_send", TextUtils.join(",", selected_user_items));
                             params.put("items_to_receive", TextUtils.join(",", selected_partner_items));
-                            params.put("message", message);
+
+                            if(!message.equals(default_message)) {
+                                params.put("message", message);
+                            }
 
                             opskins_trade_api.post_SetBearerAuth("ITrade/SendOffer/v1", params, false, new JsonHttpResponseHandler() {
                                 @Override
@@ -614,6 +618,7 @@ public class fragment_trade extends Fragment {
                                             // -----
 
                                             final String default_inventory_items_in_trade_count = resources.getString(R.string.fragment_trade_inventory_items_in_trade_count);
+                                            final int color_pale_sky = resources.getColor(R.color.pale_sky);
 
                                             fragment.findViewById(R.id.fragment_trade_user_inventory_items_in_trade_total_value_container).setVisibility(View.GONE);
                                             ((TextView) fragment.findViewById(R.id.fragment_trade_user_inventory_items_in_trade_count)).setText(default_inventory_items_in_trade_count);
@@ -621,8 +626,13 @@ public class fragment_trade extends Fragment {
                                             fragment.findViewById(R.id.fragment_trade_partner_inventory_items_in_trade_total_value_container).setVisibility(View.GONE);
                                             ((TextView) fragment.findViewById(R.id.fragment_trade_partner_inventory_items_in_trade_count)).setText(default_inventory_items_in_trade_count);
 
-                                            message_input.setText(resources.getString(R.string.fragment_trade_default_message));
+                                            message_input.setText(default_message);
+                                            message_input.setTextColor(color_pale_sky);
+
                                             twofactor_input.setText(twofactor_hint);
+                                            twofactor_input.setTextColor(color_pale_sky);
+
+                                            updateMakeOfferButton(fragment);
 
                                             main.showDialog(context, "Offer sent!", null);
 
@@ -635,7 +645,7 @@ public class fragment_trade extends Fragment {
                                             }, 1500);
                                         }
                                         else {
-                                            main.showDialog(context, "An error occurred", response.getString("message"));
+                                            main.showDialog(context, response.getString("message"), null);
 
                                             // -----
 
@@ -733,7 +743,6 @@ public class fragment_trade extends Fragment {
             final Context context = fragment_trade.this.getContext();
             final Resources resources = getResources();
             final DisplayMetrics display_metrics = resources.getDisplayMetrics();
-            final opskins_trade_api opskins_trade_api = new opskins_trade_api(new WeakReference<>(context));
             final LinearLayout items_container_layout;
             final LinearLayout user_inventory_total_items_inner_container_view = fragment.findViewById(R.id.fragment_trade_user_inventory_total_items_inner_container);
             final ImageView partner_avatar_view = fragment.findViewById(R.id.fragment_trade_partner_avatar);
@@ -790,7 +799,7 @@ public class fragment_trade extends Fragment {
                     params.put("search", search);
                 }
 
-                opskins_trade_api.get("ITrade/GetUserInventory/v1", params, new JsonHttpResponseHandler() {
+                new opskins_trade_api(new WeakReference<>(context)).get("ITrade/GetUserInventory/v1", params, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         try {
@@ -832,19 +841,19 @@ public class fragment_trade extends Fragment {
                                 ((TextView) fragment.findViewById(R.id.fragment_trade_partner_inventory_total_items_count)).setText(String.valueOf(item_count));
                             }
 
-                            if(item_count >= 1) {
+                            if(item_count >= 1 && items.length() >= 1) { // temporary - WAX Stickers doesn't return the correct item count upon searching for an item
                                 JSONObject item;
                                 RelativeLayout layout;
                                 ImageView item_image_view;
                                 TextView item_name_view;
                                 String item_image;
+                                long item_suggested_price_temp;
                                 final int item_deselected_background = resources.getColor(R.color.background);
                                 final int item_selected_background = resources.getColor(R.color.eucalyptus);
                                 final int item_name_color = resources.getColor(R.color.white);
 
                                 for(int i = 0; i < item_count; i ++) {
                                     item = items.getJSONObject(i);
-                                    long item_suggested_price_temp;
 
                                     try {
                                         final JSONObject item_images = item.getJSONObject("image");
@@ -876,7 +885,7 @@ public class fragment_trade extends Fragment {
                                     item_name_view.setGravity(Gravity.CENTER);
                                     layout.addView(item_name_view, unit_conversion_1, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-                                    items_container_layout.addView(layout, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    items_container_layout.addView(layout, RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
                                     Glide.with(context).load(item_image).apply(new RequestOptions().fitCenter()).into(item_image_view);
 

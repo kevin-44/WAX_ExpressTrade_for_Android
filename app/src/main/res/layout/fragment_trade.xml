@@ -68,7 +68,9 @@
 
         <HorizontalScrollView tools:ignore="UselessParent"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+
+            android:scrollbars="none">
 
             <LinearLayout
                 android:id="@+id/fragment_trade_selected_app_container"
@@ -176,7 +178,7 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
 
-            android:background="@color/bunker"
+            android:background="@color/bunker_1"
 
             android:gravity="center_horizontal"
             android:orientation="vertical">
@@ -393,7 +395,9 @@
             <HorizontalScrollView tools:ignore="UselessParent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+
+                android:scrollbars="none">
 
                 <LinearLayout
                     android:id="@+id/fragment_trade_user_inventory_items_container"
@@ -416,7 +420,7 @@
             android:paddingLeft="60dp"
             android:paddingRight="60dp"
 
-            android:background="@color/bunker"
+            android:background="@color/bunker_1"
 
             android:gravity="center_horizontal">
 
@@ -584,7 +588,7 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
 
-            android:background="@color/bunker"
+            android:background="@color/bunker_1"
 
             android:gravity="center_horizontal"
             android:orientation="vertical"
@@ -802,7 +806,9 @@
             <HorizontalScrollView tools:ignore="UselessParent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+
+                android:scrollbars="none">
 
                 <LinearLayout
                     android:id="@+id/fragment_trade_partner_inventory_items_container"
@@ -824,7 +830,7 @@
             android:paddingLeft="17dp"
             android:paddingRight="17dp"
 
-            android:background="@color/bunker">
+            android:background="@color/bunker_1">
 
             <RelativeLayout
                 android:layout_width="match_parent"

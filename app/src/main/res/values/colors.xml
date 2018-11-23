@@ -17,12 +17,15 @@
     <color name="ebony_clay_1">#1F2934</color>
     <color name="ebony_clay_2">#232E3E</color>
     <color name="downy">#66CCCC</color>
-    <color name="big_stone">#172437</color>
+    <color name="big_stone_1">#172437</color>
+    <color name="big_stone_2">#172C48</color>
     <color name="stiletto_1">#A02E45</color>
     <color name="stiletto_2">#9E2D44</color>
-    <color name="bunker">#0C0F15</color>
+    <color name="bunker_1">#0C0F15</color>
+    <color name="bunker_2">#0B0F16</color>
     <color name="mirage_1">#182029</color>
     <color name="mirage_2">#131A23</color>
+    <color name="mirage_3">#1B2632</color>
     <color name="eucalyptus">#28A745</color>
     <color name="denim">#0C7BBD</color>
     <color name="shark">#252626</color>
@@ -37,6 +40,8 @@
     <color name="dusty_gray">#999999</color>
     <color name="bittersweet">#FF6562</color>
     <color name="science_blue">#0360CF</color>
+    <color name="pickled_bluewood">#293D50</color>
+    <color name="red_berry">#990000</color>
 
     <!-- ** CUSTOM -->
 
