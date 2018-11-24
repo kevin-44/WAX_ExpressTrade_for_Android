@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,6 +42,8 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
+
 import cz.msebera.android.httpclient.Header;
 
 public class fragment_trade extends Fragment {
@@ -805,9 +808,9 @@ public class fragment_trade extends Fragment {
                         try {
                             final JSONObject data = response.getJSONObject("response");
                             final JSONArray items = data.getJSONArray("items");
-                            final int unit_conversion_1 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, display_metrics);
-                            final int unit_conversion_2 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, display_metrics);
-                            final int unit_conversion_3 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7, display_metrics);
+                            final int unit_conversion_1 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 140, display_metrics);
+                            final int unit_conversion_2 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7, display_metrics);
+                            final int unit_conversion_3 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 15, display_metrics);
                             final int item_count = data.getInt("total");
 
                             if(user_inventory) {
@@ -844,13 +847,20 @@ public class fragment_trade extends Fragment {
                             if(item_count >= 1 && items.length() >= 1) { // temporary - WAX Stickers doesn't return the correct item count upon searching for an item
                                 JSONObject item;
                                 RelativeLayout layout;
+                                RelativeLayout.LayoutParams layout_params;
+                                LinearLayout inner_layout;
                                 ImageView item_image_view;
                                 TextView item_name_view;
+                                TextView item_condition_view;
+                                String item_name;
+                                StringTokenizer item_name_parts;
+                                String item_condition = "";
                                 String item_image;
+                                String item_color;
                                 long item_suggested_price_temp;
-                                final int item_deselected_background = resources.getColor(R.color.background);
-                                final int item_selected_background = resources.getColor(R.color.eucalyptus);
-                                final int item_name_color = resources.getColor(R.color.white);
+                                final Drawable item_container_drawable = resources.getDrawable(R.drawable.shape_fragment_trade_item_container);
+                                final Drawable selected_item_container_drawable = resources.getDrawable(R.drawable.shape_fragment_trade_selected_item_container);
+                                final int color_white = resources.getColor(R.color.white);
 
                                 for(int i = 0; i < item_count; i ++) {
                                     item = items.getJSONObject(i);
@@ -871,23 +881,98 @@ public class fragment_trade extends Fragment {
                                         item_suggested_price_temp = 0;
                                     }
 
+                                    item_name = item.getString("name");
+                                    item_color = item.getString("color");
+
+                                    if(item_name.contains(" (Battle-Scarred)")) {
+                                        item_name = item_name.replace(" (Battle-Scarred)", "");
+                                        item_condition = "Battle-Scarred";
+                                    }
+                                    else if(item_name.contains(" (Well-Worn)")) {
+                                        item_name = item_name.replace(" (Well-Worn)", "");
+                                        item_condition = "Well-Worn";
+                                    }
+                                    else if(item_name.contains(" (Field-Tested)")) {
+                                        item_name = item_name.replace(" (Field-Tested)", "");
+                                        item_condition = "Field-Tested";
+                                    }
+                                    else if(item_name.contains(" (Minimal Wear)")) {
+                                        item_name = item_name.replace(" (Minimal Wear)", "");
+                                        item_condition = "Minimal Wear";
+                                    }
+                                    else if(item_name.contains(" (Factory New)")) {
+                                        item_name = item_name.replace(" (Factory New)", "");
+                                        item_condition = "Factory New";
+                                    }
+
+                                    item_name_parts = new StringTokenizer(item_name, "|");
+
+                                    if(item_name_parts.countTokens() == 2) {
+                                        item_name_parts.nextToken();
+                                        item_name = item_name_parts.nextToken().trim();
+                                    }
+
                                     layout = new RelativeLayout(context);
-                                    layout.setBackgroundColor(item_deselected_background);
+                                    layout.setBackgroundDrawable(item_container_drawable);
+
+                                    layout_params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+                                    if(i != 0) {
+                                        layout_params.setMargins(unit_conversion_2, 0, 0, 0);
+                                    }
+
+                                    // -----
 
                                     item_image_view = new ImageView(context);
+                                    item_image_view.setPadding(unit_conversion_3, unit_conversion_3, unit_conversion_3, unit_conversion_3);
                                     layout.addView(item_image_view, unit_conversion_1, unit_conversion_1);
 
-                                    item_name_view = new TextView(context);
-                                    item_name_view.setPadding(unit_conversion_3, unit_conversion_2, unit_conversion_3, 0);
-                                    item_name_view.setText(new StringBuilder(item.getString("name") + ((item_suggested_price_temp == 0) ? ("") : (" - $" + main.currencyFormat(String.valueOf((double) item_suggested_price_temp / 100))))));
-                                    item_name_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 7);
-                                    item_name_view.setTextColor(item_name_color);
-                                    item_name_view.setGravity(Gravity.CENTER);
-                                    layout.addView(item_name_view, unit_conversion_1, RelativeLayout.LayoutParams.WRAP_CONTENT);
-
-                                    items_container_layout.addView(layout, RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-
                                     Glide.with(context).load(item_image).apply(new RequestOptions().fitCenter()).into(item_image_view);
+
+                                    // -
+
+                                    inner_layout = new LinearLayout(context);
+                                    inner_layout.setOrientation(LinearLayout.VERTICAL);
+
+                                    item_name_view = new TextView(context);
+                                    item_name_view.setPadding(unit_conversion_2, unit_conversion_2, unit_conversion_2, 0);
+                                    item_name_view.setText(main.fromHTML("<font color = \"" + item_color + "\">" + item_name.toUpperCase() + "</font>"));
+                                    item_name_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                                    item_name_view.setTypeface(null, Typeface.BOLD);
+                                    item_name_view.setTextColor(color_white);
+                                    inner_layout.addView(item_name_view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                                    if(!item_condition.isEmpty()) {
+                                        item_condition_view = new TextView(context);
+                                        item_condition_view.setPadding(unit_conversion_2, 0, unit_conversion_2, 0);
+                                        item_condition_view.setText(main.fromHTML("<font color = \"" + item_color + "\">" + item_condition.toUpperCase() + "</font>"));
+                                        item_condition_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 7);
+                                        item_condition_view.setTypeface(null, Typeface.BOLD);
+                                        item_condition_view.setTextColor(color_white);
+                                        inner_layout.addView(item_condition_view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    }
+
+                                    layout.addView(inner_layout, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                                    // -
+
+                                    if(item_suggested_price_temp != 0) {
+                                        inner_layout = new LinearLayout(context);
+                                        inner_layout.setOrientation(LinearLayout.HORIZONTAL);
+
+                                        item_name_view = new TextView(context);
+                                        item_name_view.setPadding(unit_conversion_2, unit_conversion_2, unit_conversion_2, unit_conversion_3);
+                                        item_name_view.setText(new StringBuilder("$" + main.currencyFormat(String.valueOf((double) item_suggested_price_temp / 100))));
+                                        item_name_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                                        item_name_view.setTypeface(null, Typeface.BOLD);
+                                        item_name_view.setTextColor(color_white);
+                                        item_name_view.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
+                                        inner_layout.addView(item_name_view, unit_conversion_1, unit_conversion_1);
+
+                                        layout.addView(inner_layout, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    }
+
+                                    items_container_layout.addView(layout, layout_params);
 
                                     // -----
 
@@ -897,12 +982,12 @@ public class fragment_trade extends Fragment {
 
                                     if(user_inventory) {
                                         if(selected_user_items.indexOf(item_id) != -1) {
-                                            item_layout.setBackgroundColor(item_selected_background);
+                                            item_layout.setBackgroundDrawable(selected_item_container_drawable);
                                         }
                                     }
                                     else {
                                         if(selected_partner_items.indexOf(item_id) != -1) {
-                                            item_layout.setBackgroundColor(item_selected_background);
+                                            item_layout.setBackgroundDrawable(selected_item_container_drawable);
                                         }
                                     }
 
@@ -918,7 +1003,7 @@ public class fragment_trade extends Fragment {
                                                         selected_user_items.add(item_id);
                                                         total_value_selected_user_items += item_suggested_price;
 
-                                                        item_layout.setBackgroundColor(item_selected_background);
+                                                        item_layout.setBackgroundDrawable(selected_item_container_drawable);
                                                     }
                                                 }
                                                 else {
@@ -929,7 +1014,7 @@ public class fragment_trade extends Fragment {
                                                         total_value_selected_user_items = 0;
                                                     }
 
-                                                    item_layout.setBackgroundColor(item_deselected_background);
+                                                    item_layout.setBackgroundDrawable(item_container_drawable);
                                                 }
 
                                                 // -----
@@ -956,7 +1041,7 @@ public class fragment_trade extends Fragment {
                                                         selected_partner_items.add(item_id);
                                                         total_value_selected_partner_items += item_suggested_price;
 
-                                                        item_layout.setBackgroundColor(item_selected_background);
+                                                        item_layout.setBackgroundDrawable(selected_item_container_drawable);
                                                     }
                                                 }
                                                 else {
@@ -967,7 +1052,7 @@ public class fragment_trade extends Fragment {
                                                         total_value_selected_partner_items = 0;
                                                     }
 
-                                                    item_layout.setBackgroundColor(item_deselected_background);
+                                                    item_layout.setBackgroundDrawable(item_container_drawable);
                                                 }
 
                                                 // -----

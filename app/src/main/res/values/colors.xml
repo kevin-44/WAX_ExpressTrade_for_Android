@@ -26,6 +26,7 @@
     <color name="mirage_1">#182029</color>
     <color name="mirage_2">#131A23</color>
     <color name="mirage_3">#1B2632</color>
+    <color name="mirage_4">#1C2735</color>
     <color name="eucalyptus">#28A745</color>
     <color name="denim">#0C7BBD</color>
     <color name="shark">#252626</color>
@@ -42,6 +43,7 @@
     <color name="science_blue">#0360CF</color>
     <color name="pickled_bluewood">#293D50</color>
     <color name="red_berry">#990000</color>
+    <color name="vulcan">#0D0F18</color>
 
     <!-- ** CUSTOM -->
 
