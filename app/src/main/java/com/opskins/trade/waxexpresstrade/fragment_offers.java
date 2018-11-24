@@ -36,6 +36,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.lang.ref.WeakReference;
+import java.util.Locale;
 import cz.msebera.android.httpclient.Header;
 
 public class fragment_offers extends Fragment {
@@ -342,6 +343,7 @@ public class fragment_offers extends Fragment {
                                 RelativeLayout separator_view;
                                 String item_image;
                                 long item_suggested_price;
+                                Double item_wear;
                                 String user_avatar;
                                 String user_name;
                                 Boolean user_verified;
@@ -357,6 +359,7 @@ public class fragment_offers extends Fragment {
                                 final int unit_conversion_8 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 32, display_metrics);
                                 final int unit_conversion_9 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 17, display_metrics);
                                 final int unit_conversion_10 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80, display_metrics);
+                                final int unit_conversion_11 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, display_metrics);
                                 final Drawable container_outline_drawable = resources.getDrawable(R.drawable.shape_fragment_offers_container_outline);
                                 final Drawable offer_header_container_drawable = resources.getDrawable(R.drawable.shape_fragment_offers_offer_header_container);
                                 final Drawable offer_content_container_drawable = resources.getDrawable(R.drawable.shape_fragment_offers_offer_content_container);
@@ -376,6 +379,8 @@ public class fragment_offers extends Fragment {
                                 int recipient_item_count;
                                 int their_item_count;
                                 int your_item_count;
+                                long their_items_total_value;
+                                long your_items_total_value;
                                 int total_image_count_temp = offer_count;
 
                                 for(int i = 0; i < offer_count; i ++) {
@@ -397,6 +402,8 @@ public class fragment_offers extends Fragment {
                                     state_name = offer.getString("state_name");
                                     sender_item_count = sender_items.length();
                                     recipient_item_count = recipient_items.length();
+                                    their_items_total_value = 0;
+                                    your_items_total_value = 0;
 
                                     if(selected_offer_type == Constant.OFFER_TYPE_RECEIVED) {
                                         their_items = sender_items;
@@ -702,7 +709,7 @@ public class fragment_offers extends Fragment {
 
                                     // -
 
-                                    if(!message.isEmpty()) { // functional; however, conflicts with glide - needs fixing
+                                    if(!message.isEmpty()) {
                                         offer_header_inner_layout = new LinearLayout(context);
                                         offer_header_inner_layout.setPadding(0, unit_conversion_9, 0, unit_conversion_9);
                                         offer_header_inner_layout.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -733,7 +740,7 @@ public class fragment_offers extends Fragment {
                                     // -----
 
                                     offer_content_layout = new LinearLayout(context);
-                                    offer_content_layout.setPadding(unit_conversion_3, unit_conversion_3, unit_conversion_3, unit_conversion_3);
+                                    offer_content_layout.setPadding(unit_conversion_11, unit_conversion_3, unit_conversion_11, unit_conversion_3);
                                     offer_content_layout.setBackgroundDrawable(offer_content_container_drawable);
                                     offer_content_layout.setOrientation(LinearLayout.VERTICAL);
 
@@ -762,9 +769,17 @@ public class fragment_offers extends Fragment {
 
                                         try {
                                             item_suggested_price = item.getInt("suggested_price");
+                                            their_items_total_value += item_suggested_price;
                                         }
                                         catch (JSONException e) {
                                             item_suggested_price = 0;
+                                        }
+
+                                        try {
+                                            item_wear = item.getDouble("wear");
+                                        }
+                                        catch (JSONException e) {
+                                            item_wear = 0.00;
                                         }
 
                                         offer_content_inner_layout = new LinearLayout(context);
@@ -801,12 +816,16 @@ public class fragment_offers extends Fragment {
 
                                         item_name_view = new TextView(context);
                                         item_name_view.setPadding(unit_conversion_5, 0, 0, 0);
-                                        item_name_view.setText(new StringBuilder(item.getString("name") + ((item_suggested_price == 0) ? ("") : (" - $" + main.currencyFormat(String.valueOf((double) item_suggested_price / 100))))));
+                                        item_name_view.setText(main.fromHTML("<font color = \"" + item.getString("color") + "\">" + item.getString("name") + "</font>" + ((item_suggested_price == 0) ? ("") : (" - $" + main.currencyFormat(String.valueOf((double) item_suggested_price / 100)))) + ((item_wear == 0.00) ? ("") : (" - Wear: " + String.format(Locale.getDefault(), "%.5f", item_wear * 100)))));
                                         item_name_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                                         item_name_view.setTextColor(color_white);
                                         offer_content_inner_layout.addView(item_name_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
                                         offer_content_layout.addView(offer_content_inner_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    }
+
+                                    if(their_items_total_value >= 1) {
+                                        item_count_view.setText(new StringBuilder(item_count_view.getText() + " - $" + main.currencyFormat(String.valueOf((double) their_items_total_value / 100))));
                                     }
 
                                     // -----
@@ -836,9 +855,17 @@ public class fragment_offers extends Fragment {
 
                                         try {
                                             item_suggested_price = item.getInt("suggested_price");
+                                            your_items_total_value += item_suggested_price;
                                         }
                                         catch (JSONException e) {
                                             item_suggested_price = 0;
+                                        }
+
+                                        try {
+                                            item_wear = item.getDouble("wear");
+                                        }
+                                        catch (JSONException e) {
+                                            item_wear = 0.00;
                                         }
 
                                         offer_content_inner_layout = new LinearLayout(context);
@@ -875,12 +902,16 @@ public class fragment_offers extends Fragment {
 
                                         item_name_view = new TextView(context);
                                         item_name_view.setPadding(unit_conversion_5, 0, 0, 0);
-                                        item_name_view.setText(new StringBuilder(item.getString("name") + ((item_suggested_price == 0) ? ("") : (" - $" + main.currencyFormat(String.valueOf((double) item_suggested_price / 100))))));
+                                        item_name_view.setText(main.fromHTML("<font color = \"" + item.getString("color") + "\">" + item.getString("name") + "</font>" + ((item_suggested_price == 0) ? ("") : (" - $" + main.currencyFormat(String.valueOf((double) item_suggested_price / 100)))) + ((item_wear == 0.00) ? ("") : (" - Wear: " + String.format(Locale.getDefault(), "%.5f", item_wear * 100)))));
                                         item_name_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                                         item_name_view.setTextColor(color_white);
                                         offer_content_inner_layout.addView(item_name_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
                                         offer_content_layout.addView(offer_content_inner_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    }
+
+                                    if(your_items_total_value >= 1) {
+                                        item_count_view.setText(new StringBuilder(item_count_view.getText() + " - $" + main.currencyFormat(String.valueOf((double) your_items_total_value / 100))));
                                     }
 
                                     // -----
