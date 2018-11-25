@@ -578,6 +578,8 @@ public class main extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    input_view.requestFocus();
+
                     ((InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(input_view, InputMethodManager.SHOW_IMPLICIT);
                 }
             }, 25);

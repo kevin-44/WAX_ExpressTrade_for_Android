@@ -318,13 +318,17 @@ public class fragment_offers extends Fragment {
                                 JSONArray your_items;
                                 JSONObject item;
 
-                                final LinearLayout offers_inner_container = new LinearLayout(context);
-                                offers_inner_container.setOrientation(LinearLayout.VERTICAL);
+                                final LinearLayout offer_inner_container_layout = new LinearLayout(context);
+                                offer_inner_container_layout.setOrientation(LinearLayout.VERTICAL);
 
+                                LinearLayout offer_align_right_container_layout;
+                                LinearLayout.LayoutParams offer_align_right_container_layout_params;
                                 LinearLayout offer_outline_container_layout;
                                 LinearLayout.LayoutParams offer_outline_container_layout_params;
                                 LinearLayout offer_header_layout;
                                 LinearLayout offer_header_inner_layout;
+                                LinearLayout offer_detail_layout;
+                                LinearLayout offer_detail_inner_layout;
                                 LinearLayout offer_content_layout;
                                 LinearLayout offer_content_inner_layout;
                                 ImageView user_avatar_view_1;
@@ -334,9 +338,11 @@ public class fragment_offers extends Fragment {
                                 LinearLayout.LayoutParams user_status_view_layout_params;
                                 TextView trade_summary_view;
                                 TextView message_view;
+                                TextView offer_detail_view;
                                 TextView item_count_view;
                                 ImageView item_image_view;
                                 TextView item_name_view;
+                                TextView item_price_view;
                                 TextView button_view_1;
                                 TextView button_view_2;
                                 LinearLayout.LayoutParams button_view_layout_params;
@@ -344,6 +350,8 @@ public class fragment_offers extends Fragment {
                                 String item_image;
                                 long item_suggested_price;
                                 Double item_wear;
+                                JSONObject item_attributes;
+                                long item_serial_number;
                                 String user_avatar;
                                 String user_name;
                                 Boolean user_verified;
@@ -360,8 +368,11 @@ public class fragment_offers extends Fragment {
                                 final int unit_conversion_9 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 17, display_metrics);
                                 final int unit_conversion_10 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80, display_metrics);
                                 final int unit_conversion_11 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, display_metrics);
+                                final int unit_conversion_12 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, display_metrics);
+                                final int unit_conversion_13 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, display_metrics);
                                 final Drawable container_outline_drawable = resources.getDrawable(R.drawable.shape_fragment_offers_container_outline);
                                 final Drawable offer_header_container_drawable = resources.getDrawable(R.drawable.shape_fragment_offers_offer_header_container);
+                                final Drawable offer_detail_container_drawable = resources.getDrawable(R.drawable.shape_fragment_offers_offer_detail_container);
                                 final Drawable offer_content_container_drawable = resources.getDrawable(R.drawable.shape_fragment_offers_offer_content_container);
                                 final Drawable opskins_logo_drawable = resources.getDrawable(R.drawable.ic_opskins_logo);
                                 final Drawable verified_drawable = resources.getDrawable(R.drawable.verified);
@@ -369,10 +380,13 @@ public class fragment_offers extends Fragment {
                                 final String decline_button_text = resources.getString(R.string.fragment_offers_decline_button);
                                 final String accept_button_text = resources.getString(R.string.fragment_offers_accept_button);
                                 final String cancel_button_text = resources.getString(R.string.fragment_offers_cancel_button);
+                                final String offer_detail_text = resources.getString(R.string.fragment_offers_offer_detail);
                                 final int color_white = resources.getColor(R.color.white);
                                 final int color_pickled_bluewood = resources.getColor(R.color.pickled_bluewood);
                                 final int color_red_berry = resources.getColor(R.color.red_berry);
                                 final int color_denim = resources.getColor(R.color.denim);
+                                final int color_kashmir_blue = resources.getColor(R.color.kashmir_blue);
+                                final int color_downy = resources.getColor(R.color.downy);
                                 String message;
                                 String state_name;
                                 int sender_item_count;
@@ -458,7 +472,7 @@ public class fragment_offers extends Fragment {
 
                                     offer_outline_container_layout_params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-                                    if(i >= 1) {
+                                    if(i != 0) {
                                         offer_outline_container_layout_params.setMargins(0, unit_conversion_2, 0, 0);
                                     }
 
@@ -507,7 +521,7 @@ public class fragment_offers extends Fragment {
 
                                                             clearView_LinearLayout(offers_container);
 
-                                                            offers_container.addView(offers_inner_container, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                                            offers_container.addView(offer_inner_container_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                                         }
                                                         return false;
                                                     }
@@ -739,10 +753,34 @@ public class fragment_offers extends Fragment {
 
                                     // -----
 
+                                    offer_detail_layout = new LinearLayout(context);
+                                    offer_detail_layout.setPadding(unit_conversion_13, unit_conversion_13, unit_conversion_13, unit_conversion_13);
+                                    offer_detail_layout.setBackgroundDrawable(offer_detail_container_drawable);
+                                    offer_detail_layout.setOrientation(LinearLayout.HORIZONTAL);
+
+                                    offer_detail_inner_layout = new LinearLayout(context);
+                                    offer_detail_inner_layout.setOrientation(LinearLayout.HORIZONTAL);
+
+                                    offer_detail_view = new TextView(context);
+                                    offer_detail_view.setText(offer_detail_text);
+                                    offer_detail_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+                                    offer_detail_view.setTextColor(color_downy);
+                                    offer_detail_inner_layout.addView(offer_detail_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                                    offer_detail_layout.addView(offer_detail_inner_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                                    // -----
+
                                     offer_content_layout = new LinearLayout(context);
-                                    offer_content_layout.setPadding(unit_conversion_11, unit_conversion_3, unit_conversion_11, unit_conversion_3);
+                                    offer_content_layout.setPadding(unit_conversion_11, unit_conversion_3, unit_conversion_11, unit_conversion_11);
                                     offer_content_layout.setBackgroundDrawable(offer_content_container_drawable);
                                     offer_content_layout.setOrientation(LinearLayout.VERTICAL);
+
+                                    if(i >= 1) {
+                                        offer_detail_layout.setBackgroundDrawable(offer_content_container_drawable);
+
+                                        offer_content_layout.setVisibility(View.GONE);
+                                    }
 
                                     offer_content_inner_layout = new LinearLayout(context);
                                     offer_content_inner_layout.setOrientation(LinearLayout.HORIZONTAL);
@@ -753,6 +791,18 @@ public class fragment_offers extends Fragment {
                                     item_count_view.setTextColor(color_white);
                                     offer_content_inner_layout.addView(item_count_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
+                                    offer_align_right_container_layout = new LinearLayout(context);
+                                    offer_align_right_container_layout.setGravity(Gravity.END);
+
+                                    offer_align_right_container_layout_params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+
+                                    item_count_view = new TextView(context);
+                                    item_count_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                                    item_count_view.setTextColor(color_white);
+                                    item_count_view.setGravity(Gravity.END);
+                                    offer_align_right_container_layout.addView(item_count_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                                    offer_content_inner_layout.addView(offer_align_right_container_layout, offer_align_right_container_layout_params);
                                     offer_content_layout.addView(offer_content_inner_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
                                     for(int j = 0; j < their_item_count; j ++) {
@@ -768,7 +818,7 @@ public class fragment_offers extends Fragment {
                                         }
 
                                         try {
-                                            item_suggested_price = item.getInt("suggested_price");
+                                            item_suggested_price = item.getLong("suggested_price");
                                             their_items_total_value += item_suggested_price;
                                         }
                                         catch (JSONException e) {
@@ -780,6 +830,14 @@ public class fragment_offers extends Fragment {
                                         }
                                         catch (JSONException e) {
                                             item_wear = 0.00;
+                                        }
+
+                                        try {
+                                            item_attributes = item.getJSONObject("attributes");
+                                            item_serial_number = item_attributes.getLong("serial_sku_wear");
+                                        }
+                                        catch (JSONException e) {
+                                            item_serial_number = 0;
                                         }
 
                                         offer_content_inner_layout = new LinearLayout(context);
@@ -807,26 +865,59 @@ public class fragment_offers extends Fragment {
 
                                                             clearView_LinearLayout(offers_container);
 
-                                                            offers_container.addView(offers_inner_container, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                                            offers_container.addView(offer_inner_container_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                                         }
                                                         return false;
                                                     }
                                                 })
                                                 .into(item_image_view);
 
+                                        offer_align_right_container_layout = new LinearLayout(context);
+                                        offer_align_right_container_layout.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                                        offer_align_right_container_layout_params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.75f);
+
                                         item_name_view = new TextView(context);
-                                        item_name_view.setPadding(unit_conversion_5, 0, 0, 0);
-                                        item_name_view.setText(main.fromHTML("<font color = \"" + item.getString("color") + "\">" + item.getString("name") + "</font>" + ((item_suggested_price == 0) ? ("") : (" - $" + main.currencyFormat(String.valueOf((double) item_suggested_price / 100)))) + ((item_wear == 0.00) ? ("") : (" - Wear: " + String.format(Locale.getDefault(), "%.5f", item_wear * 100)))));
+                                        item_name_view.setPadding(unit_conversion_12, 0, 0, 0);
+                                        item_name_view.setText(main.fromHTML("<font color = \"" + item.getString("color") + "\">" + item.getString("name") + "</font>" + ((item_wear == 0.00 && item_serial_number == 0) ? ("") : ("<br><font color = \"#CCCCCC\">Wear:</font> " + String.format(Locale.getDefault(), "%.5f", item_wear * 100) + "% <font color = \"#443836\">|</font> <font color = \"#CCCCCC\">Serial Number:</font> " + item_serial_number))));
                                         item_name_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                                         item_name_view.setTextColor(color_white);
-                                        offer_content_inner_layout.addView(item_name_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                        item_name_view.setGravity(Gravity.CENTER_HORIZONTAL);
+                                        offer_align_right_container_layout.addView(item_name_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
+                                        offer_content_inner_layout.addView(offer_align_right_container_layout, offer_align_right_container_layout_params);
+
+                                        offer_align_right_container_layout = new LinearLayout(context);
+                                        offer_align_right_container_layout.setGravity(Gravity.END);
+
+                                        offer_align_right_container_layout_params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.25f);
+
+                                        item_price_view = new TextView(context);
+                                        item_price_view.setText(((item_suggested_price == 0) ? ("") : ("$" + main.currencyFormat(String.valueOf((double) item_suggested_price / 100)))));
+                                        item_price_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                                        item_price_view.setTextColor(color_kashmir_blue);
+                                        item_price_view.setGravity(Gravity.END);
+                                        offer_align_right_container_layout.addView(item_price_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                                        offer_content_inner_layout.addView(offer_align_right_container_layout, offer_align_right_container_layout_params);
                                         offer_content_layout.addView(offer_content_inner_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                     }
 
-                                    if(their_items_total_value >= 1) {
-                                        item_count_view.setText(new StringBuilder(item_count_view.getText() + " - $" + main.currencyFormat(String.valueOf((double) their_items_total_value / 100))));
+                                    if(their_item_count != 0) {
+                                        item_count_view.setText(main.fromHTML("<font color = \"#CCCCCC\">Total Value</font><br><b>$" + main.currencyFormat(String.valueOf((double) their_items_total_value / 100)) + "</b>"));
                                     }
+
+                                    // -----
+
+                                    offer_content_inner_layout = new LinearLayout(context);
+                                    offer_content_inner_layout.setPadding(0, unit_conversion_9, 0, unit_conversion_9);
+                                    offer_content_inner_layout.setOrientation(LinearLayout.HORIZONTAL);
+
+                                    separator_view = new RelativeLayout(context);
+                                    separator_view.setBackgroundColor(color_pickled_bluewood);
+                                    offer_content_inner_layout.addView(separator_view, RelativeLayout.LayoutParams.MATCH_PARENT, unit_conversion_1);
+
+                                    offer_content_layout.addView(offer_content_inner_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
                                     // -----
 
@@ -839,6 +930,18 @@ public class fragment_offers extends Fragment {
                                     item_count_view.setTextColor(color_white);
                                     offer_content_inner_layout.addView(item_count_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
+                                    offer_align_right_container_layout = new LinearLayout(context);
+                                    offer_align_right_container_layout.setGravity(Gravity.END);
+
+                                    offer_align_right_container_layout_params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+
+                                    item_count_view = new TextView(context);
+                                    item_count_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                                    item_count_view.setTextColor(color_white);
+                                    item_count_view.setGravity(Gravity.END);
+                                    offer_align_right_container_layout.addView(item_count_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                                    offer_content_inner_layout.addView(offer_align_right_container_layout, offer_align_right_container_layout_params);
                                     offer_content_layout.addView(offer_content_inner_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
                                     for(int j = 0; j < your_item_count; j ++) {
@@ -854,7 +957,7 @@ public class fragment_offers extends Fragment {
                                         }
 
                                         try {
-                                            item_suggested_price = item.getInt("suggested_price");
+                                            item_suggested_price = item.getLong("suggested_price");
                                             your_items_total_value += item_suggested_price;
                                         }
                                         catch (JSONException e) {
@@ -866,6 +969,14 @@ public class fragment_offers extends Fragment {
                                         }
                                         catch (JSONException e) {
                                             item_wear = 0.00;
+                                        }
+
+                                        try {
+                                            item_attributes = item.getJSONObject("attributes");
+                                            item_serial_number = item_attributes.getLong("serial_sku_wear");
+                                        }
+                                        catch (JSONException e) {
+                                            item_serial_number = 0;
                                         }
 
                                         offer_content_inner_layout = new LinearLayout(context);
@@ -893,33 +1004,78 @@ public class fragment_offers extends Fragment {
 
                                                             clearView_LinearLayout(offers_container);
 
-                                                            offers_container.addView(offers_inner_container, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                                            offers_container.addView(offer_inner_container_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                                         }
                                                         return false;
                                                     }
                                                 })
                                                 .into(item_image_view);
 
+                                        offer_align_right_container_layout = new LinearLayout(context);
+                                        offer_align_right_container_layout.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                                        offer_align_right_container_layout_params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.75f);
+
                                         item_name_view = new TextView(context);
-                                        item_name_view.setPadding(unit_conversion_5, 0, 0, 0);
-                                        item_name_view.setText(main.fromHTML("<font color = \"" + item.getString("color") + "\">" + item.getString("name") + "</font>" + ((item_suggested_price == 0) ? ("") : (" - $" + main.currencyFormat(String.valueOf((double) item_suggested_price / 100)))) + ((item_wear == 0.00) ? ("") : (" - Wear: " + String.format(Locale.getDefault(), "%.5f", item_wear * 100)))));
+                                        item_name_view.setPadding(unit_conversion_12, 0, 0, 0);
+                                        item_name_view.setText(main.fromHTML("<font color = \"" + item.getString("color") + "\">" + item.getString("name") + "</font>" + ((item_wear == 0.00 && item_serial_number == 0) ? ("") : ("<br><font color = \"#CCCCCC\">Wear:</font> " + String.format(Locale.getDefault(), "%.5f", item_wear * 100) + "% <font color = \"#443836\">|</font> <font color = \"#CCCCCC\">Serial Number:</font> " + item_serial_number))));
                                         item_name_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                                         item_name_view.setTextColor(color_white);
-                                        offer_content_inner_layout.addView(item_name_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                        item_name_view.setGravity(Gravity.CENTER_HORIZONTAL);
+                                        offer_align_right_container_layout.addView(item_name_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
+                                        offer_content_inner_layout.addView(offer_align_right_container_layout, offer_align_right_container_layout_params);
+
+                                        offer_align_right_container_layout = new LinearLayout(context);
+                                        offer_align_right_container_layout.setGravity(Gravity.END);
+
+                                        offer_align_right_container_layout_params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.25f);
+
+                                        item_price_view = new TextView(context);
+                                        item_price_view.setText(((item_suggested_price == 0) ? ("") : ("$" + main.currencyFormat(String.valueOf((double) item_suggested_price / 100)))));
+                                        item_price_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                                        item_price_view.setTextColor(color_kashmir_blue);
+                                        item_price_view.setGravity(Gravity.END);
+                                        offer_align_right_container_layout.addView(item_price_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                                        offer_content_inner_layout.addView(offer_align_right_container_layout, offer_align_right_container_layout_params);
                                         offer_content_layout.addView(offer_content_inner_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                     }
 
-                                    if(your_items_total_value >= 1) {
-                                        item_count_view.setText(new StringBuilder(item_count_view.getText() + " - $" + main.currencyFormat(String.valueOf((double) your_items_total_value / 100))));
+                                    if(your_item_count != 0) {
+                                        item_count_view.setText(main.fromHTML("<font color = \"#CCCCCC\">Total Value</font><br><b>$" + main.currencyFormat(String.valueOf((double) your_items_total_value / 100)) + "</b>"));
                                     }
 
                                     // -----
 
+                                    final LinearLayout offer_detail_layout_final = offer_detail_layout;
+                                    final LinearLayout offer_content_layout_final = offer_content_layout;
+
+                                    offer_detail_layout.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            if(offer_content_layout_final.getVisibility() == View.GONE) {
+                                                offer_detail_layout_final.setBackgroundDrawable(offer_detail_container_drawable);
+
+                                                offer_content_layout_final.setVisibility(View.VISIBLE);
+                                                offer_content_layout_final.setBackgroundDrawable(null);
+                                                offer_content_layout_final.setBackgroundDrawable(offer_content_container_drawable);
+                                            }
+                                            else {
+                                                offer_detail_layout_final.setBackgroundDrawable(offer_content_container_drawable);
+
+                                                offer_content_layout_final.setVisibility(View.GONE);
+                                            }
+                                        }
+                                    });
+
+                                    // -----
+
                                     offer_outline_container_layout.addView(offer_header_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    offer_outline_container_layout.addView(offer_detail_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                     offer_outline_container_layout.addView(offer_content_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-                                    offers_inner_container.addView(offer_outline_container_layout, offer_outline_container_layout_params);
+                                    offer_inner_container_layout.addView(offer_outline_container_layout, offer_outline_container_layout_params);
                                 }
 
                                 if(!offers_loaded && image_load_count == total_image_count) {
@@ -929,7 +1085,7 @@ public class fragment_offers extends Fragment {
 
                                     clearView_LinearLayout(offers_container);
 
-                                    offers_container.addView(offers_inner_container, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    offers_container.addView(offer_inner_container_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                 }
                             }
                             else {

@@ -43,7 +43,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-
 import cz.msebera.android.httpclient.Header;
 
 public class fragment_trade extends Fragment {
@@ -811,6 +810,7 @@ public class fragment_trade extends Fragment {
                             final int unit_conversion_1 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 140, display_metrics);
                             final int unit_conversion_2 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7, display_metrics);
                             final int unit_conversion_3 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 15, display_metrics);
+                            final int unit_conversion_4 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, display_metrics);
                             final int item_count = data.getInt("total");
 
                             if(user_inventory) {
@@ -852,6 +852,7 @@ public class fragment_trade extends Fragment {
                                 ImageView item_image_view;
                                 TextView item_name_view;
                                 TextView item_condition_view;
+                                TextView item_price_view;
                                 String item_name;
                                 StringTokenizer item_name_parts;
                                 String item_condition = "";
@@ -860,6 +861,7 @@ public class fragment_trade extends Fragment {
                                 long item_suggested_price_temp;
                                 final Drawable item_container_drawable = resources.getDrawable(R.drawable.shape_fragment_trade_item_container);
                                 final Drawable selected_item_container_drawable = resources.getDrawable(R.drawable.shape_fragment_trade_selected_item_container);
+                                final int color_black = resources.getColor(R.color.black);
                                 final int color_white = resources.getColor(R.color.white);
 
                                 for(int i = 0; i < item_count; i ++) {
@@ -940,6 +942,7 @@ public class fragment_trade extends Fragment {
                                     item_name_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                                     item_name_view.setTypeface(null, Typeface.BOLD);
                                     item_name_view.setTextColor(color_white);
+                                    item_name_view.setShadowLayer((float) 3, (float) 1.5, (float) 1.5, color_black);
                                     inner_layout.addView(item_name_view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
                                     if(!item_condition.isEmpty()) {
@@ -949,6 +952,7 @@ public class fragment_trade extends Fragment {
                                         item_condition_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 7);
                                         item_condition_view.setTypeface(null, Typeface.BOLD);
                                         item_condition_view.setTextColor(color_white);
+                                        item_condition_view.setShadowLayer((float) 3, (float) 1.5, (float) 1.5, color_black);
                                         inner_layout.addView(item_condition_view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                     }
 
@@ -960,14 +964,15 @@ public class fragment_trade extends Fragment {
                                         inner_layout = new LinearLayout(context);
                                         inner_layout.setOrientation(LinearLayout.HORIZONTAL);
 
-                                        item_name_view = new TextView(context);
-                                        item_name_view.setPadding(unit_conversion_2, unit_conversion_2, unit_conversion_2, unit_conversion_3);
-                                        item_name_view.setText(new StringBuilder("$" + main.currencyFormat(String.valueOf((double) item_suggested_price_temp / 100))));
-                                        item_name_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-                                        item_name_view.setTypeface(null, Typeface.BOLD);
-                                        item_name_view.setTextColor(color_white);
-                                        item_name_view.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
-                                        inner_layout.addView(item_name_view, unit_conversion_1, unit_conversion_1);
+                                        item_price_view = new TextView(context);
+                                        item_price_view.setPadding(unit_conversion_2, unit_conversion_2, unit_conversion_2, unit_conversion_4);
+                                        item_price_view.setText(new StringBuilder("$" + main.currencyFormat(String.valueOf((double) item_suggested_price_temp / 100))));
+                                        item_price_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                                        item_price_view.setTypeface(null, Typeface.BOLD);
+                                        item_price_view.setTextColor(color_white);
+                                        item_price_view.setShadowLayer((float) 3, (float) 1.5, (float) 1.5, color_black);
+                                        item_price_view.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
+                                        inner_layout.addView(item_price_view, unit_conversion_1, unit_conversion_1);
 
                                         layout.addView(inner_layout, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                     }
