@@ -36,6 +36,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import cz.msebera.android.httpclient.Header;
 
@@ -65,15 +67,16 @@ public class fragment_offers extends Fragment {
 
     // *** GENERAL
 
+    private List<Object> offer_containers = new ArrayList<>();
     private int selected_offer_type = Constant.OFFER_TYPE_RECEIVED;
     private int selected_offer_state_filter = Constant.OFFER_STATE_ACTIVE;
     private View selected_offer_type_view;
     private View selected_offer_state_filter_view;
     private int image_load_count = 0;
-    private Boolean offers_loaded = false;
 
     // *** STATES
 
+    private Boolean offers_loaded = false;
     private Boolean perform_action = false;
 
     // ** CALLBACKS
@@ -165,6 +168,13 @@ public class fragment_offers extends Fragment {
         return fragment;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        refreshContainers();
+    }
+
     private void on2FAEntered(final View fragment, EditText edit_text, int offer_id) {
         final main main = new main();
         final String twofactor = edit_text.getText().toString();
@@ -252,6 +262,19 @@ public class fragment_offers extends Fragment {
 
     // ** FUNCTIONS
 
+    public void refreshContainers() {
+        final Resources resources = getResources();
+        final Drawable container_outline_drawable = resources.getDrawable(R.drawable.shape_fragment_offers_container_outline);
+        final Drawable offer_header_container_drawable = resources.getDrawable(R.drawable.shape_fragment_offers_offer_header_container);
+        final Drawable offer_content_container_drawable = resources.getDrawable(R.drawable.shape_fragment_offers_offer_content_container);
+
+        for(int i = 0, j = offer_containers.size(); i < j; i += 3) {
+            ((LinearLayout) offer_containers.get(i)).setBackgroundDrawable(container_outline_drawable);
+            ((LinearLayout) offer_containers.get(i + 1)).setBackgroundDrawable(offer_header_container_drawable);
+            ((LinearLayout) offer_containers.get(i + 2)).setBackgroundDrawable(offer_content_container_drawable);
+        }
+    }
+
     private void clearView_LinearLayout(View view) {
         if(((LinearLayout) view).getChildCount() > 0) {
             ((LinearLayout) view).removeAllViews();
@@ -265,6 +288,7 @@ public class fragment_offers extends Fragment {
             perform_action = false;
             main.set_perform_action(false);
 
+            offer_containers.clear();
             image_load_count = 0;
             offers_loaded = false;
 
@@ -1058,16 +1082,20 @@ public class fragment_offers extends Fragment {
                                                 offer_detail_layout_final.setBackgroundDrawable(offer_detail_container_drawable);
 
                                                 offer_content_layout_final.setVisibility(View.VISIBLE);
-                                                offer_content_layout_final.setBackgroundDrawable(null);
-                                                offer_content_layout_final.setBackgroundDrawable(offer_content_container_drawable);
                                             }
                                             else {
                                                 offer_detail_layout_final.setBackgroundDrawable(offer_content_container_drawable);
 
                                                 offer_content_layout_final.setVisibility(View.GONE);
                                             }
+
+                                            refreshContainers();
                                         }
                                     });
+
+                                    offer_containers.add(offer_outline_container_layout);
+                                    offer_containers.add(offer_header_layout);
+                                    offer_containers.add(offer_content_layout);
 
                                     // -----
 
