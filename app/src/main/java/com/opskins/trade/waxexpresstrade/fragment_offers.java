@@ -4,12 +4,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
 import android.util.DisplayMetrics;
@@ -61,6 +61,7 @@ public class fragment_offers extends Fragment {
         private static final int OFFER_STATE_EXPIRED = 5;
         private static final int OFFER_STATE_CANCELED = 6;
         private static final int OFFER_STATE_DECLINED = 7;
+        private static final int OFFER_STATE_INVALID_ITEMS = 8;
     }
 
     // ** VARIABLES
@@ -124,6 +125,13 @@ public class fragment_offers extends Fragment {
             @Override
             public void onClick(View view) {
                 setSelectedOfferType(fragment, Constant.OFFER_TYPE_SENT);
+            }
+        });
+
+        fragment.findViewById(R.id.fragment_offers_refresh_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadOffers(fragment, 1, false);
             }
         });
 
@@ -313,7 +321,7 @@ public class fragment_offers extends Fragment {
                 // -----
 
                 final RequestParams params = new RequestParams();
-                params.put("state", String.valueOf(selected_offer_state_filter));
+                params.put("state", selected_offer_state_filter + ((selected_offer_state_filter == Constant.OFFER_STATE_CANCELED) ? ("," + Constant.OFFER_STATE_INVALID_ITEMS) : ("")));
                 params.put("page", page);
                 params.put("per_page", Constant.OFFERS_PER_PAGE);
 
@@ -345,16 +353,18 @@ public class fragment_offers extends Fragment {
                                 final LinearLayout offer_inner_container_layout = new LinearLayout(context);
                                 offer_inner_container_layout.setOrientation(LinearLayout.VERTICAL);
 
+                                LinearLayout offer_outline_container_layout;
+                                RelativeLayout offer_time_container_layout;
+                                RelativeLayout.LayoutParams offer_time_container_layout_params;
                                 LinearLayout offer_align_right_container_layout;
                                 LinearLayout.LayoutParams offer_align_right_container_layout_params;
-                                LinearLayout offer_outline_container_layout;
-                                LinearLayout.LayoutParams offer_outline_container_layout_params;
                                 LinearLayout offer_header_layout;
                                 LinearLayout offer_header_inner_layout;
                                 LinearLayout offer_detail_layout;
                                 LinearLayout offer_detail_inner_layout;
                                 LinearLayout offer_content_layout;
                                 LinearLayout offer_content_inner_layout;
+                                TextView offer_time_view;
                                 ImageView user_avatar_view_1;
                                 de.hdodenhof.circleimageview.CircleImageView user_avatar_view_2;
                                 TextView user_name_view;
@@ -363,7 +373,10 @@ public class fragment_offers extends Fragment {
                                 TextView trade_summary_view;
                                 TextView message_view;
                                 TextView offer_detail_view;
+                                ImageView offer_detail_arrow_view;
                                 TextView item_count_view;
+                                TextView total_value_view;
+                                TextView total_value_amount_view;
                                 ImageView item_image_view;
                                 TextView item_name_view;
                                 TextView item_price_view;
@@ -371,6 +384,8 @@ public class fragment_offers extends Fragment {
                                 TextView button_view_2;
                                 LinearLayout.LayoutParams button_view_layout_params;
                                 RelativeLayout separator_view;
+                                RelativeLayout.LayoutParams separator_view_layout_params;
+                                ImageView trade_image_view;
                                 String item_image;
                                 long item_suggested_price;
                                 Double item_wear;
@@ -381,6 +396,7 @@ public class fragment_offers extends Fragment {
                                 Boolean user_verified;
                                 Boolean user_case_opening;
                                 String trade_summary;
+                                Locale locale = Locale.getDefault();
                                 final int unit_conversion_1 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, display_metrics);
                                 final int unit_conversion_2 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 15, display_metrics);
                                 final int unit_conversion_3 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, display_metrics);
@@ -394,23 +410,33 @@ public class fragment_offers extends Fragment {
                                 final int unit_conversion_11 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, display_metrics);
                                 final int unit_conversion_12 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, display_metrics);
                                 final int unit_conversion_13 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, display_metrics);
+                                final int unit_conversion_14 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 18, display_metrics);
+                                final int unit_conversion_15 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, display_metrics);
+                                final int unit_conversion_16 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 3, display_metrics);
                                 final Drawable container_outline_drawable = resources.getDrawable(R.drawable.shape_fragment_offers_container_outline);
                                 final Drawable offer_header_container_drawable = resources.getDrawable(R.drawable.shape_fragment_offers_offer_header_container);
                                 final Drawable offer_detail_container_drawable = resources.getDrawable(R.drawable.shape_fragment_offers_offer_detail_container);
                                 final Drawable offer_content_container_drawable = resources.getDrawable(R.drawable.shape_fragment_offers_offer_content_container);
+                                final Drawable trade_container_drawable = resources.getDrawable(R.drawable.shape_fragment_offers_trade_container);
                                 final Drawable opskins_logo_drawable = resources.getDrawable(R.drawable.ic_opskins_logo);
                                 final Drawable verified_drawable = resources.getDrawable(R.drawable.verified);
                                 final Drawable vcase_drawable = resources.getDrawable(R.drawable.vcase);
+                                final int arrow_right_drawable = R.drawable.ic_arrow_right;
+                                final int arrow_down_drawable = R.drawable.ic_arrow_down;
+                                final int trade_drawable = R.drawable.ic_trade;
                                 final String decline_button_text = resources.getString(R.string.fragment_offers_decline_button);
                                 final String accept_button_text = resources.getString(R.string.fragment_offers_accept_button);
                                 final String cancel_button_text = resources.getString(R.string.fragment_offers_cancel_button);
                                 final String offer_detail_text = resources.getString(R.string.fragment_offers_offer_detail);
+                                final String total_value_text = resources.getString(R.string.fragment_offers_total_value);
                                 final int color_white = resources.getColor(R.color.white);
                                 final int color_pickled_bluewood = resources.getColor(R.color.pickled_bluewood);
                                 final int color_red_berry = resources.getColor(R.color.red_berry);
                                 final int color_denim = resources.getColor(R.color.denim);
                                 final int color_kashmir_blue = resources.getColor(R.color.kashmir_blue);
                                 final int color_downy = resources.getColor(R.color.downy);
+                                final int color_silver = resources.getColor(R.color.silver);
+                                final int color_stiletto_1 = resources.getColor(R.color.stiletto_1);
                                 String message;
                                 String state_name;
                                 int sender_item_count;
@@ -442,6 +468,24 @@ public class fragment_offers extends Fragment {
                                     recipient_item_count = recipient_items.length();
                                     their_items_total_value = 0;
                                     your_items_total_value = 0;
+
+                                    offer_time_container_layout = new RelativeLayout(context);
+                                    offer_time_container_layout.setPadding(unit_conversion_3, 0, unit_conversion_3, unit_conversion_16);
+
+                                    offer_time_container_layout_params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+                                    if(i != 0) {
+                                        offer_time_container_layout_params.setMargins(0, unit_conversion_11, 0, 0);
+                                    }
+
+                                    offer_time_view = new TextView(context);
+                                    offer_time_view.setText(main.dateFormat(offer.getInt("time_created")));
+                                    offer_time_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                                    offer_time_view.setTypeface(null, Typeface.BOLD);
+                                    offer_time_view.setTextColor(color_stiletto_1);
+                                    offer_time_container_layout.addView(offer_time_view, RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+                                    // -----
 
                                     if(selected_offer_type == Constant.OFFER_TYPE_RECEIVED) {
                                         their_items = sender_items;
@@ -494,12 +538,6 @@ public class fragment_offers extends Fragment {
                                     offer_outline_container_layout.setBackgroundDrawable(container_outline_drawable);
                                     offer_outline_container_layout.setOrientation(LinearLayout.VERTICAL);
 
-                                    offer_outline_container_layout_params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-                                    if(i != 0) {
-                                        offer_outline_container_layout_params.setMargins(0, unit_conversion_2, 0, 0);
-                                    }
-
                                     // -----
 
                                     offer_header_layout = new LinearLayout(context);
@@ -514,7 +552,7 @@ public class fragment_offers extends Fragment {
                                     if(user_avatar.equals("null") || user_avatar.equals("/images/opskins-logo-avatar.png")) {
                                         user_avatar_view_1 = new ImageView(context);
                                         user_avatar_view_1.setImageDrawable(opskins_logo_drawable);
-                                        user_avatar_view_1.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.SRC_IN);
+                                        user_avatar_view_1.setColorFilter(color_white, android.graphics.PorterDuff.Mode.SRC_IN);
                                         offer_header_inner_layout.addView(user_avatar_view_1, unit_conversion_4, unit_conversion_4);
 
                                         // -----
@@ -783,6 +821,7 @@ public class fragment_offers extends Fragment {
                                     offer_detail_layout.setOrientation(LinearLayout.HORIZONTAL);
 
                                     offer_detail_inner_layout = new LinearLayout(context);
+                                    offer_detail_inner_layout.setGravity(Gravity.CENTER_VERTICAL);
                                     offer_detail_inner_layout.setOrientation(LinearLayout.HORIZONTAL);
 
                                     offer_detail_view = new TextView(context);
@@ -791,6 +830,16 @@ public class fragment_offers extends Fragment {
                                     offer_detail_view.setTextColor(color_downy);
                                     offer_detail_inner_layout.addView(offer_detail_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
+                                    offer_align_right_container_layout = new LinearLayout(context);
+                                    offer_align_right_container_layout.setGravity(Gravity.END);
+
+                                    offer_align_right_container_layout_params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+
+                                    offer_detail_arrow_view = new ImageView(context);
+                                    offer_detail_arrow_view.setColorFilter(color_downy, android.graphics.PorterDuff.Mode.SRC_IN);
+                                    offer_align_right_container_layout.addView(offer_detail_arrow_view, unit_conversion_14, unit_conversion_14);
+
+                                    offer_detail_inner_layout.addView(offer_align_right_container_layout, offer_align_right_container_layout_params);
                                     offer_detail_layout.addView(offer_detail_inner_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
                                     // -----
@@ -802,8 +851,12 @@ public class fragment_offers extends Fragment {
 
                                     if(i >= 1) {
                                         offer_detail_layout.setBackgroundDrawable(offer_content_container_drawable);
+                                        offer_detail_arrow_view.setImageResource(arrow_right_drawable);
 
                                         offer_content_layout.setVisibility(View.GONE);
+                                    }
+                                    else {
+                                        offer_detail_arrow_view.setImageResource(arrow_down_drawable);
                                     }
 
                                     offer_content_inner_layout = new LinearLayout(context);
@@ -817,14 +870,26 @@ public class fragment_offers extends Fragment {
 
                                     offer_align_right_container_layout = new LinearLayout(context);
                                     offer_align_right_container_layout.setGravity(Gravity.END);
+                                    offer_align_right_container_layout.setOrientation(LinearLayout.VERTICAL);
 
                                     offer_align_right_container_layout_params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
 
-                                    item_count_view = new TextView(context);
-                                    item_count_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-                                    item_count_view.setTextColor(color_white);
-                                    item_count_view.setGravity(Gravity.END);
-                                    offer_align_right_container_layout.addView(item_count_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    total_value_view = new TextView(context);
+                                    total_value_view.setText(total_value_text);
+                                    total_value_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                                    total_value_view.setTextColor(color_silver);
+                                    total_value_view.setGravity(Gravity.END);
+                                    total_value_view.setVisibility(View.GONE);
+                                    offer_align_right_container_layout.addView(total_value_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                                    total_value_amount_view = new TextView(context);
+                                    total_value_amount_view.setPadding(0, unit_conversion_1, 0, 0);
+                                    total_value_amount_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                                    total_value_amount_view.setTypeface(null, Typeface.BOLD);
+                                    total_value_amount_view.setTextColor(color_white);
+                                    total_value_amount_view.setGravity(Gravity.END);
+                                    total_value_amount_view.setVisibility(View.GONE);
+                                    offer_align_right_container_layout.addView(total_value_amount_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
                                     offer_content_inner_layout.addView(offer_align_right_container_layout, offer_align_right_container_layout_params);
                                     offer_content_layout.addView(offer_content_inner_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -903,7 +968,7 @@ public class fragment_offers extends Fragment {
 
                                         item_name_view = new TextView(context);
                                         item_name_view.setPadding(unit_conversion_12, 0, 0, 0);
-                                        item_name_view.setText(main.fromHTML("<font color = \"" + item.getString("color") + "\">" + item.getString("name") + "</font>" + ((item_wear == 0.00 && item_serial_number == 0) ? ("") : ("<br><font color = \"#CCCCCC\">Wear:</font> " + String.format(Locale.getDefault(), "%.5f", item_wear * 100) + "% <font color = \"#443836\">|</font> <font color = \"#CCCCCC\">Serial Number:</font> " + item_serial_number))));
+                                        item_name_view.setText(main.fromHTML("<font color = \"" + item.getString("color") + "\">" + item.getString("name") + "</font>" + ((item_wear == 0.00 && item_serial_number == 0) ? ("") : ("<br><font color = \"#CCCCCC\">Wear:</font> " + String.format(locale, "%.5f", item_wear * 100) + "% <font color = \"#443836\">|</font> <font color = \"#CCCCCC\">Serial Number:</font> " + item_serial_number))));
                                         item_name_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                                         item_name_view.setTextColor(color_white);
                                         item_name_view.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -927,21 +992,42 @@ public class fragment_offers extends Fragment {
                                         offer_content_layout.addView(offer_content_inner_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                     }
 
-                                    if(their_item_count != 0) {
-                                        item_count_view.setText(main.fromHTML("<font color = \"#CCCCCC\">Total Value</font><br><b>$" + main.currencyFormat(String.valueOf((double) their_items_total_value / 100)) + "</b>"));
+                                    if(their_items_total_value != 0) {
+                                        total_value_view.setVisibility(View.VISIBLE);
+
+                                        total_value_amount_view.setText(main.fromHTML("$" + main.currencyFormat(String.valueOf((double) their_items_total_value / 100))));
+                                        total_value_amount_view.setVisibility(View.VISIBLE);
                                     }
 
                                     // -----
 
                                     offer_content_inner_layout = new LinearLayout(context);
-                                    offer_content_inner_layout.setPadding(0, unit_conversion_9, 0, unit_conversion_9);
-                                    offer_content_inner_layout.setOrientation(LinearLayout.HORIZONTAL);
+                                    offer_content_inner_layout.setPadding(0, unit_conversion_12, 0, unit_conversion_12);
+                                    offer_content_inner_layout.setGravity(Gravity.CENTER);
+                                    offer_content_inner_layout.setOrientation(LinearLayout.VERTICAL);
 
                                     separator_view = new RelativeLayout(context);
                                     separator_view.setBackgroundColor(color_pickled_bluewood);
-                                    offer_content_inner_layout.addView(separator_view, RelativeLayout.LayoutParams.MATCH_PARENT, unit_conversion_1);
 
-                                    offer_content_layout.addView(offer_content_inner_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    separator_view_layout_params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, unit_conversion_1);
+                                    separator_view_layout_params.setMargins(0, unit_conversion_9, 0, 0);
+
+                                    offer_content_inner_layout.addView(separator_view, separator_view_layout_params);
+
+                                    separator_view = new RelativeLayout(context);
+                                    separator_view.setPadding(unit_conversion_15, unit_conversion_15, unit_conversion_15, unit_conversion_15);
+                                    separator_view.setBackgroundDrawable(trade_container_drawable);
+
+                                    separator_view_layout_params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                                    separator_view_layout_params.setMargins(0, -unit_conversion_9, 0, 0);
+
+                                    trade_image_view = new ImageView(context);
+                                    trade_image_view.setImageResource(trade_drawable);
+                                    trade_image_view.setColorFilter(color_stiletto_1, android.graphics.PorterDuff.Mode.SRC_IN);
+                                    separator_view.addView(trade_image_view, unit_conversion_14, unit_conversion_14);
+
+                                    offer_content_inner_layout.addView(separator_view, separator_view_layout_params);
+                                    offer_content_layout.addView(offer_content_inner_layout, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
                                     // -----
 
@@ -956,14 +1042,26 @@ public class fragment_offers extends Fragment {
 
                                     offer_align_right_container_layout = new LinearLayout(context);
                                     offer_align_right_container_layout.setGravity(Gravity.END);
+                                    offer_align_right_container_layout.setOrientation(LinearLayout.VERTICAL);
 
                                     offer_align_right_container_layout_params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
 
-                                    item_count_view = new TextView(context);
-                                    item_count_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-                                    item_count_view.setTextColor(color_white);
-                                    item_count_view.setGravity(Gravity.END);
-                                    offer_align_right_container_layout.addView(item_count_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    total_value_view = new TextView(context);
+                                    total_value_view.setText(total_value_text);
+                                    total_value_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                                    total_value_view.setTextColor(color_silver);
+                                    total_value_view.setGravity(Gravity.END);
+                                    total_value_view.setVisibility(View.GONE);
+                                    offer_align_right_container_layout.addView(total_value_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                                    total_value_amount_view = new TextView(context);
+                                    total_value_amount_view.setPadding(0, unit_conversion_1, 0, 0);
+                                    total_value_amount_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                                    total_value_amount_view.setTypeface(null, Typeface.BOLD);
+                                    total_value_amount_view.setTextColor(color_white);
+                                    total_value_amount_view.setGravity(Gravity.END);
+                                    total_value_amount_view.setVisibility(View.GONE);
+                                    offer_align_right_container_layout.addView(total_value_amount_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
                                     offer_content_inner_layout.addView(offer_align_right_container_layout, offer_align_right_container_layout_params);
                                     offer_content_layout.addView(offer_content_inner_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -1042,7 +1140,7 @@ public class fragment_offers extends Fragment {
 
                                         item_name_view = new TextView(context);
                                         item_name_view.setPadding(unit_conversion_12, 0, 0, 0);
-                                        item_name_view.setText(main.fromHTML("<font color = \"" + item.getString("color") + "\">" + item.getString("name") + "</font>" + ((item_wear == 0.00 && item_serial_number == 0) ? ("") : ("<br><font color = \"#CCCCCC\">Wear:</font> " + String.format(Locale.getDefault(), "%.5f", item_wear * 100) + "% <font color = \"#443836\">|</font> <font color = \"#CCCCCC\">Serial Number:</font> " + item_serial_number))));
+                                        item_name_view.setText(main.fromHTML("<font color = \"" + item.getString("color") + "\">" + item.getString("name") + "</font>" + ((item_wear == 0.00 && item_serial_number == 0) ? ("") : ("<br><font color = \"#CCCCCC\">Wear:</font> " + String.format(locale, "%.5f", item_wear * 100) + "% <font color = \"#443836\">|</font> <font color = \"#CCCCCC\">Serial Number:</font> " + item_serial_number))));
                                         item_name_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                                         item_name_view.setTextColor(color_white);
                                         item_name_view.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -1066,13 +1164,17 @@ public class fragment_offers extends Fragment {
                                         offer_content_layout.addView(offer_content_inner_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                     }
 
-                                    if(your_item_count != 0) {
-                                        item_count_view.setText(main.fromHTML("<font color = \"#CCCCCC\">Total Value</font><br><b>$" + main.currencyFormat(String.valueOf((double) your_items_total_value / 100)) + "</b>"));
+                                    if(your_items_total_value != 0) {
+                                        total_value_view.setVisibility(View.VISIBLE);
+
+                                        total_value_amount_view.setText(main.fromHTML("$" + main.currencyFormat(String.valueOf((double) your_items_total_value / 100))));
+                                        total_value_amount_view.setVisibility(View.VISIBLE);
                                     }
 
                                     // -----
 
                                     final LinearLayout offer_detail_layout_final = offer_detail_layout;
+                                    final ImageView offer_detail_arrow_view_final = offer_detail_arrow_view;
                                     final LinearLayout offer_content_layout_final = offer_content_layout;
 
                                     offer_detail_layout.setOnClickListener(new View.OnClickListener() {
@@ -1080,11 +1182,13 @@ public class fragment_offers extends Fragment {
                                         public void onClick(View view) {
                                             if(offer_content_layout_final.getVisibility() == View.GONE) {
                                                 offer_detail_layout_final.setBackgroundDrawable(offer_detail_container_drawable);
+                                                offer_detail_arrow_view_final.setImageResource(arrow_down_drawable);
 
                                                 offer_content_layout_final.setVisibility(View.VISIBLE);
                                             }
                                             else {
                                                 offer_detail_layout_final.setBackgroundDrawable(offer_content_container_drawable);
+                                                offer_detail_arrow_view_final.setImageResource(arrow_right_drawable);
 
                                                 offer_content_layout_final.setVisibility(View.GONE);
                                             }
@@ -1103,7 +1207,8 @@ public class fragment_offers extends Fragment {
                                     offer_outline_container_layout.addView(offer_detail_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                     offer_outline_container_layout.addView(offer_content_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-                                    offer_inner_container_layout.addView(offer_outline_container_layout, offer_outline_container_layout_params);
+                                    offer_inner_container_layout.addView(offer_time_container_layout, offer_time_container_layout_params);
+                                    offer_inner_container_layout.addView(offer_outline_container_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                 }
 
                                 if(!offers_loaded && image_load_count == total_image_count) {
@@ -1251,7 +1356,7 @@ public class fragment_offers extends Fragment {
             case Constant.OFFER_STATE_DECLINED:
                 view = fragment.findViewById(R.id.fragment_offers_state_tab_declined);
                 break;
-            case Constant.OFFER_STATE_CANCELED:
+            case Constant.OFFER_STATE_CANCELED: case Constant.OFFER_STATE_INVALID_ITEMS:
                 view = fragment.findViewById(R.id.fragment_offers_state_tab_canceled);
                 break;
         }

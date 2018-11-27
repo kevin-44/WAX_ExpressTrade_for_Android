@@ -49,6 +49,7 @@
     <string name="fragment_offers_accept_button">Accept</string>
     <string name="fragment_offers_cancel_button">Cancel</string>
     <string name="fragment_offers_offer_detail">Offer Detail</string>
+    <string name="fragment_offers_total_value">Total Value</string>
     <string name="fragment_offers_loading">Please wait&#8230;</string>
     <string name="fragment_offers_error_tag">An error occurred: \</string>
     <string name="fragment_offers_error_no_internet_connection">An error occurred: No internet connection. Check your mobile data or Wi-Fi.</string>

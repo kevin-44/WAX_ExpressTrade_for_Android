@@ -187,7 +187,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:baselineAligned="true">
+                android:baselineAligned="false">
 
                 <RelativeLayout
                     android:layout_width="85dp"
@@ -598,7 +598,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:baselineAligned="true">
+                android:baselineAligned="false">
 
                 <RelativeLayout
                     android:layout_width="85dp"

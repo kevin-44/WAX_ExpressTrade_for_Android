@@ -107,94 +107,131 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
 
-                <HorizontalScrollView tools:ignore="UselessParent"
-                    android:layout_width="wrap_content"
+                android:baselineAligned="false"
+                android:gravity="center_vertical">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.8">
 
-                    android:scrollbars="none">
-
-                    <LinearLayout
+                    <HorizontalScrollView tools:ignore="UselessParent"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+
+                        android:scrollbars="none">
 
                         <LinearLayout
-                            android:id="@+id/fragment_offers_tab_received"
-
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="wrap_content">
 
-                            android:paddingLeft="13dp"
-                            android:paddingStart="13dp"
-                            android:paddingRight="13dp"
-                            android:paddingEnd="13dp"
+                            <LinearLayout
+                                android:id="@+id/fragment_offers_tab_received"
 
-                            android:background="@drawable/shape_fragment_offers_tab">
-
-                            <ImageView tools:ignore="ContentDescription"
-                                android:layout_width="25dp"
-                                android:layout_height="36dp"
-
-                                android:paddingTop="10dp"
-                                android:paddingBottom="10dp"
-
-                                android:src="@drawable/ic_received"
-                                android:tint="@color/white"/>
-
-                            <TextView
                                 android:layout_width="wrap_content"
-                                android:layout_height="36dp"
+                                android:layout_height="wrap_content"
+
+                                android:paddingLeft="13dp"
+                                android:paddingStart="13dp"
+                                android:paddingRight="13dp"
+                                android:paddingEnd="13dp"
+
+                                android:background="@drawable/shape_fragment_offers_tab">
+
+                                <ImageView tools:ignore="ContentDescription"
+                                    android:layout_width="25dp"
+                                    android:layout_height="36dp"
+
+                                    android:paddingTop="10dp"
+                                    android:paddingBottom="10dp"
+
+                                    android:src="@drawable/ic_received"
+                                    android:tint="@color/white"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="36dp"
+                                    android:layout_marginLeft="7dp"
+                                    android:layout_marginStart="7dp"
+
+                                    android:text="@string/fragment_offers_received"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/white"
+
+                                    android:gravity="center_vertical"/>
+                            </LinearLayout>
+
+                            <LinearLayout tools:ignore="UseCompoundDrawables"
+                                android:id="@+id/fragment_offers_tab_sent"
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_marginLeft="7dp"
                                 android:layout_marginStart="7dp"
 
-                                android:text="@string/fragment_offers_received"
-                                android:textSize="14sp"
-                                android:textColor="@color/white"
+                                android:paddingLeft="9dp"
+                                android:paddingStart="9dp"
+                                android:paddingRight="13dp"
+                                android:paddingEnd="13dp">
 
-                                android:gravity="center_vertical"/>
+                                <ImageView tools:ignore="ContentDescription"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="36dp"
+
+                                    android:paddingTop="10dp"
+                                    android:paddingBottom="10dp"
+
+                                    android:src="@drawable/ic_sent"
+                                    android:tint="@color/white"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="36dp"
+                                    android:layout_marginLeft="3dp"
+                                    android:layout_marginStart="3dp"
+
+                                    android:text="@string/fragment_offers_sent"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/white"
+
+                                    android:gravity="center_vertical"/>
+                            </LinearLayout>
                         </LinearLayout>
+                    </HorizontalScrollView>
+                </RelativeLayout>
 
-                        <LinearLayout tools:ignore="UseCompoundDrawables"
-                            android:id="@+id/fragment_offers_tab_sent"
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
 
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="7dp"
-                            android:layout_marginStart="7dp"
+                    android:gravity="end">
 
-                            android:paddingLeft="9dp"
-                            android:paddingStart="9dp"
-                            android:paddingRight="13dp"
-                            android:paddingEnd="13dp">
+                    <RelativeLayout tools:ignore="UselessParent"
+                        android:id="@+id/fragment_offers_refresh_button"
 
-                            <ImageView tools:ignore="ContentDescription"
-                                android:layout_width="wrap_content"
-                                android:layout_height="36dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
 
-                                android:paddingTop="10dp"
-                                android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
 
-                                android:src="@drawable/ic_sent"
-                                android:tint="@color/white"/>
+                        android:background="@drawable/shape_fragment_offers_refresh_container">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="36dp"
-                                android:layout_marginLeft="3dp"
-                                android:layout_marginStart="3dp"
+                        <ImageView tools:ignore="ContentDescription"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
 
-                                android:text="@string/fragment_offers_sent"
-                                android:textSize="14sp"
-                                android:textColor="@color/white"
-
-                                android:gravity="center_vertical"/>
-                        </LinearLayout>
-                    </LinearLayout>
-                </HorizontalScrollView>
-            </RelativeLayout>
+                            android:src="@drawable/ic_refresh"/>
+                    </RelativeLayout>
+                </RelativeLayout>
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="wrap_content"

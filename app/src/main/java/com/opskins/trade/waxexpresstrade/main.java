@@ -40,6 +40,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 import cz.msebera.android.httpclient.Header;
 
 public class main extends AppCompatActivity {
@@ -673,6 +677,12 @@ public class main extends AppCompatActivity {
     public String currencyFormat(String amount) {
         DecimalFormat formatter = new DecimalFormat("###,###,##0.00");
         return formatter.format(Double.parseDouble(amount));
+    }
+
+    public String dateFormat(int time) {
+        SimpleDateFormat simple_date_format = new SimpleDateFormat("M/dd/yyyy - hh:mm aaa", Locale.getDefault());
+        simple_date_format.setTimeZone(TimeZone.getDefault());
+        return simple_date_format.format(new Date(time * 1000L));
     }
 
     public Boolean isNetworkAvailable(Context context) {
