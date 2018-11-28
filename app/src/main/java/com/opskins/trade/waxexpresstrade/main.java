@@ -120,15 +120,21 @@ public class main extends AppCompatActivity {
             final Uri intent_data = intent.getData();
 
             if(intent.getAction() != null) {
+                final String itent_url = intent.getDataString();
+
                 if(intent_data.getQueryParameter("state") != null && intent_data.getQueryParameter("code") != null) {
                     authenticating = true;
                 }
 
-                try {
-                    fragment_offers_show_offer_id = Integer.parseInt(intent_data.getQueryParameter("offer"));
-                }
-                catch(NumberFormatException nfe) {
-                    fragment_offers_show_offer_id = -1;
+                if(itent_url.startsWith("https://trade.opskins.com/trade-offers/")) {
+                    final String[] url_parts = itent_url.split("/");
+
+                    try {
+                        fragment_offers_show_offer_id = Integer.parseInt(url_parts[url_parts.length - 1]);
+                    }
+                    catch (NumberFormatException nfe) {
+                        fragment_offers_show_offer_id = -1;
+                    }
                 }
             }
 

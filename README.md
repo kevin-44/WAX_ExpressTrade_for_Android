@@ -5,4 +5,4 @@ Available on Google Play: https://play.google.com/store/apps/details?id=com.opsk
 Client details: *app/src/main/res/values/keys.xml*
 
 ## View a specific trade offer (redirect)
-*wax-expresstrade://callback/?offer={OFFER_ID}*
+*https://trade.opskins.com/trade-offers/{OFFER_ID}*
