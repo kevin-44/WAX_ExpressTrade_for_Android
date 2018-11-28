@@ -2,6 +2,7 @@ package com.opskins.trade.waxexpresstrade;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Typeface;
@@ -83,6 +84,7 @@ public class main extends AppCompatActivity {
 
     private static SharedPreferences shared_preferences;
     private DrawerLayout navigation_drawer;
+    private static int fragment_offers_show_offer_id = -1;
 
     // *** STATES
 
@@ -114,8 +116,20 @@ public class main extends AppCompatActivity {
         updateNavigationDrawerUserInfo(context, false);
 
         if(getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
-            if(getIntent().getAction() != null) {
-                authenticating = true;
+            final Intent intent = getIntent();
+            final Uri intent_data = intent.getData();
+
+            if(intent.getAction() != null) {
+                if(intent_data.getQueryParameter("state") != null && intent_data.getQueryParameter("code") != null) {
+                    authenticating = true;
+                }
+
+                try {
+                    fragment_offers_show_offer_id = Integer.parseInt(intent_data.getQueryParameter("offer"));
+                }
+                catch(NumberFormatException nfe) {
+                    fragment_offers_show_offer_id = -1;
+                }
             }
 
             // -----
@@ -125,10 +139,8 @@ public class main extends AppCompatActivity {
             showFragment(new fragment_loading(), View.GONE);
 
             if(authenticating) {
-                final Uri data = getIntent().getData();
-
-                if(data != null) {
-                    if("access_denied".equals(data.getQueryParameter("error"))) {
+                if(intent_data != null) {
+                    if("access_denied".equals(intent_data.getQueryParameter("error"))) {
                         showDialog(context, "Unable to log in", "You have denied access.");
 
                         showFragment(fragment_log_in, View.GONE);
@@ -138,7 +150,7 @@ public class main extends AppCompatActivity {
                         authenticating = false;
                     }
                     else {
-                        final String authorization_code = data.getQueryParameter("code");
+                        final String authorization_code = intent_data.getQueryParameter("code");
 
                         if(authorization_code != null) {
                             new opskins_oauth(new WeakReference<>(context)).requestAuthorization(authorization_code);
@@ -166,8 +178,8 @@ public class main extends AppCompatActivity {
             }
             else {
                 if(UserData.logged_in) {
-                    if(UserData.bearer_token == null || UserData.refresh_token == null) { // temporary - log out authenticated users that updated the app
-                        logOut(context, false);
+                    if(fragment_offers_show_offer_id != -1) {
+                        showFragment(new fragment_offers(), View.VISIBLE);
                     }
                     else {
                         showFragment(new fragment_trade(), View.VISIBLE);
@@ -660,6 +672,14 @@ public class main extends AppCompatActivity {
     }
 
     // -----
+
+    public int get_fragment_offers_show_offer_id() {
+        return fragment_offers_show_offer_id;
+    }
+
+    public void set_fragment_offers_show_offer_id(int value) {
+        fragment_offers_show_offer_id = value;
+    }
 
     public void set_perform_action(Boolean state) {
         perform_action = state;

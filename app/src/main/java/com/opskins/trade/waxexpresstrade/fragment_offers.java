@@ -25,11 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import org.json.JSONArray;
@@ -73,11 +69,9 @@ public class fragment_offers extends Fragment {
     private int selected_offer_state_filter = Constant.OFFER_STATE_ACTIVE;
     private View selected_offer_type_view;
     private View selected_offer_state_filter_view;
-    private int image_load_count = 0;
 
     // *** STATES
 
-    private Boolean offers_loaded = false;
     private Boolean perform_action = false;
 
     // ** CALLBACKS
@@ -85,11 +79,14 @@ public class fragment_offers extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        new main().set_perform_action(false);
+        final main main = new main();
+
+        main.set_perform_action(false);
 
         // -----
 
         final View fragment = inflater.inflate(R.layout.fragment_offers, container, false);
+        final Context context = fragment_offers.this.getContext();
         final Resources resources = getResources();
         final DisplayMetrics display_metrics = resources.getDisplayMetrics();
         final int unit_conversion_1 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 19, display_metrics);
@@ -172,7 +169,63 @@ public class fragment_offers extends Fragment {
             }
         });
 
-        loadOffers(fragment, 1, true);
+        // -----
+
+        final LinearLayout offers_container = fragment.findViewById(R.id.fragment_offers_offer_list_container);
+
+        clearView_LinearLayout(offers_container);
+
+        TextView loading_view = new TextView(context);
+        loading_view.setText(resources.getString(R.string.fragment_offers_loading));
+        loading_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        loading_view.setTextColor(resources.getColor(R.color.white));
+        loading_view.setGravity(Gravity.CENTER_HORIZONTAL);
+        offers_container.addView(loading_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        if(main.get_fragment_offers_show_offer_id() != -1) {
+            final RequestParams params = new RequestParams();
+            params.put("offer_id", main.get_fragment_offers_show_offer_id());
+
+            new opskins_trade_api(new WeakReference<>(context)).get_SetBearerAuth("ITrade/GetOffer/v1", params, false, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    try {
+                        final JSONObject data = response.getJSONObject("response");
+                        final JSONObject offer = data.getJSONObject("offer");
+
+                        if(offer.getBoolean("sent_by_you")) {
+                            selected_offer_type = Constant.OFFER_TYPE_SENT;
+                        }
+
+                        selected_offer_state_filter = offer.getInt("state");
+
+                        updateSelectedOfferType(fragment, selected_offer_type);
+                        updateSelectedOfferStateFilter(fragment, selected_offer_state_filter);
+
+                        loadOffers(fragment, 1, true);
+                    }
+                    catch (JSONException e) {
+                        main.set_fragment_offers_show_offer_id(-1);
+
+                        // -----
+
+                        loadOffers(fragment, 1, true);
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    main.set_fragment_offers_show_offer_id(-1);
+
+                    // -----
+
+                    loadOffers(fragment, 1, true);
+                }
+            });
+        }
+        else {
+            loadOffers(fragment, 1, true);
+        }
         return fragment;
     }
 
@@ -297,8 +350,6 @@ public class fragment_offers extends Fragment {
             main.set_perform_action(false);
 
             offer_containers.clear();
-            image_load_count = 0;
-            offers_loaded = false;
 
             // -----
 
@@ -364,6 +415,7 @@ public class fragment_offers extends Fragment {
                                 LinearLayout offer_detail_inner_layout;
                                 LinearLayout offer_content_layout;
                                 LinearLayout offer_content_inner_layout;
+                                LinearLayout request_focus_layout = null;
                                 TextView offer_time_view;
                                 ImageView user_avatar_view_1;
                                 de.hdodenhof.circleimageview.CircleImageView user_avatar_view_2;
@@ -438,6 +490,7 @@ public class fragment_offers extends Fragment {
                                 final int color_downy = resources.getColor(R.color.downy);
                                 final int color_silver = resources.getColor(R.color.silver);
                                 final int color_stiletto_1 = resources.getColor(R.color.stiletto_1);
+                                int offer_id;
                                 String message;
                                 String state_name;
                                 int sender_item_count;
@@ -446,16 +499,6 @@ public class fragment_offers extends Fragment {
                                 int your_item_count;
                                 long their_items_total_value;
                                 long your_items_total_value;
-                                int total_image_count_temp = offer_count;
-
-                                for(int i = 0; i < offer_count; i ++) {
-                                    offer = offers.getJSONObject(i);
-                                    total_image_count_temp += offer.getJSONObject("sender").getJSONArray("items").length() + offer.getJSONObject("recipient").getJSONArray("items").length();
-                                }
-
-                                // -----
-
-                                final int total_image_count = total_image_count_temp;
 
                                 for(int i = 0; i < offer_count; i ++) {
                                     offer = offers.getJSONObject(i);
@@ -463,6 +506,7 @@ public class fragment_offers extends Fragment {
                                     recipient = offer.getJSONObject("recipient");
                                     sender_items = sender.getJSONArray("items");
                                     recipient_items = recipient.getJSONArray("items");
+                                    offer_id = offer.getInt("id");
                                     message = offer.getString("message");
                                     state_name = offer.getString("state_name");
                                     sender_item_count = sender_items.length();
@@ -556,10 +600,6 @@ public class fragment_offers extends Fragment {
                                         user_avatar_view_1.setImageDrawable(opskins_logo_drawable);
                                         user_avatar_view_1.setColorFilter(color_white, android.graphics.PorterDuff.Mode.SRC_IN);
                                         offer_header_inner_layout.addView(user_avatar_view_1, unit_conversion_4, unit_conversion_4);
-
-                                        // -----
-
-                                        image_load_count += 1;
                                     }
                                     else {
                                         user_avatar_view_2 = new de.hdodenhof.circleimageview.CircleImageView(context);
@@ -567,30 +607,7 @@ public class fragment_offers extends Fragment {
                                         user_avatar_view_2.setBorderColor(color_white);
                                         offer_header_inner_layout.addView(user_avatar_view_2, unit_conversion_4, unit_conversion_4);
 
-                                        Glide.with(context)
-                                                .load(user_avatar)
-                                                .apply(new RequestOptions().fitCenter())
-                                                .listener(new RequestListener<Drawable>() {
-                                                    @Override
-                                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                                        return false;
-                                                    }
-
-                                                    @Override
-                                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                                        if(!offers_loaded && (++ image_load_count) == total_image_count) {
-                                                            offers_loaded = true;
-
-                                                            // -----
-
-                                                            clearView_LinearLayout(offers_container);
-
-                                                            offers_container.addView(offer_inner_container_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                                        }
-                                                        return false;
-                                                    }
-                                                })
-                                                .into(user_avatar_view_2);
+                                        Glide.with(context).load(user_avatar).apply(new RequestOptions().fitCenter()).into(user_avatar_view_2);
                                     }
 
                                     user_name_view = new TextView(context);
@@ -651,7 +668,7 @@ public class fragment_offers extends Fragment {
                                     // -
 
                                     if(state_name.equals("Open")) {
-                                        final int offer_id = offer.getInt("id");
+                                        final int offer_id_final = offer_id;
 
                                         if(selected_offer_type == Constant.OFFER_TYPE_RECEIVED) {
                                             offer_header_inner_layout = new LinearLayout(context);
@@ -691,7 +708,7 @@ public class fragment_offers extends Fragment {
                                                             ((AlertDialog) input_dialog_response[0]).setOnDismissListener(new DialogInterface.OnDismissListener() {
                                                                 @Override
                                                                 public void onDismiss(DialogInterface dialog) {
-                                                                    on2FAEntered(fragment, edit_text_view, offer_id);
+                                                                    on2FAEntered(fragment, edit_text_view, offer_id_final);
                                                                 }
                                                             });
 
@@ -702,7 +719,7 @@ public class fragment_offers extends Fragment {
 
                                                                         // -----
 
-                                                                        on2FAEntered(fragment, edit_text_view, offer_id);
+                                                                        on2FAEntered(fragment, edit_text_view, offer_id_final);
                                                                         return true;
                                                                     }
                                                                     return false;
@@ -742,7 +759,7 @@ public class fragment_offers extends Fragment {
                                                     // -----
 
                                                     final RequestParams params = new RequestParams();
-                                                    params.put("offer_id", offer_id);
+                                                    params.put("offer_id", offer_id_final);
 
                                                     opskins_trade_api.post_SetBearerAuth("ITrade/CancelOffer/v1", params, false, new JsonHttpResponseHandler() {
                                                         @Override
@@ -938,30 +955,7 @@ public class fragment_offers extends Fragment {
                                         item_image_view = new ImageView(context);
                                         offer_content_inner_layout.addView(item_image_view, unit_conversion_10, unit_conversion_10);
 
-                                        Glide.with(context)
-                                                .load(item_image)
-                                                .apply(new RequestOptions().fitCenter())
-                                                .listener(new RequestListener<Drawable>() {
-                                                    @Override
-                                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                                        return false;
-                                                    }
-
-                                                    @Override
-                                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                                        if(!offers_loaded && (++ image_load_count) == total_image_count) {
-                                                            offers_loaded = true;
-
-                                                            // -----
-
-                                                            clearView_LinearLayout(offers_container);
-
-                                                            offers_container.addView(offer_inner_container_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                                        }
-                                                        return false;
-                                                    }
-                                                })
-                                                .into(item_image_view);
+                                        Glide.with(context).load(item_image).apply(new RequestOptions().fitCenter()).into(item_image_view);
 
                                         offer_align_right_container_layout = new LinearLayout(context);
                                         offer_align_right_container_layout.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -1110,30 +1104,7 @@ public class fragment_offers extends Fragment {
                                         item_image_view = new ImageView(context);
                                         offer_content_inner_layout.addView(item_image_view, unit_conversion_10, unit_conversion_10);
 
-                                        Glide.with(context)
-                                                .load(item_image)
-                                                .apply(new RequestOptions().fitCenter())
-                                                .listener(new RequestListener<Drawable>() {
-                                                    @Override
-                                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                                        return false;
-                                                    }
-
-                                                    @Override
-                                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                                        if(!offers_loaded && (++ image_load_count) == total_image_count) {
-                                                            offers_loaded = true;
-
-                                                            // -----
-
-                                                            clearView_LinearLayout(offers_container);
-
-                                                            offers_container.addView(offer_inner_container_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                                        }
-                                                        return false;
-                                                    }
-                                                })
-                                                .into(item_image_view);
+                                        Glide.with(context).load(item_image).apply(new RequestOptions().fitCenter()).into(item_image_view);
 
                                         offer_align_right_container_layout = new LinearLayout(context);
                                         offer_align_right_container_layout.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -1211,16 +1182,31 @@ public class fragment_offers extends Fragment {
 
                                     offer_inner_container_layout.addView(offer_time_container_layout, offer_time_container_layout_params);
                                     offer_inner_container_layout.addView(offer_outline_container_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                                    if(main.get_fragment_offers_show_offer_id() == offer_id) {
+                                        main.set_fragment_offers_show_offer_id(-1);
+
+                                        // -----
+
+                                        offer_detail_layout_final.setBackgroundDrawable(offer_detail_container_drawable);
+                                        offer_detail_arrow_view_final.setImageResource(arrow_down_drawable);
+
+                                        offer_content_layout_final.setVisibility(View.VISIBLE);
+
+                                        request_focus_layout = offer_outline_container_layout;
+                                    }
                                 }
 
-                                if(!offers_loaded && image_load_count == total_image_count) {
-                                    offers_loaded = true;
+                                // -----
 
-                                    // -----
+                                clearView_LinearLayout(offers_container);
 
-                                    clearView_LinearLayout(offers_container);
+                                offers_container.addView(offer_inner_container_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-                                    offers_container.addView(offer_inner_container_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                refreshContainers();
+
+                                if(request_focus_layout != null) {
+                                    request_focus_layout.getParent().requestChildFocus(request_focus_layout, request_focus_layout);
                                 }
                             }
                             else {
