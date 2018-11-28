@@ -413,6 +413,7 @@ public class fragment_offers extends Fragment {
                                 final int unit_conversion_14 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 18, display_metrics);
                                 final int unit_conversion_15 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, display_metrics);
                                 final int unit_conversion_16 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 3, display_metrics);
+                                final int unit_conversion_17 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, display_metrics);
                                 final Drawable container_outline_drawable = resources.getDrawable(R.drawable.shape_fragment_offers_container_outline);
                                 final Drawable offer_header_container_drawable = resources.getDrawable(R.drawable.shape_fragment_offers_offer_header_container);
                                 final Drawable offer_detail_container_drawable = resources.getDrawable(R.drawable.shape_fragment_offers_offer_detail_container);
@@ -470,12 +471,13 @@ public class fragment_offers extends Fragment {
                                     your_items_total_value = 0;
 
                                     offer_time_container_layout = new RelativeLayout(context);
-                                    offer_time_container_layout.setPadding(unit_conversion_3, 0, unit_conversion_3, unit_conversion_16);
+                                    offer_time_container_layout.setPadding(0, 0, 0, unit_conversion_16);
+                                    offer_time_container_layout.setGravity(Gravity.CENTER_HORIZONTAL);
 
                                     offer_time_container_layout_params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
                                     if(i != 0) {
-                                        offer_time_container_layout_params.setMargins(0, unit_conversion_11, 0, 0);
+                                        offer_time_container_layout_params.setMargins(0, unit_conversion_17, 0, 0);
                                     }
 
                                     offer_time_view = new TextView(context);
