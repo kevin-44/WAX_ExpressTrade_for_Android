@@ -543,7 +543,6 @@ public class fragment_offers extends Fragment {
                                         user_avatar = sender.getString("avatar");
                                         user_name = sender.getString("display_name");
                                         user_verified = sender.getBoolean("verified");
-                                        user_case_opening = offer.getBoolean("is_case_opening");
 
                                         if(recipient_item_count == 0) {
                                             trade_summary = "Has sent you a gift!";
@@ -565,7 +564,6 @@ public class fragment_offers extends Fragment {
                                         user_avatar = recipient.getString("avatar");
                                         user_name = recipient.getString("display_name");
                                         user_verified = recipient.getBoolean("verified");
-                                        user_case_opening = offer.getBoolean("is_case_opening");
 
                                         trade_summary = "Sent " + sender_item_count + ((sender_item_count == 1) ? (" item") : (" items")) + " and received " + recipient_item_count + ((recipient_item_count == 1) ? (" item") : (" items"));
                                     }
@@ -578,6 +576,8 @@ public class fragment_offers extends Fragment {
                                     else {
                                         trade_summary += " <font color = \"#58CCCC\"><b>" + state_name + "</b></font>";
                                     }
+
+                                    user_case_opening = offer.getBoolean("is_case_opening");
 
                                     offer_outline_container_layout = new LinearLayout(context);
                                     offer_outline_container_layout.setPadding(unit_conversion_1, unit_conversion_1, unit_conversion_1, unit_conversion_1);

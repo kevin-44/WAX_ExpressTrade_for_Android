@@ -84,6 +84,7 @@ public class main extends AppCompatActivity {
 
     private static SharedPreferences shared_preferences;
     private DrawerLayout navigation_drawer;
+    private static Intent intent_background_service = null;
     private static int fragment_offers_show_offer_id = -1;
 
     // *** STATES
@@ -208,6 +209,16 @@ public class main extends AppCompatActivity {
                 findViewById(R.id.background_fade).setVisibility(View.GONE);
             }
         }
+
+        // -----
+
+        if(intent_background_service != null) {
+            stopService(intent_background_service);
+        }
+
+        intent_background_service = new Intent(context, background_service.class);
+
+        startService(intent_background_service);
     }
 
     protected void onLogIn(Context context, String bearer_token, int bearer_token_expires_in, int bearer_token_timestamp_issued, String refresh_token, JSONObject user_data) {
@@ -301,6 +312,10 @@ public class main extends AppCompatActivity {
 
     protected int getUserID() {
         return UserData.id;
+    }
+
+    protected Boolean isUserLoggedIn() {
+        return UserData.logged_in;
     }
 
     protected void setUserRefreshToken(String refresh_token) {

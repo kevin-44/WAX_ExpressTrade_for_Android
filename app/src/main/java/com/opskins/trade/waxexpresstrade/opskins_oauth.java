@@ -16,7 +16,7 @@ class opskins_oauth {
 
     private static class Constant {
         private static final String BASE_URL = "https://oauth.opskins.com/";
-        private static final String SCOPE = "identity_basic+trades+items";
+        private static final String SCOPE = "identity_basic+trades+items+open_cases";
     }
 
     // ** VARIABLES
