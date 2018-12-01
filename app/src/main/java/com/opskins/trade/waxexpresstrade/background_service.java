@@ -30,8 +30,7 @@ public class background_service extends Service {
 
                     final RequestParams params = new RequestParams();
                     params.put("state", "2");
-                    params.put("page", 1);
-                    params.put("per_page", 100);
+                    params.put("type", "received");
 
                     opskins_trade_api.get_SetBearerAuth("ITrade/GetOffers/v1", params, false, new JsonHttpResponseHandler() {
                         @Override
