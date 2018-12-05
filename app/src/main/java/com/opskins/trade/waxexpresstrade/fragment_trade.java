@@ -21,6 +21,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.URLUtil;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -99,6 +101,7 @@ public class fragment_trade extends Fragment {
         final opskins_trade_api opskins_trade_api = new opskins_trade_api(new WeakReference<>(context));
         final TextView user_search_inventory_input = fragment.findViewById(R.id.fragment_trade_user_search_inventory_input);
         final TextView find_partner_input = fragment.findViewById(R.id.fragment_trade_find_partner_input);
+        final CheckBox one_way_trade_or_gift_checkbox = fragment.findViewById(R.id.fragment_trade_one_way_trade_or_gift_checkbox);
         final TextView partner_search_inventory_input = fragment.findViewById(R.id.fragment_trade_partner_search_inventory_input);
         final TextView message_input = fragment.findViewById(R.id.fragment_trade_enter_message_input);
         final TextView twofactor_input = fragment.findViewById(R.id.fragment_trade_enter_twofactor_input);
@@ -311,6 +314,13 @@ public class fragment_trade extends Fragment {
             Glide.with(context).load(main.getUserAvatar()).apply(new RequestOptions().placeholder(R.color.transparent).fitCenter()).into((de.hdodenhof.circleimageview.CircleImageView) fragment.findViewById(R.id.fragment_trade_user_avatar));
             ((TextView) fragment.findViewById(R.id.fragment_trade_user_username)).setText(main.getUserUsername());
 
+            ((CheckBox) fragment.findViewById(R.id.fragment_trade_dont_show_items_in_active_trades_checkbox)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    loadInventory(fragment, main.getUserID(), 1, false, true);
+                }
+            });
+
             user_search_inventory_input.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -457,6 +467,13 @@ public class fragment_trade extends Fragment {
                 }
             });
 
+            one_way_trade_or_gift_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    updateMakeOfferButton(fragment);
+                }
+            });
+
             partner_search_inventory_input.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -591,8 +608,10 @@ public class fragment_trade extends Fragment {
 
                         final String twofactor_hint = resources.getString(R.string.fragment_trade_enter_twofactor_hint);
                         final String twofactor = twofactor_input.getText().toString();
+                        final int selected_user_item_count = selected_user_items.size();
+                        final int selected_partner_item_count = selected_partner_items.size();
 
-                        if(PartnerData.valid_user && (selected_user_items.size() >= 1 || selected_partner_items.size() >= 1) && !twofactor.equals(twofactor_hint)) {
+                        if(PartnerData.valid_user && ((one_way_trade_or_gift_checkbox.isChecked() && (selected_user_item_count >= 1 || selected_partner_item_count >= 1)) || (selected_user_item_count >= 1 && selected_partner_item_count >= 1)) && !twofactor.equals(twofactor_hint)) {
                             final String default_message = resources.getString(R.string.fragment_trade_default_message);
                             final String message = message_input.getText().toString();
 
@@ -716,8 +735,10 @@ public class fragment_trade extends Fragment {
     private void updateMakeOfferButton(View fragment) {
         final Resources resources = getResources();
         final TextView make_offer_button = fragment.findViewById(R.id.fragment_trade_inner_make_offer_button);
+        final int selected_user_item_count = selected_user_items.size();
+        final int selected_partner_item_count = selected_partner_items.size();
 
-        if(PartnerData.valid_user && (selected_user_items.size() >= 1 || selected_partner_items.size() >= 1) && !((TextView) fragment.findViewById(R.id.fragment_trade_enter_twofactor_input)).getText().toString().equals(resources.getString(R.string.fragment_trade_enter_twofactor_hint))) {
+        if(PartnerData.valid_user && ((((CheckBox) fragment.findViewById(R.id.fragment_trade_one_way_trade_or_gift_checkbox)).isChecked() && (selected_user_item_count >= 1 || selected_partner_item_count >= 1)) || (selected_user_item_count >= 1 && selected_partner_item_count >= 1)) && !((TextView) fragment.findViewById(R.id.fragment_trade_enter_twofactor_input)).getText().toString().equals(resources.getString(R.string.fragment_trade_enter_twofactor_hint))) {
             make_offer_button.setBackgroundColor(resources.getColor(R.color.denim));
             make_offer_button.setTextColor(resources.getColor(R.color.white));
         }
@@ -807,15 +828,26 @@ public class fragment_trade extends Fragment {
                         try {
                             final JSONObject data = response.getJSONObject("response");
                             final JSONArray items = data.getJSONArray("items");
+                            JSONObject items_in_active_offers;
+
+                            try {
+                                items_in_active_offers = data.getJSONObject("items_in_active_offers");
+                            }
+                            catch (JSONException e) {
+                                items_in_active_offers = new JSONObject();
+                            }
+
+                            final Boolean dont_show_items_in_active_trades_is_checked = ((CheckBox) fragment.findViewById(R.id.fragment_trade_dont_show_items_in_active_trades_checkbox)).isChecked();
                             final int unit_conversion_1 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 140, display_metrics);
                             final int unit_conversion_2 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7, display_metrics);
                             final int unit_conversion_3 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 15, display_metrics);
                             final int unit_conversion_4 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, display_metrics);
-                            final int item_count = data.getInt("total");
+                            final int item_count = items.length();
+                            final int item_count_dont_show_items_in_active_trades = item_count - ((dont_show_items_in_active_trades_is_checked) ? (items_in_active_offers.length()) : (0));
 
                             if(user_inventory) {
                                 user_inventory_total_items_inner_container_view.setVisibility(View.VISIBLE);
-                                ((TextView) fragment.findViewById(R.id.fragment_trade_user_inventory_total_items_count)).setText(String.valueOf(item_count));
+                                ((TextView) fragment.findViewById(R.id.fragment_trade_user_inventory_total_items_count)).setText(String.valueOf(item_count_dont_show_items_in_active_trades));
                             }
                             else {
                                 if(!PartnerData.valid_user) {
@@ -841,11 +873,12 @@ public class fragment_trade extends Fragment {
                                 }
 
                                 partner_inventory_total_items_inner_container_view.setVisibility(View.VISIBLE);
-                                ((TextView) fragment.findViewById(R.id.fragment_trade_partner_inventory_total_items_count)).setText(String.valueOf(item_count));
+                                ((TextView) fragment.findViewById(R.id.fragment_trade_partner_inventory_total_items_count)).setText(String.valueOf(item_count_dont_show_items_in_active_trades));
                             }
 
-                            if(item_count >= 1 && items.length() >= 1) { // temporary - WAX Stickers doesn't return the correct item count upon searching for an item
+                            if(item_count >= 1) {
                                 JSONObject item;
+                                int item_id;
                                 RelativeLayout layout;
                                 RelativeLayout.LayoutParams layout_params;
                                 LinearLayout inner_layout;
@@ -866,219 +899,240 @@ public class fragment_trade extends Fragment {
 
                                 for(int i = 0; i < item_count; i ++) {
                                     item = items.getJSONObject(i);
+                                    item_id = item.getInt("id");
 
-                                    try {
-                                        final JSONObject item_images = item.getJSONObject("image");
+                                    if(!user_inventory || !dont_show_items_in_active_trades_is_checked || (dont_show_items_in_active_trades_is_checked && !items_in_active_offers.has(String.valueOf(item_id)))) {
+                                        try {
+                                            final JSONObject item_images = item.getJSONObject("image");
 
-                                        item_image = item_images.getString("300px");
-                                    }
-                                    catch (JSONException e) {
-                                        item_image = item.getString("image");
-                                    }
+                                            item_image = item_images.getString(item_images.keys().next());
+                                        }
+                                        catch (JSONException e) {
+                                            try {
+                                                item_image = item.getString("image");
+                                            }
+                                            catch (JSONException e_fallback) {
+                                                item_image = "";
+                                            }
+                                        }
 
-                                    try {
-                                        item_suggested_price_temp = item.getInt("suggested_price");
-                                    }
-                                    catch (JSONException e) {
-                                        item_suggested_price_temp = 0;
-                                    }
+                                        try {
+                                            item_suggested_price_temp = item.getInt("suggested_price");
+                                        }
+                                        catch (JSONException e) {
+                                            item_suggested_price_temp = 0;
+                                        }
 
-                                    item_name = item.getString("name");
-                                    item_color = item.getString("color");
+                                        item_name = item.getString("name");
+                                        item_color = item.getString("color");
 
-                                    if(item_name.contains(" (Battle-Scarred)")) {
-                                        item_name = item_name.replace(" (Battle-Scarred)", "");
-                                        item_condition = "Battle-Scarred";
-                                    }
-                                    else if(item_name.contains(" (Well-Worn)")) {
-                                        item_name = item_name.replace(" (Well-Worn)", "");
-                                        item_condition = "Well-Worn";
-                                    }
-                                    else if(item_name.contains(" (Field-Tested)")) {
-                                        item_name = item_name.replace(" (Field-Tested)", "");
-                                        item_condition = "Field-Tested";
-                                    }
-                                    else if(item_name.contains(" (Minimal Wear)")) {
-                                        item_name = item_name.replace(" (Minimal Wear)", "");
-                                        item_condition = "Minimal Wear";
-                                    }
-                                    else if(item_name.contains(" (Factory New)")) {
-                                        item_name = item_name.replace(" (Factory New)", "");
-                                        item_condition = "Factory New";
-                                    }
+                                        if(item_name.contains(" (Battle-Scarred)")) {
+                                            item_name = item_name.replace(" (Battle-Scarred)", "");
+                                            item_condition = "Battle-Scarred";
+                                        }
+                                        else if(item_name.contains(" (Well-Worn)")) {
+                                            item_name = item_name.replace(" (Well-Worn)", "");
+                                            item_condition = "Well-Worn";
+                                        }
+                                        else if(item_name.contains(" (Field-Tested)")) {
+                                            item_name = item_name.replace(" (Field-Tested)", "");
+                                            item_condition = "Field-Tested";
+                                        }
+                                        else if(item_name.contains(" (Minimal Wear)")) {
+                                            item_name = item_name.replace(" (Minimal Wear)", "");
+                                            item_condition = "Minimal Wear";
+                                        }
+                                        else if(item_name.contains(" (Factory New)")) {
+                                            item_name = item_name.replace(" (Factory New)", "");
+                                            item_condition = "Factory New";
+                                        }
 
-                                    item_name_parts = new StringTokenizer(item_name, "|");
+                                        item_name_parts = new StringTokenizer(item_name, "|");
 
-                                    if(item_name_parts.countTokens() == 2) {
-                                        item_name_parts.nextToken();
-                                        item_name = item_name_parts.nextToken().trim();
-                                    }
+                                        while(item_name_parts.hasMoreElements()) {
+                                            item_name = item_name_parts.nextToken();
+                                        }
 
-                                    layout = new RelativeLayout(context);
-                                    layout.setBackgroundDrawable(item_container_drawable);
+                                        item_name = item_name.trim();
 
-                                    layout_params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                                        layout = new RelativeLayout(context);
+                                        layout.setBackgroundDrawable(item_container_drawable);
 
-                                    if(i != 0) {
-                                        layout_params.setMargins(unit_conversion_2, 0, 0, 0);
-                                    }
+                                        layout_params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-                                    // -----
+                                        if(i != 0) {
+                                            layout_params.setMargins(unit_conversion_2, 0, 0, 0);
+                                        }
 
-                                    item_image_view = new ImageView(context);
-                                    item_image_view.setPadding(unit_conversion_3, unit_conversion_3, unit_conversion_3, unit_conversion_3);
-                                    layout.addView(item_image_view, unit_conversion_1, unit_conversion_1);
+                                        // -----
 
-                                    Glide.with(context).load(item_image).apply(new RequestOptions().fitCenter()).into(item_image_view);
+                                        item_image_view = new ImageView(context);
+                                        item_image_view.setPadding(unit_conversion_3, unit_conversion_3, unit_conversion_3, unit_conversion_3);
+                                        layout.addView(item_image_view, unit_conversion_1, unit_conversion_1);
 
-                                    // -
+                                        Glide.with(context).load(item_image).apply(new RequestOptions().fitCenter()).into(item_image_view);
 
-                                    inner_layout = new LinearLayout(context);
-                                    inner_layout.setOrientation(LinearLayout.VERTICAL);
+                                        // -
 
-                                    item_name_view = new TextView(context);
-                                    item_name_view.setPadding(unit_conversion_2, unit_conversion_2, unit_conversion_2, 0);
-                                    item_name_view.setText(main.fromHTML("<font color = \"" + item_color + "\">" + item_name.toUpperCase() + "</font>"));
-                                    item_name_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-                                    item_name_view.setTypeface(null, Typeface.BOLD);
-                                    item_name_view.setTextColor(color_white);
-                                    item_name_view.setShadowLayer((float) 3, (float) 1.5, (float) 1.5, color_black);
-                                    inner_layout.addView(item_name_view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-                                    if(!item_condition.isEmpty()) {
-                                        item_condition_view = new TextView(context);
-                                        item_condition_view.setPadding(unit_conversion_2, 0, unit_conversion_2, 0);
-                                        item_condition_view.setText(main.fromHTML("<font color = \"" + item_color + "\">" + item_condition.toUpperCase() + "</font>"));
-                                        item_condition_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 7);
-                                        item_condition_view.setTypeface(null, Typeface.BOLD);
-                                        item_condition_view.setTextColor(color_white);
-                                        item_condition_view.setShadowLayer((float) 3, (float) 1.5, (float) 1.5, color_black);
-                                        inner_layout.addView(item_condition_view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                    }
-
-                                    layout.addView(inner_layout, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-                                    // -
-
-                                    if(item_suggested_price_temp != 0) {
                                         inner_layout = new LinearLayout(context);
-                                        inner_layout.setOrientation(LinearLayout.HORIZONTAL);
+                                        inner_layout.setOrientation(LinearLayout.VERTICAL);
 
-                                        item_price_view = new TextView(context);
-                                        item_price_view.setPadding(unit_conversion_2, unit_conversion_2, unit_conversion_2, unit_conversion_4);
-                                        item_price_view.setText(new StringBuilder("$" + main.currencyFormat(String.valueOf((double) item_suggested_price_temp / 100))));
-                                        item_price_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-                                        item_price_view.setTypeface(null, Typeface.BOLD);
-                                        item_price_view.setTextColor(color_white);
-                                        item_price_view.setShadowLayer((float) 3, (float) 1.5, (float) 1.5, color_black);
-                                        item_price_view.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
-                                        inner_layout.addView(item_price_view, unit_conversion_1, unit_conversion_1);
+                                        item_name_view = new TextView(context);
+                                        item_name_view.setPadding(unit_conversion_2, unit_conversion_2, unit_conversion_2, 0);
+                                        item_name_view.setText(main.fromHTML("<font color = \"" + item_color + "\">" + item_name.toUpperCase() + "</font>"));
+                                        item_name_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                                        item_name_view.setTypeface(null, Typeface.BOLD);
+                                        item_name_view.setTextColor(color_white);
+                                        item_name_view.setShadowLayer((float) 3, (float) 1.5, (float) 1.5, color_black);
+                                        inner_layout.addView(item_name_view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                                        if(!item_condition.isEmpty()) {
+                                            item_condition_view = new TextView(context);
+                                            item_condition_view.setPadding(unit_conversion_2, 0, unit_conversion_2, 0);
+                                            item_condition_view.setText(main.fromHTML("<font color = \"" + item_color + "\">" + item_condition.toUpperCase() + "</font>"));
+                                            item_condition_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 7);
+                                            item_condition_view.setTypeface(null, Typeface.BOLD);
+                                            item_condition_view.setTextColor(color_white);
+                                            item_condition_view.setShadowLayer((float) 3, (float) 1.5, (float) 1.5, color_black);
+                                            inner_layout.addView(item_condition_view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                        }
 
                                         layout.addView(inner_layout, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                    }
 
-                                    items_container_layout.addView(layout, layout_params);
+                                        // -
 
-                                    // -----
+                                        if(item_suggested_price_temp != 0) {
+                                            inner_layout = new LinearLayout(context);
+                                            inner_layout.setOrientation(LinearLayout.HORIZONTAL);
 
-                                    final RelativeLayout item_layout = layout;
-                                    final int item_id = item.getInt("id");
-                                    final long item_suggested_price = item_suggested_price_temp;
+                                            item_price_view = new TextView(context);
+                                            item_price_view.setPadding(unit_conversion_2, unit_conversion_2, unit_conversion_2, unit_conversion_4);
+                                            item_price_view.setText(new StringBuilder("$" + main.currencyFormat(String.valueOf((double) item_suggested_price_temp / 100))));
+                                            item_price_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                                            item_price_view.setTypeface(null, Typeface.BOLD);
+                                            item_price_view.setTextColor(color_white);
+                                            item_price_view.setShadowLayer((float) 3, (float) 1.5, (float) 1.5, color_black);
+                                            item_price_view.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
+                                            inner_layout.addView(item_price_view, unit_conversion_1, unit_conversion_1);
 
-                                    if(user_inventory) {
-                                        if(selected_user_items.indexOf(item_id) != -1) {
-                                            item_layout.setBackgroundDrawable(selected_item_container_drawable);
+                                            layout.addView(inner_layout, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                         }
-                                    }
-                                    else {
-                                        if(selected_partner_items.indexOf(item_id) != -1) {
-                                            item_layout.setBackgroundDrawable(selected_item_container_drawable);
-                                        }
-                                    }
 
-                                    layout.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            if(user_inventory) {
-                                                int selected_item_count = selected_user_items.size();
-                                                final int key = selected_user_items.indexOf(item_id);
+                                        items_container_layout.addView(layout, layout_params);
 
-                                                if(key == -1) {
-                                                    if(selected_item_count < Constant.MAX_SELECTABLE_ITEMS) {
-                                                        selected_user_items.add(item_id);
-                                                        total_value_selected_user_items += item_suggested_price;
+                                        // -----
 
-                                                        item_layout.setBackgroundDrawable(selected_item_container_drawable);
-                                                    }
-                                                }
-                                                else {
-                                                    selected_user_items.remove(key);
-                                                    total_value_selected_user_items -= item_suggested_price;
+                                        final RelativeLayout item_layout = layout;
+                                        final int item_id_final = item_id;
+                                        final long item_suggested_price = item_suggested_price_temp;
 
-                                                    if(total_value_selected_user_items <= 0) {
-                                                        total_value_selected_user_items = 0;
-                                                    }
-
-                                                    item_layout.setBackgroundDrawable(item_container_drawable);
-                                                }
-
-                                                // -----
-
-                                                final LinearLayout user_inventory_items_in_trade_total_value_container = fragment.findViewById(R.id.fragment_trade_user_inventory_items_in_trade_total_value_container);
-                                                final TextView user_inventory_items_in_trade_total_value = fragment.findViewById(R.id.fragment_trade_user_inventory_items_in_trade_total_value);
-
-                                                if(total_value_selected_user_items == 0) {
-                                                    user_inventory_items_in_trade_total_value_container.setVisibility(View.GONE);
-                                                }
-                                                else {
-                                                    user_inventory_items_in_trade_total_value_container.setVisibility(View.VISIBLE);
-                                                    user_inventory_items_in_trade_total_value.setText(new StringBuilder("$" + main.currencyFormat(String.valueOf((double) total_value_selected_user_items / 100))));
-                                                }
-
-                                                ((TextView) fragment.findViewById(R.id.fragment_trade_user_inventory_items_in_trade_count)).setText(String.valueOf(selected_user_items.size()));
+                                        if(user_inventory) {
+                                            if(selected_user_items.indexOf(item_id) != -1) {
+                                                item_layout.setBackgroundDrawable(selected_item_container_drawable);
                                             }
-                                            else {
-                                                final int selected_item_count = selected_partner_items.size();
-                                                final int key = selected_partner_items.indexOf(item_id);
-
-                                                if(key == -1) {
-                                                    if(selected_item_count < Constant.MAX_SELECTABLE_ITEMS) {
-                                                        selected_partner_items.add(item_id);
-                                                        total_value_selected_partner_items += item_suggested_price;
-
-                                                        item_layout.setBackgroundDrawable(selected_item_container_drawable);
-                                                    }
-                                                }
-                                                else {
-                                                    selected_partner_items.remove(key);
-                                                    total_value_selected_partner_items -= item_suggested_price;
-
-                                                    if(total_value_selected_partner_items <= 0) {
-                                                        total_value_selected_partner_items = 0;
-                                                    }
-
-                                                    item_layout.setBackgroundDrawable(item_container_drawable);
-                                                }
-
-                                                // -----
-
-                                                final LinearLayout partner_inventory_items_in_trade_total_value_container = fragment.findViewById(R.id.fragment_trade_partner_inventory_items_in_trade_total_value_container);
-                                                final TextView partner_inventory_items_in_trade_total_value = fragment.findViewById(R.id.fragment_trade_partner_inventory_items_in_trade_total_value);
-
-                                                if(total_value_selected_partner_items == 0) {
-                                                    partner_inventory_items_in_trade_total_value_container.setVisibility(View.GONE);
-                                                }
-                                                else {
-                                                    partner_inventory_items_in_trade_total_value_container.setVisibility(View.VISIBLE);
-                                                    partner_inventory_items_in_trade_total_value.setText(new StringBuilder("$" + main.currencyFormat(String.valueOf((double) total_value_selected_partner_items / 100))));
-                                                }
-
-                                                ((TextView) fragment.findViewById(R.id.fragment_trade_partner_inventory_items_in_trade_count)).setText(String.valueOf(selected_partner_items.size()));
-                                            }
-
-                                            updateMakeOfferButton(fragment);
                                         }
-                                    });
+                                        else {
+                                            if(selected_partner_items.indexOf(item_id) != -1) {
+                                                item_layout.setBackgroundDrawable(selected_item_container_drawable);
+                                            }
+                                        }
+
+                                        layout.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                if(user_inventory) {
+                                                    int selected_item_count = selected_user_items.size();
+                                                    final int key = selected_user_items.indexOf(item_id_final);
+
+                                                    if(key == -1) {
+                                                        if(selected_item_count < Constant.MAX_SELECTABLE_ITEMS) {
+                                                            selected_user_items.add(item_id_final);
+                                                            total_value_selected_user_items += item_suggested_price;
+
+                                                            item_layout.setBackgroundDrawable(selected_item_container_drawable);
+                                                        }
+                                                    }
+                                                    else {
+                                                        selected_user_items.remove(key);
+                                                        total_value_selected_user_items -= item_suggested_price;
+
+                                                        if(total_value_selected_user_items <= 0) {
+                                                            total_value_selected_user_items = 0;
+                                                        }
+
+                                                        item_layout.setBackgroundDrawable(item_container_drawable);
+                                                    }
+
+                                                    // -----
+
+                                                    final LinearLayout user_inventory_items_in_trade_total_value_container = fragment.findViewById(R.id.fragment_trade_user_inventory_items_in_trade_total_value_container);
+                                                    final TextView user_inventory_items_in_trade_total_value = fragment.findViewById(R.id.fragment_trade_user_inventory_items_in_trade_total_value);
+
+                                                    if(total_value_selected_user_items == 0) {
+                                                        user_inventory_items_in_trade_total_value_container.setVisibility(View.GONE);
+                                                    }
+                                                    else {
+                                                        user_inventory_items_in_trade_total_value_container.setVisibility(View.VISIBLE);
+                                                        user_inventory_items_in_trade_total_value.setText(new StringBuilder("$" + main.currencyFormat(String.valueOf((double) total_value_selected_user_items / 100))));
+                                                    }
+
+                                                    ((TextView) fragment.findViewById(R.id.fragment_trade_user_inventory_items_in_trade_count)).setText(String.valueOf(selected_user_items.size()));
+                                                }
+                                                else {
+                                                    final int selected_item_count = selected_partner_items.size();
+                                                    final int key = selected_partner_items.indexOf(item_id_final);
+
+                                                    if(key == -1) {
+                                                        if(selected_item_count < Constant.MAX_SELECTABLE_ITEMS) {
+                                                            selected_partner_items.add(item_id_final);
+                                                            total_value_selected_partner_items += item_suggested_price;
+
+                                                            item_layout.setBackgroundDrawable(selected_item_container_drawable);
+                                                        }
+                                                    }
+                                                    else {
+                                                        selected_partner_items.remove(key);
+                                                        total_value_selected_partner_items -= item_suggested_price;
+
+                                                        if(total_value_selected_partner_items <= 0) {
+                                                            total_value_selected_partner_items = 0;
+                                                        }
+
+                                                        item_layout.setBackgroundDrawable(item_container_drawable);
+                                                    }
+
+                                                    // -----
+
+                                                    final LinearLayout partner_inventory_items_in_trade_total_value_container = fragment.findViewById(R.id.fragment_trade_partner_inventory_items_in_trade_total_value_container);
+                                                    final TextView partner_inventory_items_in_trade_total_value = fragment.findViewById(R.id.fragment_trade_partner_inventory_items_in_trade_total_value);
+
+                                                    if(total_value_selected_partner_items == 0) {
+                                                        partner_inventory_items_in_trade_total_value_container.setVisibility(View.GONE);
+                                                    }
+                                                    else {
+                                                        partner_inventory_items_in_trade_total_value_container.setVisibility(View.VISIBLE);
+                                                        partner_inventory_items_in_trade_total_value.setText(new StringBuilder("$" + main.currencyFormat(String.valueOf((double) total_value_selected_partner_items / 100))));
+                                                    }
+
+                                                    ((TextView) fragment.findViewById(R.id.fragment_trade_partner_inventory_items_in_trade_count)).setText(String.valueOf(selected_partner_items.size()));
+                                                }
+
+                                                updateMakeOfferButton(fragment);
+                                            }
+                                        });
+
+                                        // -----
+
+                                        final JSONObject item_info = item;
+
+                                        layout.setOnLongClickListener(new View.OnLongClickListener() {
+                                            @Override
+                                            public boolean onLongClick(View view) {
+                                                main.showItemInfoDialog(context, item_info);
+                                                return false;
+                                            }
+                                        });
+                                    }
                                 }
                             }
                         }

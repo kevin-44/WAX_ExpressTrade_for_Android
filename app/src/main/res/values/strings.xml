@@ -22,6 +22,7 @@
     <string name="fragment_trade_inventory_in_trade">in Trade</string>
     <string name="fragment_trade_inventory_total_value">Total Value</string>
     <string name="fragment_trade_inventory_max_selectable_items">200 items max</string>
+    <string name="fragment_trade_dont_show_items_in_active_trades">Don\'t show items in active trades</string>
     <string name="fragment_trade_search_inventory_hint">Start typing to find an item&#8230;</string>
     <string name="fragment_trade_find_partner_title">Find your friend to trade with</string>
     <string name="fragment_trade_find_partner_description">Enter WAX ExpressTrade URL:</string>
@@ -29,6 +30,7 @@
     <string name="fragment_trade_find_partner_error_user_not_found">Sorry, that user cannot be found. Make sure you have a valid WAX ExpressTrade URL.</string>
     <string name="fragment_trade_find_partner_error_unable_to_load_friend_inventory">Unable to load friend\'s inventory! Ensure the WAX ExpressTrade URL is correct.</string>
     <string name="fragment_trade_find_partner_error_cant_trade_with_yourself">You can\'t trade with yourself.</string>
+    <string name="fragment_trade_one_way_trade_or_gift">This is a one-way trade or gift.</string>
     <string name="fragment_trade_offer_message">Offer Message:</string>
     <string name="fragment_trade_default_message">This is an offer you can\'t refuse!</string>
     <string name="fragment_trade_enter_twofactor_hint">Enter Two Factor Authentication Code</string>

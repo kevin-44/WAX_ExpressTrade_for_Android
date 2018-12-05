@@ -560,6 +560,35 @@ public class main extends AppCompatActivity {
         }
     }
 
+    public void showItemInfoDialog(Context context, JSONObject item) {
+        final Resources resources = context.getResources();
+        final DisplayMetrics display_metrics = resources.getDisplayMetrics();
+        final AlertDialog alert_dialog = new AlertDialog.Builder(context, R.style.DialogTheme).create();
+        final ScrollView scroll_view_layout = new ScrollView(context);
+        final RelativeLayout container_layout = new RelativeLayout(context);
+        final int unit_conversion_1 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 15, display_metrics);
+
+        container_layout.setPadding(unit_conversion_1, unit_conversion_1, unit_conversion_1, unit_conversion_1);
+
+        final LinearLayout layout = new LinearLayout(context);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        final int color_white = resources.getColor(R.color.white);
+
+        final TextView title_view = new TextView(context);
+        title_view.setText("Inspect item is coming soon!");
+        title_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 19);
+        title_view.setTypeface(null, Typeface.BOLD);
+        title_view.setTextColor(color_white);
+        layout.addView(title_view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        container_layout.addView(layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        scroll_view_layout.addView(container_layout, RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+        alert_dialog.setView(scroll_view_layout);
+        alert_dialog.show();
+    }
+
     public Object[] showInputDialog(final Context context, String title, String description, String default_input) {
         if(perform_action) {
             final Resources resources = context.getResources();

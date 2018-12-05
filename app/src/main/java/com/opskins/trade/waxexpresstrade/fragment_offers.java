@@ -919,10 +919,15 @@ public class fragment_offers extends Fragment {
                                         try {
                                             final JSONObject item_images = item.getJSONObject("image");
 
-                                            item_image = item_images.getString("300px");
+                                            item_image = item_images.getString(item_images.keys().next());
                                         }
                                         catch (JSONException e) {
-                                            item_image = item.getString("image");
+                                            try {
+                                                item_image = item.getString("image");
+                                            }
+                                            catch (JSONException e_fallback) {
+                                                item_image = "";
+                                            }
                                         }
 
                                         try {
@@ -986,6 +991,17 @@ public class fragment_offers extends Fragment {
 
                                         offer_content_inner_layout.addView(offer_align_right_container_layout, offer_align_right_container_layout_params);
                                         offer_content_layout.addView(offer_content_inner_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                                        // -----
+
+                                        final JSONObject item_info = item;
+
+                                        offer_content_inner_layout.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                main.showItemInfoDialog(context, item_info);
+                                            }
+                                        });
                                     }
 
                                     if(their_items_total_value != 0) {
@@ -1135,6 +1151,17 @@ public class fragment_offers extends Fragment {
 
                                         offer_content_inner_layout.addView(offer_align_right_container_layout, offer_align_right_container_layout_params);
                                         offer_content_layout.addView(offer_content_inner_layout, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                                        // -----
+
+                                        final JSONObject item_info = item;
+
+                                        offer_content_inner_layout.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                main.showItemInfoDialog(context, item_info);
+                                            }
+                                        });
                                     }
 
                                     if(your_items_total_value != 0) {

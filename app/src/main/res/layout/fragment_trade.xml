@@ -371,12 +371,34 @@
                 </RelativeLayout>
             </LinearLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="13dp"
+                android:layout_marginLeft="-5dp"
+                android:layout_marginStart="-5dp">
+
+                <CheckBox
+                    android:id="@+id/fragment_trade_dont_show_items_in_active_trades_checkbox"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:background="@color/transparent"
+
+                    android:text="@string/fragment_trade_dont_show_items_in_active_trades"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+
+                    android:theme="@style/CheckBoxTheme_Downy"/>
+            </RelativeLayout>
+
             <TextView
                 android:id="@+id/fragment_trade_user_search_inventory_input"
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="11dp"
 
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
@@ -782,12 +804,34 @@
                 </RelativeLayout>
             </LinearLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="13dp"
+                android:layout_marginLeft="-5dp"
+                android:layout_marginStart="-5dp">
+
+                <CheckBox
+                    android:id="@+id/fragment_trade_one_way_trade_or_gift_checkbox"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:background="@color/transparent"
+
+                    android:text="@string/fragment_trade_one_way_trade_or_gift"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+
+                    android:theme="@style/CheckBoxTheme_AzureRadiance"/>
+            </RelativeLayout>
+
             <TextView
                 android:id="@+id/fragment_trade_partner_search_inventory_input"
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="11dp"
 
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"

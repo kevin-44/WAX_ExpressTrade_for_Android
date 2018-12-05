@@ -13,6 +13,16 @@
         <item name="colorAccent">#66CCCC</item>
     </style>
 
+    <style name="CheckBoxTheme_Downy" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlActivated">@color/downy</item>
+    </style>
+
+    <style name="CheckBoxTheme_AzureRadiance" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlActivated">@color/azure_radiance</item>
+    </style>
+
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowBackground">@color/shark</item>
 
