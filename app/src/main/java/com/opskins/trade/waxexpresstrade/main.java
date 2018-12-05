@@ -85,6 +85,7 @@ public class main extends AppCompatActivity {
     private static SharedPreferences shared_preferences;
     private DrawerLayout navigation_drawer;
     private static Intent intent_background_service = null;
+    private static String fragment_trade_find_partner = null;
     private static int fragment_offers_show_offer_id = -1;
 
     // *** STATES
@@ -119,16 +120,23 @@ public class main extends AppCompatActivity {
         if(getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
             final Intent intent = getIntent();
             final Uri intent_data = intent.getData();
+            final fragment_log_in fragment_log_in = new fragment_log_in();
+            final fragment_trade fragment_trade = new fragment_trade();
 
             if(intent.getAction() != null) {
-                final String itent_url = intent.getDataString();
+                final String intent_url = intent.getDataString();
 
                 if(intent_data.getQueryParameter("state") != null && intent_data.getQueryParameter("code") != null) {
                     authenticating = true;
                 }
 
-                if(itent_url.startsWith("https://trade.opskins.com/trade-offers/")) {
-                    final String[] url_parts = itent_url.split("/");
+                if(intent_url.startsWith("https://trade.opskins.com/t/")) {
+                    fragment_trade.clearPartnerData();
+
+                    fragment_trade_find_partner = intent_url;
+                }
+                else if(intent_url.startsWith("https://trade.opskins.com/trade-offers/")) {
+                    final String[] url_parts = intent_url.split("/");
 
                     try {
                         fragment_offers_show_offer_id = Integer.parseInt(url_parts[url_parts.length - 1]);
@@ -140,8 +148,6 @@ public class main extends AppCompatActivity {
             }
 
             // -----
-
-            final fragment_log_in fragment_log_in = new fragment_log_in();
 
             showFragment(new fragment_loading(), View.GONE);
 
@@ -189,7 +195,7 @@ public class main extends AppCompatActivity {
                         showFragment(new fragment_offers(), View.VISIBLE);
                     }
                     else {
-                        showFragment(new fragment_trade(), View.VISIBLE);
+                        showFragment(fragment_trade, View.VISIBLE);
                     }
                 }
                 else {
@@ -729,6 +735,14 @@ public class main extends AppCompatActivity {
 
     public void set_fragment_offers_show_offer_id(int value) {
         fragment_offers_show_offer_id = value;
+    }
+
+    public String get_fragment_trade_find_partner() {
+        return fragment_trade_find_partner;
+    }
+
+    public void set_fragment_trade_find_partner(String value) {
+        fragment_trade_find_partner = value;
     }
 
     public void set_perform_action(Boolean state) {

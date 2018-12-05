@@ -266,7 +266,76 @@ public class fragment_trade extends Fragment {
                                 loadInventory(fragment, PartnerData.id, 1, true, true);
                             }
                             else {
-                                loadInventory(fragment, main.getUserID(), 1, true, true);
+                                if(main.get_fragment_trade_find_partner() != null) {
+                                    find_partner_input.setText(main.get_fragment_trade_find_partner());
+                                    find_partner_input.setTextColor(resources.getColor(R.color.white));
+
+                                    main.set_fragment_trade_find_partner(null);
+
+                                    // -----
+
+                                    loadInventory(fragment, main.getUserID(), 1, true, false);
+
+                                    // -----
+
+                                    final String partner_trade_url = find_partner_input.getText().toString();
+                                    final TextView find_partner_error_view = fragment.findViewById(R.id.fragment_trade_find_partner_error);
+
+                                    if(URLUtil.isValidUrl(partner_trade_url)) {
+                                        final String[] partner_trade_url_parts = partner_trade_url.split("/");
+
+                                        if(partner_trade_url_parts.length > 5) {
+                                            try {
+                                                PartnerData.valid_user = false;
+                                                PartnerData.id = Integer.parseInt(partner_trade_url_parts[4]);
+                                                PartnerData.trade_url = partner_trade_url;
+
+                                                if(PartnerData.id != main.getUserID()) {
+                                                    loadInventory(fragment, PartnerData.id, 1, true, true);
+                                                }
+                                                else {
+                                                    find_partner_error_view.setVisibility(View.VISIBLE);
+                                                    find_partner_error_view.setText(resources.getString(R.string.fragment_trade_find_partner_error_cant_trade_with_yourself));
+
+                                                    // -----
+
+                                                    perform_action = true;
+                                                    main.set_perform_action(true);
+                                                }
+                                            }
+                                            catch (NumberFormatException nfe) {
+                                                find_partner_error_view.setVisibility(View.VISIBLE);
+                                                find_partner_error_view.setText(resources.getString(R.string.fragment_trade_find_partner_error_unable_to_load_friend_inventory));
+
+                                                // -----
+
+                                                perform_action = true;
+                                                main.set_perform_action(true);
+                                            }
+                                        }
+                                        else {
+                                            find_partner_error_view.setVisibility(View.VISIBLE);
+                                            find_partner_error_view.setText(resources.getString(R.string.fragment_trade_find_partner_error_user_not_found));
+
+                                            // -----
+
+                                            perform_action = true;
+                                            main.set_perform_action(true);
+                                        }
+                                    }
+                                    else {
+                                        find_partner_error_view.setVisibility(View.VISIBLE);
+                                        find_partner_error_view.setText(resources.getString(R.string.fragment_trade_find_partner_error_user_not_found));
+
+                                        // -----
+
+                                        perform_action = true;
+                                        main.set_perform_action(true);
+                                    }
+                                }
+                                else {
+                                    loadInventory(fragment, main.getUserID(), 1, true, true);
+                                }
                             }
                         }
                         else {
@@ -892,6 +961,7 @@ public class fragment_trade extends Fragment {
                                 String item_image;
                                 String item_color;
                                 long item_suggested_price_temp;
+                                Boolean second = false;
                                 final Drawable item_container_drawable = resources.getDrawable(R.drawable.shape_fragment_trade_item_container);
                                 final Drawable selected_item_container_drawable = resources.getDrawable(R.drawable.shape_fragment_trade_selected_item_container);
                                 final int color_black = resources.getColor(R.color.black);
@@ -901,7 +971,7 @@ public class fragment_trade extends Fragment {
                                     item = items.getJSONObject(i);
                                     item_id = item.getInt("id");
 
-                                    if(!user_inventory || !dont_show_items_in_active_trades_is_checked || (dont_show_items_in_active_trades_is_checked && !items_in_active_offers.has(String.valueOf(item_id)))) {
+                                    if(!user_inventory || !dont_show_items_in_active_trades_is_checked || !items_in_active_offers.has(String.valueOf(item_id))) {
                                         try {
                                             final JSONObject item_images = item.getJSONObject("image");
 
@@ -960,8 +1030,11 @@ public class fragment_trade extends Fragment {
 
                                         layout_params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-                                        if(i != 0) {
+                                        if(second) {
                                             layout_params.setMargins(unit_conversion_2, 0, 0, 0);
+                                        }
+                                        else {
+                                            second = true;
                                         }
 
                                         // -----
