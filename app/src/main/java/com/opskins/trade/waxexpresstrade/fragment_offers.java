@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -329,11 +330,16 @@ public class fragment_offers extends Fragment {
         final Drawable offer_header_container_drawable = resources.getDrawable(R.drawable.shape_fragment_offers_offer_header_container);
         final Drawable offer_content_container_drawable = resources.getDrawable(R.drawable.shape_fragment_offers_offer_content_container);
 
-        for(int i = 0, j = offer_containers.size(); i < j; i += 3) {
-            ((LinearLayout) offer_containers.get(i)).setBackgroundDrawable(container_outline_drawable);
-            ((LinearLayout) offer_containers.get(i + 1)).setBackgroundDrawable(offer_header_container_drawable);
-            ((LinearLayout) offer_containers.get(i + 2)).setBackgroundDrawable(offer_content_container_drawable);
-        }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                for(int i = 0, j = offer_containers.size(); i < j; i += 3) {
+                    ((LinearLayout) offer_containers.get(i)).setBackgroundDrawable(container_outline_drawable);
+                    ((LinearLayout) offer_containers.get(i + 1)).setBackgroundDrawable(offer_header_container_drawable);
+                    ((LinearLayout) offer_containers.get(i + 2)).setBackgroundDrawable(offer_content_container_drawable);
+                }
+            }
+        }, 25);
     }
 
     private void clearView_LinearLayout(View view) {
@@ -406,7 +412,7 @@ public class fragment_offers extends Fragment {
 
                                 LinearLayout offer_outline_container_layout;
                                 RelativeLayout offer_time_container_layout;
-                                RelativeLayout.LayoutParams offer_time_container_layout_params;
+                                LinearLayout.LayoutParams offer_time_container_layout_params;
                                 LinearLayout offer_align_right_container_layout;
                                 LinearLayout.LayoutParams offer_align_right_container_layout_params;
                                 LinearLayout offer_header_layout;
@@ -436,7 +442,7 @@ public class fragment_offers extends Fragment {
                                 TextView button_view_2;
                                 LinearLayout.LayoutParams button_view_layout_params;
                                 RelativeLayout separator_view;
-                                RelativeLayout.LayoutParams separator_view_layout_params;
+                                LinearLayout.LayoutParams separator_view_layout_params;
                                 ImageView trade_image_view;
                                 String item_image;
                                 long item_suggested_price;
@@ -518,7 +524,7 @@ public class fragment_offers extends Fragment {
                                     offer_time_container_layout.setPadding(0, 0, 0, unit_conversion_16);
                                     offer_time_container_layout.setGravity(Gravity.CENTER_HORIZONTAL);
 
-                                    offer_time_container_layout_params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                                    offer_time_container_layout_params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
                                     if(i != 0) {
                                         offer_time_container_layout_params.setMargins(0, unit_conversion_17, 0, 0);
@@ -1021,7 +1027,7 @@ public class fragment_offers extends Fragment {
                                     separator_view = new RelativeLayout(context);
                                     separator_view.setBackgroundColor(color_pickled_bluewood);
 
-                                    separator_view_layout_params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, unit_conversion_1);
+                                    separator_view_layout_params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, unit_conversion_1);
                                     separator_view_layout_params.setMargins(0, unit_conversion_9, 0, 0);
 
                                     offer_content_inner_layout.addView(separator_view, separator_view_layout_params);
@@ -1030,7 +1036,7 @@ public class fragment_offers extends Fragment {
                                     separator_view.setPadding(unit_conversion_15, unit_conversion_15, unit_conversion_15, unit_conversion_15);
                                     separator_view.setBackgroundDrawable(trade_container_drawable);
 
-                                    separator_view_layout_params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                                    separator_view_layout_params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                                     separator_view_layout_params.setMargins(0, -unit_conversion_9, 0, 0);
 
                                     trade_image_view = new ImageView(context);

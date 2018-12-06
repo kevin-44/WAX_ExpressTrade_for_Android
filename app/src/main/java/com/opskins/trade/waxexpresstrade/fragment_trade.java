@@ -169,7 +169,7 @@ public class fragment_trade extends Fragment {
 
                                     RelativeLayout app_list_item_layout;
                                     LinearLayout layout;
-                                    LinearLayout.LayoutParams layout_params;
+                                    RelativeLayout.LayoutParams layout_params;
                                     ImageView app_image_view;
                                     TextView app_name_view;
                                     final AlertDialog alert_dialog = new AlertDialog.Builder(context, R.style.DialogTheme).create();
@@ -183,7 +183,7 @@ public class fragment_trade extends Fragment {
                                             layout = new LinearLayout(context);
                                             layout.setGravity(Gravity.CENTER_VERTICAL);
 
-                                            layout_params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                            layout_params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                                             layout_params.setMargins(0, unit_conversion_3, 0, unit_conversion_3);
 
                                             app_image_view = new ImageView(context);
@@ -949,7 +949,7 @@ public class fragment_trade extends Fragment {
                                 JSONObject item;
                                 int item_id;
                                 RelativeLayout layout;
-                                RelativeLayout.LayoutParams layout_params;
+                                LinearLayout.LayoutParams layout_params;
                                 LinearLayout inner_layout;
                                 ImageView item_image_view;
                                 TextView item_name_view;
@@ -1028,7 +1028,7 @@ public class fragment_trade extends Fragment {
                                         layout = new RelativeLayout(context);
                                         layout.setBackgroundDrawable(item_container_drawable);
 
-                                        layout_params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                                        layout_params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
                                         if(second) {
                                             layout_params.setMargins(unit_conversion_2, 0, 0, 0);

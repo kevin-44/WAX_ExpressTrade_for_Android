@@ -19,7 +19,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -126,10 +125,6 @@ public class main extends AppCompatActivity {
             if(intent.getAction() != null) {
                 final String intent_url = intent.getDataString();
 
-                if(intent_data.getQueryParameter("state") != null && intent_data.getQueryParameter("code") != null) {
-                    authenticating = true;
-                }
-
                 if(intent_url.startsWith("https://trade.opskins.com/t/")) {
                     fragment_trade.clearPartnerData();
 
@@ -144,6 +139,9 @@ public class main extends AppCompatActivity {
                     catch (NumberFormatException nfe) {
                         fragment_offers_show_offer_id = -1;
                     }
+                }
+                else {
+                    authenticating = true;
                 }
             }
 
@@ -755,7 +753,7 @@ public class main extends AppCompatActivity {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             return Html.fromHtml(string, Html.FROM_HTML_MODE_LEGACY);
         }
-        return new SpannableStringBuilder(string);
+        return Html.fromHtml(string);
     }
 
     public String currencyFormat(String amount) {
