@@ -1,0 +1,7 @@
+curl --request POST \
+        --url https://api.opskins.com/IOAuth/UpdateClient/v1/ \
+        --header 'authorization: Basic {{AUTH_HASH}}' \
+        --data key={REPLACE:_YOUR_API_KEY} \
+        --data client_id={REPLACE:_CLIENT_ID} \
+        --data name=WAX%20ExpressTrade%20for%20Android \
+        --data redirect_uri=wax-expresstrade://callback

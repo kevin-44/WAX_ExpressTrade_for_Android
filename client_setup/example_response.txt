@@ -1,0 +1,14 @@
+{
+    "status":1,
+    "time":1538942913,
+    "response": {
+        "client": {
+            "client_id":"25h5489d18tw",
+            "name":"WAX ExpressTrade for Android",
+            "redirect_uri":"wax-expresstrade://callback",
+            "time_created":1538942913,
+            "has_secret":false
+        },
+        "secret":null
+    }
+}

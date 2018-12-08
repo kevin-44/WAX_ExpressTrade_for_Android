@@ -1,6 +1,16 @@
 # WAX ExpressTrade for Android
 Available on Google Play: https://play.google.com/store/apps/details?id=com.opskins.trade.waxexpresstrade
 
+## Setup
+
+### Request an API Key
+
+#### Existing OPSkins user
+https://github.com/Kevin-Reinke/WAX_ExpressTrade_Integration#request-an-api-key
+
+#### New OPSkins user
+https://github.com/Kevin-Reinke/WAX_ExpressTrade_Integration#set-up-an-opskins-account
+
 ## Configuration
 Client details: *app/src/main/res/values/keys.xml*
 

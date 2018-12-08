@@ -1,0 +1,3 @@
+** OPEN IN BROWSER
+
+https://api.opskins.com/IOAuth/GetOwnedClientList/v1/?key={REPLACE:_YOUR_API_KEY}

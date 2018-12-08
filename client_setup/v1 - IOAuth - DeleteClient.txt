@@ -1,0 +1,5 @@
+curl --request POST \
+        --url https://api.opskins.com/IOAuth/DeleteClient/v1/ \
+        --header 'authorization: Basic {{AUTH_HASH}}' \
+        --data key={REPLACE:_YOUR_API_KEY} \
+        --data client_id={REPLACE:_CLIENT_ID}
