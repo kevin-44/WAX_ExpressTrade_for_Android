@@ -22,6 +22,8 @@
 * [DeleteClient](https://github.com/Kevin-Reinke/WAX_ExpressTrade_for_Android/blob/master/client/v1%20-%20IOAuth%20-%20DeleteClient.txt)
 * Need help or more info? [OPSkins OAuth Documentation](https://docs.opskins.com/public/en.html#oauth)
 
+> **Note**: Replace all `{REPLACE:_**REPLACEMENT_NAME**}` in the given request to be sent.
+
 ## Configuration
 
 ### *app/src/main/res/values/keys.xml*
