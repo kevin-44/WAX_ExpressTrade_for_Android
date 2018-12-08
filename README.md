@@ -1,5 +1,5 @@
 <p align = "center">
-	<img alt = "Header" src = "img/header.png">
+	<img alt = "Banner" src = "img/banner.png">
 </p>
 
 <p align = "center">
