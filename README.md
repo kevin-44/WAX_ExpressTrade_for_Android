@@ -1,6 +1,10 @@
-# WAX ExpressTrade for Android
+<p align = "center">
+	<img alt = "Header" src = "img/header.png">
+</p>
 
-Available on Google Play: https://play.google.com/store/apps/details?id=com.opskins.trade.waxexpresstrade
+<p align = "center">
+	Available on Google Play: https://play.google.com/store/apps/details?id=com.opskins.trade.waxexpresstrade
+</p>
 
 ## Setup
 
