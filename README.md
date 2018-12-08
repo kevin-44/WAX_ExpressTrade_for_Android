@@ -3,7 +3,7 @@
 </p>
 
 <p align = "center">
-	<a href = "https://play.google.com/store/apps/details?id=com.opskins.trade.waxexpresstrade">Get it on Google Play - com.opskins.trade.waxexpresstrade</a>
+	<a href = "https://play.google.com/store/apps/details?id=com.opskins.trade.waxexpresstrade">Available on Google Play</a>
 </p>
 
 ## Setup
