@@ -20,10 +20,7 @@
 * [UpdateClient](https://github.com/Kevin-Reinke/WAX_ExpressTrade_for_Android/blob/master/client/v1%20-%20IOAuth%20-%20UpdateClient.txt)
 * [GetOwnedClientList](https://github.com/Kevin-Reinke/WAX_ExpressTrade_for_Android/blob/master/client/v1%20-%20IOAuth%20-%20GetOwnedClientList.txt)
 * [DeleteClient](https://github.com/Kevin-Reinke/WAX_ExpressTrade_for_Android/blob/master/client/v1%20-%20IOAuth%20-%20DeleteClient.txt)
-
----
-
-* [OPSkins OAuth Documentation](https://docs.opskins.com/public/en.html#oauth)
+* Need help or more information? [OPSkins OAuth Documentation](https://docs.opskins.com/public/en.html#oauth)
 
 ## Configuration
 
