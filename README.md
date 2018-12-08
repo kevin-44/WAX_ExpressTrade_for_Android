@@ -15,7 +15,9 @@
 
 ## Configuration
 
-Client details: *app/src/main/res/values/keys.xml*
+### *app/src/main/res/values/keys.xml*
+
+* `OPSKINS_OAUTH_CLIENT_ID`: Your client's ID
 
 ## Key Features
 
