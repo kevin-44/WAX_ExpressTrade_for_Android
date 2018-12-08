@@ -17,7 +17,8 @@
 
 ### *app/src/main/res/values/keys.xml*
 
-* `OPSKINS_OAUTH_CLIENT_ID`: Your client's ID
+* `OPSKINS_OAUTH_CLIENT_ID`: Enter your client's ID
+* `OPSKINS_OAUTH_CLIENT_SECRET`: Enter a random string
 
 ## Key Features
 
