@@ -1,9 +1,9 @@
 <p align = "center">
-	<img alt = "Banner" src = "img/banner.png">
+	<img alt = "Logo" src = "img/logo.png">
 </p>
 
 <p align = "center">
-	Available on Google Play: https://play.google.com/store/apps/details?id=com.opskins.trade.waxexpresstrade
+	[Get it on Google Play - com.opskins.trade.waxexpresstrade](https://play.google.com/store/apps/details?id=com.opskins.trade.waxexpresstrade)
 </p>
 
 ## Setup
