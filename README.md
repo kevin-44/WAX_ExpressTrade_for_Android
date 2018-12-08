@@ -13,6 +13,14 @@
 * [Existing OPSkins user](https://github.com/Kevin-Reinke/WAX_ExpressTrade_Integration#request-an-api-key)
 * [New OPSkins user](https://github.com/Kevin-Reinke/WAX_ExpressTrade_Integration#set-up-an-opskins-account)
 
+### OAuth Client
+
+* [CreateClient](https://github.com/Kevin-Reinke/WAX_ExpressTrade_for_Android/blob/master/client/v1%20-%20IOAuth%20-%20CreateClient.txt)
+* [CreateClient - Example Response](https://github.com/Kevin-Reinke/WAX_ExpressTrade_for_Android/blob/master/client/v1%20-%20IOAuth%20-%20CreateClient%20-%20Example%20Response.txt)
+* [UpdateClient](https://github.com/Kevin-Reinke/WAX_ExpressTrade_for_Android/blob/master/client/v1%20-%20IOAuth%20-%20UpdateClient.txt)
+* [GetOwnedClientList](https://github.com/Kevin-Reinke/WAX_ExpressTrade_for_Android/blob/master/client/v1%20-%20IOAuth%20-%20GetOwnedClientList.txt)
+* [DeleteClient](https://github.com/Kevin-Reinke/WAX_ExpressTrade_for_Android/blob/master/client/v1%20-%20IOAuth%20-%20DeleteClient.txt)
+
 ## Configuration
 
 ### *app/src/main/res/values/keys.xml*
