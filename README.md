@@ -1,5 +1,5 @@
 <p align = "center">
-	<img alt = "Logo" src = "img/logo.png">
+	<img alt = "Google Play Logo" src = "img/google_play_logo.png">
 </p>
 
 <p align = "center">
