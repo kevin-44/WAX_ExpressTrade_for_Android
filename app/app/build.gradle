@@ -6,8 +6,8 @@ android {
         applicationId "com.opskins.trade.waxexpresstrade"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 21
-        versionName "2.9"
+        versionCode 22
+        versionName "3.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

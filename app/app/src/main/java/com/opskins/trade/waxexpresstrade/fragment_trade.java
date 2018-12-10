@@ -99,6 +99,7 @@ public class fragment_trade extends Fragment {
         final Resources resources = getResources();
         final DisplayMetrics display_metrics = resources.getDisplayMetrics();
         final opskins_trade_api opskins_trade_api = new opskins_trade_api(new WeakReference<>(context));
+        final CheckBox dont_show_items_in_active_trades_checkbox = fragment.findViewById(R.id.fragment_trade_dont_show_items_in_active_trades_checkbox);
         final TextView user_search_inventory_input = fragment.findViewById(R.id.fragment_trade_user_search_inventory_input);
         final TextView find_partner_input = fragment.findViewById(R.id.fragment_trade_find_partner_input);
         final CheckBox one_way_trade_or_gift_checkbox = fragment.findViewById(R.id.fragment_trade_one_way_trade_or_gift_checkbox);
@@ -367,7 +368,14 @@ public class fragment_trade extends Fragment {
                     }
                     else {
                         try {
-                            main.showDialog(context, "An error occurred", errorResponse.getString("message"));
+                            final String message = errorResponse.getString("message");
+
+                            if(message.equals(resources.getString(R.string.down_for_maintenance_error))) {
+                                main.showDialog(context, "Down for maintenance", "Please try again later.");
+                            }
+                            else {
+                                main.showDialog(context, "An error occurred", message);
+                            }
                         }
                         catch (JSONException e) {
                             main.showDialog(context, "An error occurred", "Expected return data not found.");
@@ -383,10 +391,20 @@ public class fragment_trade extends Fragment {
             Glide.with(context).load(main.getUserAvatar()).apply(new RequestOptions().placeholder(R.color.transparent).fitCenter()).into((de.hdodenhof.circleimageview.CircleImageView) fragment.findViewById(R.id.fragment_trade_user_avatar));
             ((TextView) fragment.findViewById(R.id.fragment_trade_user_username)).setText(main.getUserUsername());
 
-            ((CheckBox) fragment.findViewById(R.id.fragment_trade_dont_show_items_in_active_trades_checkbox)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            dont_show_items_in_active_trades_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    loadInventory(fragment, main.getUserID(), 1, false, true);
+                    if(perform_action) {
+                        perform_action = false;
+                        main.set_perform_action(false);
+
+                        // -----
+
+                        loadInventory(fragment, main.getUserID(), 1, true, true);
+                    }
+                    else {
+                        dont_show_items_in_active_trades_checkbox.toggle();
+                    }
                 }
             });
 
@@ -769,7 +787,14 @@ public class fragment_trade extends Fragment {
                                                 main.showDialog(context, "An error occurred", errorResponse.getString("error_description"));
                                             }
                                             else {
-                                                main.showDialog(context, "An error occurred", errorResponse.getString("message"));
+                                                final String message = errorResponse.getString("message");
+
+                                                if(message.equals(resources.getString(R.string.down_for_maintenance_error))) {
+                                                    main.showDialog(context, "Down for maintenance", "Please try again later.");
+                                                }
+                                                else {
+                                                    main.showDialog(context, "An error occurred", message);
+                                                }
                                             }
                                         }
                                         catch (JSONException e) {
@@ -1242,7 +1267,12 @@ public class fragment_trade extends Fragment {
                                     find_partner_error_view.setText(resources.getString(R.string.fragment_trade_find_partner_error_unable_to_load_friend_inventory));
                                 }
                                 else {
-                                    main.showDialog(context, "An error occurred", message);
+                                    if(message.equals(resources.getString(R.string.down_for_maintenance_error))) {
+                                        main.showDialog(context, "Down for maintenance", "Please try again later.");
+                                    }
+                                    else {
+                                        main.showDialog(context, "An error occurred", message);
+                                    }
                                 }
                             }
                             catch (JSONException e) {

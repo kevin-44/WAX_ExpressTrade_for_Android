@@ -2,6 +2,7 @@
     <!-- ** MAIN -->
 
     <string name="app_name">WAX ExpressTrade</string>
+    <string name="down_for_maintenance_error">Down for Maintenance</string>
 
     <!-- ** FOOTER -->
 
