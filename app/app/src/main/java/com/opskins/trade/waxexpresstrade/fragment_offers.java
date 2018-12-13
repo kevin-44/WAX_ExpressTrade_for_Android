@@ -1329,12 +1329,24 @@ public class fragment_offers extends Fragment {
 
                                     // -----
 
-                                    TextView error_view = new TextView(context);
-                                    error_view.setText(new StringBuilder(resources.getString(R.string.fragment_offers_error_tag) + errorResponse.getString("message")));
-                                    error_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-                                    error_view.setTextColor(resources.getColor(R.color.white));
-                                    error_view.setGravity(Gravity.CENTER_HORIZONTAL);
-                                    offers_container.addView(error_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    final String message = errorResponse.getString("message");
+
+                                    if(message.equals(resources.getString(R.string.down_for_maintenance_error))) {
+                                        TextView error_view = new TextView(context);
+                                        error_view.setText(new StringBuilder("Down for maintenance, please try again later."));
+                                        error_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                                        error_view.setTextColor(resources.getColor(R.color.white));
+                                        error_view.setGravity(Gravity.CENTER_HORIZONTAL);
+                                        offers_container.addView(error_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    }
+                                    else {
+                                        TextView error_view = new TextView(context);
+                                        error_view.setText(new StringBuilder(resources.getString(R.string.fragment_offers_error_tag) + message));
+                                        error_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                                        error_view.setTextColor(resources.getColor(R.color.white));
+                                        error_view.setGravity(Gravity.CENTER_HORIZONTAL);
+                                        offers_container.addView(error_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    }
                                 }
                             }
                             catch (JSONException e) {
