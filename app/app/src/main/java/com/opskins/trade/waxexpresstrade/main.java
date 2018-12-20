@@ -117,7 +117,7 @@ public class main extends AppCompatActivity {
         loadUserData();
         updateNavigationDrawer(context, false);
         updateNavigationDrawerUserInfo(context, false);
-        startSnowing(context, false);
+        makeItSnow(context, false);
 
         if(getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
             final Intent intent = getIntent();
@@ -193,7 +193,7 @@ public class main extends AppCompatActivity {
             else {
                 if(UserData.logged_in) {
                     if(fragment_offers_show_offer_id != -1) {
-                        showFragment(new fragment_offers(), View.VISIBLE, false);
+                        showFragment(new fragment_offers(), View.VISIBLE, true);
                     }
                     else {
                         showFragment(fragment_trade, View.VISIBLE, true);
@@ -357,7 +357,7 @@ public class main extends AppCompatActivity {
         return UserData.bearer_token;
     }
 
-    private void stopSnowing(Context context, Boolean cast) {
+    private void clearSnow(Context context, Boolean cast) {
         if(snowing) {
             if(cast) {
                 ((SnowFlakesLayout) ((AppCompatActivity) context).findViewById(R.id.snow_flakes_layout)).stopSnowing();
@@ -372,7 +372,7 @@ public class main extends AppCompatActivity {
         }
     }
 
-    private void startSnowing(Context context, Boolean cast) {
+    private void makeItSnow(Context context, Boolean cast) {
         if(!snowing) {
             SnowFlakesLayout snow_flakes_layout;
 
@@ -387,7 +387,7 @@ public class main extends AppCompatActivity {
             snow_flakes_layout.setWholeAnimateTiming(3000000);
             snow_flakes_layout.setAnimateDuration(7000);
             snow_flakes_layout.setGenerateSnowTiming(300);
-            snow_flakes_layout.setRandomSnowSizeRange(40, 1);
+            snow_flakes_layout.setRandomSnowSizeRange(20, 1);
             snow_flakes_layout.setEnableRandomCurving(true);
             snow_flakes_layout.setEnableAlphaFade(true);
             snow_flakes_layout.startSnowing();
@@ -474,7 +474,8 @@ public class main extends AppCompatActivity {
                                 showFragmentEx(((cast) ? (((AppCompatActivity) context)) : (context)), new fragment_trade(), View.VISIBLE, true);
                                 break;
                             case "Offers":
-                                showFragmentEx(((cast) ? (((AppCompatActivity) context)) : (context)), new fragment_offers(), View.VISIBLE, false);
+
+                                showFragmentEx(((cast) ? (((AppCompatActivity) context)) : (context)), new fragment_offers(), View.VISIBLE, true);
                                 break;
                             case "Inventory":
                                 openTabEx_Data(((cast) ? (((AppCompatActivity) context)) : (context)), "https://trade.opskins.com/inventory");
@@ -751,11 +752,11 @@ public class main extends AppCompatActivity {
         ((AppCompatActivity) context).findViewById(R.id.background_fade).setVisibility(background_fade_visibility);
 
         if(snow) {
-            stopSnowing(context, true);
-            startSnowing(context, true);
+            clearSnow(context, true);
+            makeItSnow(context, true);
         }
         else {
-            stopSnowing(context, true);
+            clearSnow(context, true);
         }
 
         try {
@@ -770,11 +771,11 @@ public class main extends AppCompatActivity {
         findViewById(R.id.background_fade).setVisibility(background_fade_visibility);
 
         if(snow) {
-            stopSnowing(null, false);
-            startSnowing(null, false);
+            clearSnow(null, false);
+            makeItSnow(null, false);
         }
         else {
-            stopSnowing(null, false);
+            clearSnow(null, false);
         }
 
         try {

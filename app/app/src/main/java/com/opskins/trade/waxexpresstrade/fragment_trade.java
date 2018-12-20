@@ -31,11 +31,13 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import org.json.JSONArray;
@@ -860,6 +862,7 @@ public class fragment_trade extends Fragment {
             final Context context = fragment_trade.this.getContext();
             final Resources resources = getResources();
             final DisplayMetrics display_metrics = resources.getDisplayMetrics();
+            final RequestBuilder glide_request_builder = GlideToVectorYou.init().with(getActivity()).getRequestBuilder();
             final LinearLayout items_container_layout;
             final LinearLayout user_inventory_total_items_inner_container_view = fragment.findViewById(R.id.fragment_trade_user_inventory_total_items_inner_container);
             final ImageView partner_avatar_view = fragment.findViewById(R.id.fragment_trade_partner_avatar);
@@ -936,6 +939,7 @@ public class fragment_trade extends Fragment {
                             final int unit_conversion_2 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7, display_metrics);
                             final int unit_conversion_3 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 15, display_metrics);
                             final int unit_conversion_4 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, display_metrics);
+                            final int color_white = resources.getColor(R.color.white);
                             final int item_count = items.length();
                             final int item_count_dont_show_items_in_active_trades = item_count - ((dont_show_items_in_active_trades_is_checked) ? (items_in_active_offers.length()) : (0));
 
@@ -990,7 +994,6 @@ public class fragment_trade extends Fragment {
                                 final Drawable item_container_drawable = resources.getDrawable(R.drawable.shape_fragment_trade_item_container);
                                 final Drawable selected_item_container_drawable = resources.getDrawable(R.drawable.shape_fragment_trade_selected_item_container);
                                 final int color_black = resources.getColor(R.color.black);
-                                final int color_white = resources.getColor(R.color.white);
 
                                 for(int i = 0; i < item_count; i ++) {
                                     item = items.getJSONObject(i);
@@ -1068,7 +1071,12 @@ public class fragment_trade extends Fragment {
                                         item_image_view.setPadding(unit_conversion_3, unit_conversion_3, unit_conversion_3, unit_conversion_3);
                                         layout.addView(item_image_view, unit_conversion_1, unit_conversion_1);
 
-                                        Glide.with(context).load(item_image).apply(new RequestOptions().fitCenter()).into(item_image_view);
+                                        if(item_image.endsWith(".svg")) {
+                                            glide_request_builder.load(item_image).apply(new RequestOptions().fitCenter()).into(item_image_view);
+                                        }
+                                        else {
+                                            Glide.with(context).load(item_image).apply(new RequestOptions().fitCenter()).into(item_image_view);
+                                        }
 
                                         // -
 
@@ -1082,7 +1090,8 @@ public class fragment_trade extends Fragment {
                                         item_name_view.setTypeface(null, Typeface.BOLD);
                                         item_name_view.setTextColor(color_white);
                                         item_name_view.setShadowLayer((float) 3, (float) 1.5, (float) 1.5, color_black);
-                                        inner_layout.addView(item_name_view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                        item_name_view.setMaxLines(5);
+                                        inner_layout.addView(item_name_view, unit_conversion_1, LinearLayout.LayoutParams.WRAP_CONTENT);
 
                                         if(!item_condition.isEmpty()) {
                                             item_condition_view = new TextView(context);

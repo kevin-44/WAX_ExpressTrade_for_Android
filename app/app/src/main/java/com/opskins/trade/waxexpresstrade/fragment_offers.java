@@ -26,7 +26,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
+import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import org.json.JSONArray;
@@ -362,6 +364,7 @@ public class fragment_offers extends Fragment {
             final Context context = fragment_offers.this.getContext();
             final Resources resources = getResources();
             final DisplayMetrics display_metrics = resources.getDisplayMetrics();
+            final RequestBuilder glide_request_builder = GlideToVectorYou.init().with(getActivity()).getRequestBuilder();
             final opskins_trade_api opskins_trade_api = new opskins_trade_api(new WeakReference<>(context));
             final LinearLayout offers_container = fragment.findViewById(R.id.fragment_offers_offer_list_container);
 
@@ -966,7 +969,12 @@ public class fragment_offers extends Fragment {
                                         item_image_view = new ImageView(context);
                                         offer_content_inner_layout.addView(item_image_view, unit_conversion_10, unit_conversion_10);
 
-                                        Glide.with(context).load(item_image).apply(new RequestOptions().fitCenter()).into(item_image_view);
+                                        if(item_image.endsWith(".svg")) {
+                                            glide_request_builder.load(item_image).apply(new RequestOptions().fitCenter()).into(item_image_view);
+                                        }
+                                        else {
+                                            Glide.with(context).load(item_image).apply(new RequestOptions().fitCenter()).into(item_image_view);
+                                        }
 
                                         offer_align_right_container_layout = new LinearLayout(context);
                                         offer_align_right_container_layout.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -1126,7 +1134,12 @@ public class fragment_offers extends Fragment {
                                         item_image_view = new ImageView(context);
                                         offer_content_inner_layout.addView(item_image_view, unit_conversion_10, unit_conversion_10);
 
-                                        Glide.with(context).load(item_image).apply(new RequestOptions().fitCenter()).into(item_image_view);
+                                        if(item_image.endsWith(".svg")) {
+                                            glide_request_builder.load(item_image).apply(new RequestOptions().fitCenter()).into(item_image_view);
+                                        }
+                                        else {
+                                            Glide.with(context).load(item_image).apply(new RequestOptions().fitCenter()).into(item_image_view);
+                                        }
 
                                         offer_align_right_container_layout = new LinearLayout(context);
                                         offer_align_right_container_layout.setGravity(Gravity.CENTER_HORIZONTAL);

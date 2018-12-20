@@ -50,7 +50,6 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".background_service"/>
+        <service android:name=".background_service"/>
     </application>
 </manifest>
