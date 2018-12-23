@@ -983,9 +983,9 @@ public class fragment_offers extends Fragment {
 
                                         item_name_view = new TextView(context);
                                         item_name_view.setPadding(unit_conversion_12, 0, 0, 0);
-                                        item_name_view.setText(main.fromHTML("<font color = \"" + item.getString("color") + "\">" + item.getString("name") + "</font>" + ((item_wear == 0.00 && item_serial_number == 0) ? ("") : ("<br><font color = \"#CCCCCC\">Wear:</font> " + String.format(locale, "%.5f", item_wear * 100) + "% <font color = \"#443836\">|</font> <font color = \"#CCCCCC\">Serial Number:</font> " + item_serial_number))));
+                                        item_name_view.setText(main.fromHTML("<font color = \"" + item.getString("color") + "\">" + item.getString("name") + "</font>" + ((item_wear == 0.00 && item_serial_number == 0) ? ("") : ("<br><font color = \"#CCCCCC\">Wear:</font> <font color = \"#FFFFFF\">" + String.format(locale, "%.5f", item_wear * 100) + "%</font> <font color = \"#443836\">|</font> <font color = \"#CCCCCC\">Serial Number:</font> <font color = \"#FFFFFF\">" + item_serial_number + "</font>"))));
                                         item_name_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-                                        item_name_view.setTextColor(color_white);
+                                        item_name_view.setTextColor(color_downy);
                                         item_name_view.setGravity(Gravity.CENTER_HORIZONTAL);
                                         offer_align_right_container_layout.addView(item_name_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -1148,9 +1148,9 @@ public class fragment_offers extends Fragment {
 
                                         item_name_view = new TextView(context);
                                         item_name_view.setPadding(unit_conversion_12, 0, 0, 0);
-                                        item_name_view.setText(main.fromHTML("<font color = \"" + item.getString("color") + "\">" + item.getString("name") + "</font>" + ((item_wear == 0.00 && item_serial_number == 0) ? ("") : ("<br><font color = \"#CCCCCC\">Wear:</font> " + String.format(locale, "%.5f", item_wear * 100) + "% <font color = \"#443836\">|</font> <font color = \"#CCCCCC\">Serial Number:</font> " + item_serial_number))));
+                                        item_name_view.setText(main.fromHTML("<font color = \"" + item.getString("color") + "\">" + item.getString("name") + "</font>" + ((item_wear == 0.00 && item_serial_number == 0) ? ("") : ("<br><font color = \"#CCCCCC\">Wear:</font> <font color = \"#FFFFFF\">" + String.format(locale, "%.5f", item_wear * 100) + "%</font> <font color = \"#443836\">|</font> <font color = \"#CCCCCC\">Serial Number:</font> <font color = \"#FFFFFF\">" + item_serial_number + "</font>"))));
                                         item_name_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-                                        item_name_view.setTextColor(color_white);
+                                        item_name_view.setTextColor(color_downy);
                                         item_name_view.setGravity(Gravity.CENTER_HORIZONTAL);
                                         offer_align_right_container_layout.addView(item_name_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 

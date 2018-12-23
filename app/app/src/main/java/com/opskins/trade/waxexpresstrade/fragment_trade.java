@@ -986,7 +986,7 @@ public class fragment_trade extends Fragment {
                                 TextView item_price_view;
                                 String item_name;
                                 StringTokenizer item_name_parts;
-                                String item_condition = "";
+                                String item_condition;
                                 String item_image;
                                 String item_color;
                                 long item_suggested_price_temp;
@@ -1043,6 +1043,9 @@ public class fragment_trade extends Fragment {
                                         else if(item_name.contains(" (Factory New)")) {
                                             item_name = item_name.replace(" (Factory New)", "");
                                             item_condition = "Factory New";
+                                        }
+                                        else {
+                                            item_condition = "";
                                         }
 
                                         item_name_parts = new StringTokenizer(item_name, "|");
