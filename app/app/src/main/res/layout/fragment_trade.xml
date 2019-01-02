@@ -87,7 +87,6 @@
                     android:layout_height="33dp"
                     android:layout_marginTop="6dp"
                     android:layout_marginBottom="6dp"
-                    android:layout_marginLeft="11dp"
                     android:layout_marginStart="11dp"
 
                     android:theme="@style/CircleProgressBarTheme"/>
@@ -99,7 +98,6 @@
                     android:layout_height="33dp"
                     android:layout_marginTop="6dp"
                     android:layout_marginBottom="6dp"
-                    android:layout_marginLeft="11dp"
                     android:layout_marginStart="11dp"
 
                     android:visibility="gone"/>
@@ -248,7 +246,6 @@
 
                         android:layout_width="wrap_content"
                         android:layout_height="65dp"
-                        android:layout_toLeftOf="@id/fragment_trade_user_inventory_items_in_trade_container"
                         android:layout_toStartOf="@id/fragment_trade_user_inventory_items_in_trade_container"
 
                         android:gravity="center_vertical|end"
@@ -258,7 +255,6 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="7dp"
                             android:layout_marginEnd="7dp"
 
                             android:text="@string/fragment_trade_inventory_total_value"
@@ -275,7 +271,6 @@
 
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="7dp"
                             android:layout_marginEnd="7dp"
 
                             android:textSize="12sp"
@@ -292,7 +287,6 @@
 
                         android:layout_width="85dp"
                         android:layout_height="65dp"
-                        android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
 
                         android:background="@drawable/shape_fragment_trade_user_inventory_count_container">
@@ -356,7 +350,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="1dp"
-                        android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
                         android:layout_below="@id/fragment_trade_user_inventory_items_in_trade_container"
 
@@ -376,7 +369,6 @@
                 android:layout_height="wrap_content"
 
                 android:layout_marginTop="13dp"
-                android:layout_marginLeft="-5dp"
                 android:layout_marginStart="-5dp">
 
                 <CheckBox
@@ -681,7 +673,6 @@
 
                         android:layout_width="wrap_content"
                         android:layout_height="65dp"
-                        android:layout_toLeftOf="@id/fragment_trade_partner_inventory_items_in_trade_container"
                         android:layout_toStartOf="@id/fragment_trade_partner_inventory_items_in_trade_container"
 
                         android:gravity="center_vertical|end"
@@ -691,7 +682,6 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="7dp"
                             android:layout_marginEnd="7dp"
 
                             android:text="@string/fragment_trade_inventory_total_value"
@@ -708,7 +698,6 @@
 
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="7dp"
                             android:layout_marginEnd="7dp"
 
                             android:textSize="12sp"
@@ -725,7 +714,6 @@
 
                         android:layout_width="85dp"
                         android:layout_height="65dp"
-                        android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
 
                         android:background="@drawable/shape_fragment_trade_partner_inventory_count_container">
@@ -789,7 +777,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="1dp"
-                        android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
                         android:layout_below="@id/fragment_trade_partner_inventory_items_in_trade_container"
 
@@ -809,7 +796,6 @@
                 android:layout_height="wrap_content"
 
                 android:layout_marginTop="13dp"
-                android:layout_marginLeft="-5dp"
                 android:layout_marginStart="-5dp">
 
                 <CheckBox
@@ -935,7 +921,6 @@
 
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
                         android:layout_marginStart="10dp"
 
                         android:paddingTop="10dp"
@@ -986,7 +971,7 @@
 
                     android:background="@drawable/shape_button_outline">
 
-                    <TextView
+                    <TextView tools:ignore="TooManyViews"
                         android:id="@+id/fragment_trade_inner_make_offer_button"
 
                         android:layout_width="wrap_content"

@@ -34,7 +34,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.stevenyang.snowfalling.SnowFlakesLayout;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
@@ -91,7 +90,6 @@ public class main extends AppCompatActivity {
     // *** STATES
 
     private static Boolean authenticating = false;
-    private Boolean snowing = false;
     private static Boolean perform_action = true;
 
     // ** CALLBACKS
@@ -117,7 +115,6 @@ public class main extends AppCompatActivity {
         loadUserData();
         updateNavigationDrawer(context, false);
         updateNavigationDrawerUserInfo(context, false);
-        makeItSnow(context, false);
 
         if(getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
             final Intent intent = getIntent();
@@ -150,14 +147,14 @@ public class main extends AppCompatActivity {
 
             // -----
 
-            showFragment(new fragment_loading(), View.GONE, false);
+            showFragment(new fragment_loading(), View.GONE);
 
             if(authenticating) {
                 if(intent_data != null) {
                     if("access_denied".equals(intent_data.getQueryParameter("error"))) {
                         showDialog(context, "Unable to log in", "You have denied access.");
 
-                        showFragment(fragment_log_in, View.GONE, false);
+                        showFragment(fragment_log_in, View.GONE);
 
                         // -----
 
@@ -172,7 +169,7 @@ public class main extends AppCompatActivity {
                         else {
                             showDialog(context, "Log in failed", "Unable to get authorization code.");
 
-                            showFragment(fragment_log_in, View.GONE, false);
+                            showFragment(fragment_log_in, View.GONE);
 
                             // -----
 
@@ -183,7 +180,7 @@ public class main extends AppCompatActivity {
                 else {
                     showDialog(context, "Log in failed", "No return data found.");
 
-                    showFragment(fragment_log_in, View.GONE, false);
+                    showFragment(fragment_log_in, View.GONE);
 
                     // -----
 
@@ -193,14 +190,14 @@ public class main extends AppCompatActivity {
             else {
                 if(UserData.logged_in) {
                     if(fragment_offers_show_offer_id != -1) {
-                        showFragment(new fragment_offers(), View.VISIBLE, true);
+                        showFragment(new fragment_offers(), View.VISIBLE);
                     }
                     else {
-                        showFragment(fragment_trade, View.VISIBLE, true);
+                        showFragment(fragment_trade, View.VISIBLE);
                     }
                 }
                 else {
-                    showFragment(fragment_log_in, View.GONE, false);
+                    showFragment(fragment_log_in, View.GONE);
                 }
 
                 // -----
@@ -247,12 +244,12 @@ public class main extends AppCompatActivity {
             updateNavigationDrawer(context, true);
             updateNavigationDrawerUserInfo(context, true);
 
-            showFragmentEx(context, new fragment_trade(), View.VISIBLE, true);
+            showFragmentEx(context, new fragment_trade(), View.VISIBLE);
         }
         catch (JSONException e) {
             showDialog(context, "Log in failed", "Expected return data not found.");
 
-            showFragmentEx(context, new fragment_log_in(), View.GONE, false);
+            showFragmentEx(context, new fragment_log_in(), View.GONE);
         }
 
         // -----
@@ -263,7 +260,7 @@ public class main extends AppCompatActivity {
     protected void onLogInFailed(Context context, String error) {
         showDialog(context, "Log in failed", error);
 
-        showFragmentEx(context, new fragment_log_in(), View.GONE, false);
+        showFragmentEx(context, new fragment_log_in(), View.GONE);
 
         // -----
 
@@ -357,47 +354,6 @@ public class main extends AppCompatActivity {
         return UserData.bearer_token;
     }
 
-    private void clearSnow(Context context, Boolean cast) {
-        if(snowing) {
-            if(cast) {
-                ((SnowFlakesLayout) ((AppCompatActivity) context).findViewById(R.id.snow_flakes_layout)).stopSnowing();
-            }
-            else {
-                ((SnowFlakesLayout) findViewById(R.id.snow_flakes_layout)).stopSnowing();
-            }
-
-            // -----
-
-            snowing = false;
-        }
-    }
-
-    private void makeItSnow(Context context, Boolean cast) {
-        if(!snowing) {
-            SnowFlakesLayout snow_flakes_layout;
-
-            if(cast) {
-                snow_flakes_layout = ((AppCompatActivity) context).findViewById(R.id.snow_flakes_layout);
-            }
-            else {
-                snow_flakes_layout = findViewById(R.id.snow_flakes_layout);
-            }
-
-            snow_flakes_layout.init();
-            snow_flakes_layout.setWholeAnimateTiming(3000000);
-            snow_flakes_layout.setAnimateDuration(7000);
-            snow_flakes_layout.setGenerateSnowTiming(300);
-            snow_flakes_layout.setRandomSnowSizeRange(20, 1);
-            snow_flakes_layout.setEnableRandomCurving(true);
-            snow_flakes_layout.setEnableAlphaFade(true);
-            snow_flakes_layout.startSnowing();
-
-            // -----
-
-            snowing = true;
-        }
-    }
-
     public void toggleNavigationDrawer(View view) {
         if(navigation_drawer.isDrawerOpen(GravityCompat.START)) {
             navigation_drawer.closeDrawer(GravityCompat.START);
@@ -471,11 +427,11 @@ public class main extends AppCompatActivity {
                     if(perform_action) {
                         switch (adapterView.getItemAtPosition(i).toString()) {
                             case "Trade":
-                                showFragmentEx(((cast) ? (((AppCompatActivity) context)) : (context)), new fragment_trade(), View.VISIBLE, true);
+                                showFragmentEx(((cast) ? (((AppCompatActivity) context)) : (context)), new fragment_trade(), View.VISIBLE);
                                 break;
                             case "Offers":
 
-                                showFragmentEx(((cast) ? (((AppCompatActivity) context)) : (context)), new fragment_offers(), View.VISIBLE, true);
+                                showFragmentEx(((cast) ? (((AppCompatActivity) context)) : (context)), new fragment_offers(), View.VISIBLE);
                                 break;
                             case "Inventory":
                                 openTabEx_Data(((cast) ? (((AppCompatActivity) context)) : (context)), "https://trade.opskins.com/inventory");
@@ -520,7 +476,7 @@ public class main extends AppCompatActivity {
             updateNavigationDrawer(context, cast);
             updateNavigationDrawerUserInfo(context, cast);
 
-            showFragmentEx(context, new fragment_log_in(), View.GONE, false);
+            showFragmentEx(context, new fragment_log_in(), View.GONE);
 
             // -----
 
@@ -575,7 +531,7 @@ public class main extends AppCompatActivity {
         if(!UserData.logged_in && !authenticating) {
             final Context context = this;
 
-            showFragment(new fragment_loading(), View.GONE, false);
+            showFragment(new fragment_loading(), View.GONE);
 
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -591,7 +547,7 @@ public class main extends AppCompatActivity {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            showFragment(new fragment_log_in(), View.GONE, false);
+                            showFragment(new fragment_log_in(), View.GONE);
                         }
                     }, 1500);
                 }
@@ -748,16 +704,8 @@ public class main extends AppCompatActivity {
         alert_dialog.show();
     }
 
-    private void showFragmentEx(Context context, Fragment fragment, int background_fade_visibility, Boolean snow) {
+    private void showFragmentEx(Context context, Fragment fragment, int background_fade_visibility) {
         ((AppCompatActivity) context).findViewById(R.id.background_fade).setVisibility(background_fade_visibility);
-
-        if(snow) {
-            clearSnow(context, true);
-            makeItSnow(context, true);
-        }
-        else {
-            clearSnow(context, true);
-        }
 
         try {
             ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
@@ -767,16 +715,8 @@ public class main extends AppCompatActivity {
         }
     }
 
-    private void showFragment(Fragment fragment, int background_fade_visibility, Boolean snow) {
+    private void showFragment(Fragment fragment, int background_fade_visibility) {
         findViewById(R.id.background_fade).setVisibility(background_fade_visibility);
-
-        if(snow) {
-            clearSnow(null, false);
-            makeItSnow(null, false);
-        }
-        else {
-            clearSnow(null, false);
-        }
 
         try {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();

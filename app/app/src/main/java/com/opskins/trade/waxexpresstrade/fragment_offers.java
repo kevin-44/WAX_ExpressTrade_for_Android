@@ -440,6 +440,7 @@ public class fragment_offers extends Fragment {
                                 TextView total_value_amount_view;
                                 ImageView item_image_view;
                                 TextView item_name_view;
+                                TextView item_details_view;
                                 TextView item_price_view;
                                 TextView button_view_1;
                                 TextView button_view_2;
@@ -452,6 +453,7 @@ public class fragment_offers extends Fragment {
                                 Double item_wear;
                                 JSONObject item_attributes;
                                 long item_serial_number;
+                                String item_markdown_description;
                                 String user_avatar;
                                 String user_name;
                                 Boolean user_verified;
@@ -951,15 +953,38 @@ public class fragment_offers extends Fragment {
                                             item_wear = item.getDouble("wear");
                                         }
                                         catch (JSONException e) {
-                                            item_wear = 0.00;
+                                            item_wear = -1.00;
                                         }
 
                                         try {
                                             item_attributes = item.getJSONObject("attributes");
-                                            item_serial_number = item_attributes.getLong("serial_sku_wear");
                                         }
                                         catch (JSONException e) {
-                                            item_serial_number = 0;
+                                            item_attributes = null;
+                                        }
+
+                                        if(item_attributes != null) {
+                                            try {
+                                                item_serial_number = item_attributes.getLong("serial_sku_wear");
+                                            }
+                                            catch (JSONException e) {
+                                                item_serial_number = -1;
+                                            }
+                                        }
+                                        else {
+                                            item_serial_number = -1;
+                                        }
+
+                                        if(item_attributes != null) {
+                                            try {
+                                                item_markdown_description = item_attributes.getString("markdown_description").replace("<p>", "").replace("</p>", "");
+                                            }
+                                            catch (JSONException e) {
+                                                item_markdown_description = null;
+                                            }
+                                        }
+                                        else {
+                                            item_markdown_description = null;
                                         }
 
                                         offer_content_inner_layout = new LinearLayout(context);
@@ -978,16 +1003,36 @@ public class fragment_offers extends Fragment {
 
                                         offer_align_right_container_layout = new LinearLayout(context);
                                         offer_align_right_container_layout.setGravity(Gravity.CENTER_HORIZONTAL);
+                                        offer_align_right_container_layout.setOrientation(LinearLayout.VERTICAL);
 
                                         offer_align_right_container_layout_params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.75f);
 
                                         item_name_view = new TextView(context);
                                         item_name_view.setPadding(unit_conversion_12, 0, 0, 0);
-                                        item_name_view.setText(main.fromHTML("<font color = \"" + item.getString("color") + "\">" + item.getString("name") + "</font>" + ((item_wear == 0.00 && item_serial_number == 0) ? ("") : ("<br><font color = \"#CCCCCC\">Wear:</font> <font color = \"#FFFFFF\">" + String.format(locale, "%.5f", item_wear * 100) + "%</font> <font color = \"#443836\">|</font> <font color = \"#CCCCCC\">Serial Number:</font> <font color = \"#FFFFFF\">" + item_serial_number + "</font>"))));
+                                        item_name_view.setText(main.fromHTML("<font color = \"" + item.getString("color") + "\">" + item.getString("name") + "</font>"));
                                         item_name_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                                         item_name_view.setTextColor(color_downy);
                                         item_name_view.setGravity(Gravity.CENTER_HORIZONTAL);
                                         offer_align_right_container_layout.addView(item_name_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                                        if(item_wear != -1.00 && item_serial_number != -1) {
+                                            item_details_view = new TextView(context);
+                                            item_details_view.setPadding(unit_conversion_12, 0, 0, 0);
+                                            item_details_view.setText(main.fromHTML("<font color = \"#CCCCCC\">Wear:</font> " + String.format(locale, "%.5f", item_wear * 100) + "% <font color = \"#443836\">|</font> <font color = \"#CCCCCC\">Serial Number:</font> " + item_serial_number));
+                                            item_details_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+                                            item_details_view.setTextColor(color_white);
+                                            item_details_view.setGravity(Gravity.CENTER_HORIZONTAL);
+                                            offer_align_right_container_layout.addView(item_details_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                        }
+                                        else if(item_markdown_description != null) {
+                                            item_details_view = new TextView(context);
+                                            item_details_view.setPadding(unit_conversion_12, 0, 0, 0);
+                                            item_details_view.setText(item_markdown_description);
+                                            item_details_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+                                            item_details_view.setTextColor(color_white);
+                                            item_details_view.setGravity(Gravity.CENTER_HORIZONTAL);
+                                            offer_align_right_container_layout.addView(item_details_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                        }
 
                                         offer_content_inner_layout.addView(offer_align_right_container_layout, offer_align_right_container_layout_params);
 
@@ -1116,15 +1161,38 @@ public class fragment_offers extends Fragment {
                                             item_wear = item.getDouble("wear");
                                         }
                                         catch (JSONException e) {
-                                            item_wear = 0.00;
+                                            item_wear = -1.00;
                                         }
 
                                         try {
                                             item_attributes = item.getJSONObject("attributes");
-                                            item_serial_number = item_attributes.getLong("serial_sku_wear");
                                         }
                                         catch (JSONException e) {
-                                            item_serial_number = 0;
+                                            item_attributes = null;
+                                        }
+
+                                        if(item_attributes != null) {
+                                            try {
+                                                item_serial_number = item_attributes.getLong("serial_sku_wear");
+                                            }
+                                            catch (JSONException e) {
+                                                item_serial_number = -1;
+                                            }
+                                        }
+                                        else {
+                                            item_serial_number = -1;
+                                        }
+
+                                        if(item_attributes != null) {
+                                            try {
+                                                item_markdown_description = item_attributes.getString("markdown_description").replace("<p>", "").replace("</p>", "");
+                                            }
+                                            catch (JSONException e) {
+                                                item_markdown_description = null;
+                                            }
+                                        }
+                                        else {
+                                            item_markdown_description = null;
                                         }
 
                                         offer_content_inner_layout = new LinearLayout(context);
@@ -1143,16 +1211,36 @@ public class fragment_offers extends Fragment {
 
                                         offer_align_right_container_layout = new LinearLayout(context);
                                         offer_align_right_container_layout.setGravity(Gravity.CENTER_HORIZONTAL);
+                                        offer_align_right_container_layout.setOrientation(LinearLayout.VERTICAL);
 
                                         offer_align_right_container_layout_params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.75f);
 
                                         item_name_view = new TextView(context);
                                         item_name_view.setPadding(unit_conversion_12, 0, 0, 0);
-                                        item_name_view.setText(main.fromHTML("<font color = \"" + item.getString("color") + "\">" + item.getString("name") + "</font>" + ((item_wear == 0.00 && item_serial_number == 0) ? ("") : ("<br><font color = \"#CCCCCC\">Wear:</font> <font color = \"#FFFFFF\">" + String.format(locale, "%.5f", item_wear * 100) + "%</font> <font color = \"#443836\">|</font> <font color = \"#CCCCCC\">Serial Number:</font> <font color = \"#FFFFFF\">" + item_serial_number + "</font>"))));
+                                        item_name_view.setText(main.fromHTML("<font color = \"" + item.getString("color") + "\">" + item.getString("name") + "</font>"));
                                         item_name_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                                         item_name_view.setTextColor(color_downy);
                                         item_name_view.setGravity(Gravity.CENTER_HORIZONTAL);
                                         offer_align_right_container_layout.addView(item_name_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                                        if(item_wear != -1.00 && item_serial_number != -1) {
+                                            item_details_view = new TextView(context);
+                                            item_details_view.setPadding(unit_conversion_12, 0, 0, 0);
+                                            item_details_view.setText(main.fromHTML("<font color = \"#CCCCCC\">Wear:</font> " + String.format(locale, "%.5f", item_wear * 100) + "% <font color = \"#443836\">|</font> <font color = \"#CCCCCC\">Serial Number:</font> " + item_serial_number));
+                                            item_details_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+                                            item_details_view.setTextColor(color_white);
+                                            item_details_view.setGravity(Gravity.CENTER_HORIZONTAL);
+                                            offer_align_right_container_layout.addView(item_details_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                        }
+                                        else if(item_markdown_description != null) {
+                                            item_details_view = new TextView(context);
+                                            item_details_view.setPadding(unit_conversion_12, 0, 0, 0);
+                                            item_details_view.setText(item_markdown_description);
+                                            item_details_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+                                            item_details_view.setTextColor(color_white);
+                                            item_details_view.setGravity(Gravity.CENTER_HORIZONTAL);
+                                            offer_align_right_container_layout.addView(item_details_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                        }
 
                                         offer_content_inner_layout.addView(offer_align_right_container_layout, offer_align_right_container_layout_params);
 

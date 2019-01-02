@@ -6,8 +6,8 @@ android {
         applicationId "com.opskins.trade.waxexpresstrade"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 25
-        versionName "3.3"
+        versionCode 26
+        versionName "3.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -16,7 +16,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    packagingOptions { // temporary
+    packagingOptions {
         exclude 'META-INF/proguard/androidx-annotations.pro'
     }
 }
@@ -38,7 +38,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     implementation 'com.github.2coffees1team:GlideToVectorYou:v1.2.0'
     implementation 'com.loopj.android:android-async-http:1.4.9'
-    implementation 'com.github.IamStY:SnowFalling:v1.4'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

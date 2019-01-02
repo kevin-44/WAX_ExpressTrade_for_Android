@@ -155,7 +155,6 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="36dp"
-                                    android:layout_marginLeft="8dp"
                                     android:layout_marginStart="8dp"
 
                                     android:text="@string/fragment_offers_received"
@@ -170,7 +169,6 @@
 
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="7dp"
                                 android:layout_marginStart="7dp"
 
                                 android:paddingLeft="13dp"
@@ -191,7 +189,6 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="36dp"
-                                    android:layout_marginLeft="8dp"
                                     android:layout_marginStart="8dp"
 
                                     android:text="@string/fragment_offers_sent"
@@ -288,7 +285,6 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="36dp"
-                                android:layout_marginLeft="8dp"
                                 android:layout_marginStart="8dp"
 
                                 android:text="@string/fragment_offers_pending"
@@ -303,7 +299,6 @@
 
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="7dp"
                             android:layout_marginStart="7dp"
 
                             android:paddingLeft="13dp"
@@ -324,7 +319,6 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="36dp"
-                                android:layout_marginLeft="8dp"
                                 android:layout_marginStart="8dp"
 
                                 android:text="@string/fragment_offers_accepted"
@@ -339,7 +333,6 @@
 
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="7dp"
                             android:layout_marginStart="7dp"
 
                             android:paddingLeft="13dp"
@@ -360,7 +353,6 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="36dp"
-                                android:layout_marginLeft="8dp"
                                 android:layout_marginStart="8dp"
 
                                 android:text="@string/fragment_offers_expired"
@@ -375,7 +367,6 @@
 
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="7dp"
                             android:layout_marginStart="7dp"
 
                             android:paddingLeft="13dp"
@@ -396,7 +387,6 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="36dp"
-                                android:layout_marginLeft="8dp"
                                 android:layout_marginStart="8dp"
 
                                 android:text="@string/fragment_offers_declined"
@@ -411,7 +401,6 @@
 
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="7dp"
                             android:layout_marginStart="7dp"
 
                             android:paddingLeft="13dp"
@@ -432,7 +421,6 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="36dp"
-                                android:layout_marginLeft="8dp"
                                 android:layout_marginStart="8dp"
 
                                 android:text="@string/fragment_offers_canceled"

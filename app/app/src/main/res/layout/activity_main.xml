@@ -28,9 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@id/fragment_container"
                 android:layout_alignBottom="@id/fragment_container"
-                android:layout_alignLeft="@id/fragment_container"
                 android:layout_alignStart="@id/fragment_container"
-                android:layout_alignRight="@id/fragment_container"
                 android:layout_alignEnd="@id/fragment_container"
 
                 android:background="@drawable/background"/>
@@ -42,26 +40,12 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@id/fragment_container"
                 android:layout_alignBottom="@id/fragment_container"
-                android:layout_alignLeft="@id/fragment_container"
                 android:layout_alignStart="@id/fragment_container"
-                android:layout_alignRight="@id/fragment_container"
                 android:layout_alignEnd="@id/fragment_container"
 
                 android:background="@drawable/background_fade"
 
                 android:visibility="gone"/>
-
-            <com.example.stevenyang.snowfalling.SnowFlakesLayout
-                android:id="@+id/snow_flakes_layout"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@id/fragment_container"
-                android:layout_alignBottom="@id/fragment_container"
-                android:layout_alignLeft="@id/fragment_container"
-                android:layout_alignStart="@id/fragment_container"
-                android:layout_alignRight="@id/fragment_container"
-                android:layout_alignEnd="@id/fragment_container"/>
 
             <FrameLayout
                 android:id="@+id/fragment_container"
@@ -129,9 +113,7 @@
 
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:layout_marginLeft="9dp"
                         android:layout_marginStart="9dp"
-                        android:layout_toRightOf="@id/footer_join_our_community"
                         android:layout_toEndOf="@id/footer_join_our_community"
 
                         android:src="@drawable/ic_reddit_button"
@@ -145,9 +127,7 @@
                     <ImageView tools:ignore="ContentDescription"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:layout_marginLeft="7dp"
                         android:layout_marginStart="7dp"
-                        android:layout_toRightOf="@id/footer_join_our_community_reddit"
                         android:layout_toEndOf="@id/footer_join_our_community_reddit"
 
                         android:src="@drawable/ic_twitter_button"
