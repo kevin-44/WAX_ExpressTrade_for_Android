@@ -66,54 +66,71 @@
 
         android:gravity="center_horizontal">
 
-        <HorizontalScrollView tools:ignore="UselessParent"
+        <LinearLayout tools:ignore="UselessParent"
+            android:id="@+id/fragment_trade_selected_app_container"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:scrollbars="none">
+            android:background="@drawable/shape_fragment_trade_apps_container">
 
-            <LinearLayout
-                android:id="@+id/fragment_trade_selected_app_container"
+            <ProgressBar
+                android:id="@+id/fragment_trade_selected_app_progress_bar"
 
-                android:layout_width="wrap_content"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
+                android:layout_marginStart="11dp"
+
+                android:theme="@style/CircleProgressBarTheme"/>
+
+            <ImageView tools:ignore="ContentDescription"
+                android:id="@+id/fragment_trade_selected_app_image"
+
+                android:layout_width="33dp"
+                android:layout_height="33dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
+                android:layout_marginStart="11dp"
+
+                android:visibility="gone"/>
+
+            <RelativeLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1">
 
-                android:background="@drawable/shape_fragment_trade_apps_container">
+                <TextView
+                    android:id="@+id/fragment_trade_selected_app_name"
 
-                <ProgressBar
-                    android:id="@+id/fragment_trade_selected_app_progress_bar"
-
-                    android:layout_width="33dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="33dp"
                     android:layout_marginTop="6dp"
                     android:layout_marginBottom="6dp"
-                    android:layout_marginStart="11dp"
+                    android:layout_marginStart="5dp"
 
-                    android:theme="@style/CircleProgressBarTheme"/>
+                    android:textSize="14sp"
+                    android:textColor="@color/white"
 
-                <ImageView tools:ignore="ContentDescription"
-                    android:id="@+id/fragment_trade_selected_app_image"
+                    android:singleLine="true"
+                    android:maxLines="1"
 
-                    android:layout_width="33dp"
-                    android:layout_height="33dp"
-                    android:layout_marginTop="6dp"
-                    android:layout_marginBottom="6dp"
-                    android:layout_marginStart="11dp"
-
+                    android:gravity="center_vertical"
                     android:visibility="gone"/>
+            </RelativeLayout>
 
-                <ImageView tools:ignore="ContentDescription"
-                    android:layout_width="8dp"
-                    android:layout_height="33dp"
-                    android:layout_marginTop="6dp"
-                    android:layout_marginBottom="6dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
+            <ImageView tools:ignore="ContentDescription"
+                android:layout_width="8dp"
+                android:layout_height="33dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
 
-                    android:src="@drawable/ic_dropdown"
-                    android:tint="@color/white"/>
-            </LinearLayout>
-        </HorizontalScrollView>
+                android:src="@drawable/ic_dropdown"
+                android:tint="@color/white"/>
+        </LinearLayout>
     </RelativeLayout>
 
     <RelativeLayout
@@ -957,7 +974,7 @@
                     android:singleLine="true"
                     android:maxLines="1"/>
 
-                <RelativeLayout
+                <RelativeLayout tools:ignore="TooManyViews"
                     android:id="@+id/fragment_trade_make_offer_button"
 
                     android:layout_width="wrap_content"
@@ -971,7 +988,7 @@
 
                     android:background="@drawable/shape_button_outline">
 
-                    <TextView tools:ignore="TooManyViews"
+                    <TextView
                         android:id="@+id/fragment_trade_inner_make_offer_button"
 
                         android:layout_width="wrap_content"

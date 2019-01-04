@@ -73,8 +73,6 @@ public class fragment_trade extends Fragment {
 
     // *** GENERAL
 
-    private List<Integer> app_ids = new ArrayList<>();
-    private List<String> app_images = new ArrayList<>();
     private int selected_app_id = -1;
     private List<Integer> selected_user_items = new ArrayList<>();
     private long total_value_selected_user_items = 0;
@@ -123,6 +121,7 @@ public class fragment_trade extends Fragment {
                             JSONObject app_1 = apps.getJSONObject(0);
                             final ProgressBar selected_app_progress_bar_view = fragment.findViewById(R.id.fragment_trade_selected_app_progress_bar);
                             final ImageView selected_app_image_view = fragment.findViewById(R.id.fragment_trade_selected_app_image);
+                            final TextView selected_app_name_view = fragment.findViewById(R.id.fragment_trade_selected_app_name);
 
                             selected_app_id = app_1.getInt("internal_app_id");
 
@@ -145,12 +144,8 @@ public class fragment_trade extends Fragment {
                                     })
                                     .into(selected_app_image_view);
 
-                            for(int i = 0; i < app_count; i ++) {
-                                app_1 = apps.getJSONObject(i);
-
-                                app_ids.add(app_1.getInt("internal_app_id"));
-                                app_images.add(app_1.getString("img"));
-                            }
+                            selected_app_name_view.setText(app_1.getString("name"));
+                            selected_app_name_view.setVisibility(View.VISIBLE);
 
                             fragment.findViewById(R.id.fragment_trade_selected_app_container).setOnClickListener(new View.OnClickListener() {
                                 @SuppressLint("InflateParams")
@@ -199,6 +194,8 @@ public class fragment_trade extends Fragment {
                                             app_name_view.setText(app_2.getString("name"));
                                             app_name_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                                             app_name_view.setTextColor(app_name_color);
+                                            app_name_view.setSingleLine(true);
+                                            app_name_view.setMaxLines(1);
                                             layout.addView(app_name_view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
                                             app_list_item_layout.addView(layout, layout_params);
@@ -206,7 +203,9 @@ public class fragment_trade extends Fragment {
 
                                             // -----
 
-                                            final int app_index = i;
+                                            final int app_id = app_2.getInt("internal_app_id");
+                                            final String app_image = app_2.getString("img");
+                                            final String app_name = app_2.getString("name");
 
                                             app_list_item_layout.setOnClickListener(new View.OnClickListener() {
                                                 @Override
@@ -217,10 +216,10 @@ public class fragment_trade extends Fragment {
 
                                                         // -----
 
-                                                        selected_app_id = app_ids.get(app_index);
+                                                        selected_app_id = app_id;
 
                                                         Glide.with(context)
-                                                                .load(app_images.get(app_index))
+                                                                .load(app_image)
                                                                 .apply(new RequestOptions().fitCenter())
                                                                 .listener(new RequestListener<Drawable>() {
                                                                     @Override
@@ -235,6 +234,8 @@ public class fragment_trade extends Fragment {
                                                                     }
                                                                 })
                                                                 .into(selected_app_image_view);
+
+                                                        selected_app_name_view.setText(app_name);
 
                                                         alert_dialog.dismiss();
 
@@ -1022,39 +1023,46 @@ public class fragment_trade extends Fragment {
                                         }
 
                                         item_name = item.getString("name");
+                                        item_condition = "";
                                         item_color = item.getString("color");
 
-                                        if(item_name.contains(" (Battle-Scarred)")) {
-                                            item_name = item_name.replace(" (Battle-Scarred)", "");
-                                            item_condition = "Battle-Scarred";
-                                        }
-                                        else if(item_name.contains(" (Well-Worn)")) {
-                                            item_name = item_name.replace(" (Well-Worn)", "");
-                                            item_condition = "Well-Worn";
-                                        }
-                                        else if(item_name.contains(" (Field-Tested)")) {
-                                            item_name = item_name.replace(" (Field-Tested)", "");
-                                            item_condition = "Field-Tested";
-                                        }
-                                        else if(item_name.contains(" (Minimal Wear)")) {
-                                            item_name = item_name.replace(" (Minimal Wear)", "");
-                                            item_condition = "Minimal Wear";
-                                        }
-                                        else if(item_name.contains(" (Factory New)")) {
-                                            item_name = item_name.replace(" (Factory New)", "");
-                                            item_condition = "Factory New";
-                                        }
-                                        else {
-                                            item_condition = "";
+                                        if(selected_app_id == 1) { // 1: VGO
+                                            if(item_name.contains(" (Battle-Scarred)")) {
+                                                item_name = item_name.replace(" (Battle-Scarred)", "");
+                                                item_condition = "Battle-Scarred";
+                                            }
+                                            else if(item_name.contains(" (Well-Worn)")) {
+                                                item_name = item_name.replace(" (Well-Worn)", "");
+                                                item_condition = "Well-Worn";
+                                            }
+                                            else if(item_name.contains(" (Field-Tested)")) {
+                                                item_name = item_name.replace(" (Field-Tested)", "");
+                                                item_condition = "Field-Tested";
+                                            }
+                                            else if(item_name.contains(" (Minimal Wear)")) {
+                                                item_name = item_name.replace(" (Minimal Wear)", "");
+                                                item_condition = "Minimal Wear";
+                                            }
+                                            else if(item_name.contains(" (Factory New)")) {
+                                                item_name = item_name.replace(" (Factory New)", "");
+                                                item_condition = "Factory New";
+                                            }
+
+                                            item_name_parts = new StringTokenizer(item_name, "|");
+
+                                            while(item_name_parts.hasMoreElements()) {
+                                                item_name = item_name_parts.nextToken();
+                                            }
+
+                                            item_name = item_name.trim();
                                         }
 
-                                        item_name_parts = new StringTokenizer(item_name, "|");
-
-                                        while(item_name_parts.hasMoreElements()) {
-                                            item_name = item_name_parts.nextToken();
+                                        if(item_color.length() == 3) {
+                                            item_color = "#FFFFFF";
                                         }
-
-                                        item_name = item_name.trim();
+                                        else if(!item_color.startsWith("#")) {
+                                            item_color = "#" + item_color;
+                                        }
 
                                         layout = new RelativeLayout(context);
                                         layout.setBackgroundDrawable(item_container_drawable);
